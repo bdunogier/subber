@@ -28,7 +28,11 @@ class QueueController extends Controller
         $task->setOriginalName( $taskArray['original_name'] );
 
         $this->em->persist( $task );
-        $this->em->flush();
+        try {
+            $this->em->flush();
+        } catch ( \Exception $e ) {
+            // do nothin'
+        }
 
         return new Response();
     }

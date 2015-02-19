@@ -1,0 +1,41 @@
+
+Modern Family S06E15.720p HDTV x264-DIMENSION
+
+           Loading config from /media/download/apps/sab-postprocessing/autoProcessTV.cfg
+Opening URL: http://localhost:8081/home/postprocess/processEpisode?nzbName=Modern+Family+S06E15.720p+HDTV+x264-DIMENSION.nzb&quiet=1&dir=%2Fmedia%2Fdownload%2Fcomplete%2FTV%2FModern+Family+S06E15.720p+HDTV+x264-DIMENSION
+Processing folder: /media/download/complete/TV/Modern Family S06E15.720p HDTV x264-DIMENSION
+
+
+
+Processing /mnt/sgbg2T1/Download/TV/Modern Family S06E15.720p HDTV x264-DIMENSION/Modern.Family.S06E15.720p.HDTV.X264-DIMENSION.mkv (Modern Family S06E15.720p HDTV x264-DIMENSION.nzb)
+
+Found result in history: (95011, 6, [], 4)
+
+Parsed Modern Family S06E15.720p HDTV x264-DIMENSION into Modern Family - S6E15 - 720p HDTV x264 (DIMENSION) [ABD: False]
+
+Looking up Modern Family in the DB
+
+Lookup successful, using tvdb id 95011
+
+Loading show object for tvdb_id 95011
+
+Retrieving episode object for 6x15
+
+Snatch history had a quality in it, using that: HD TV
+
+Sick Beard snatched this episode, marking it safe to replace
+
+This download is marked as safe to replace existing file
+
+Found release name Modern Family S06E15.720p HDTV x264-DIMENSION
+
+Destination folder for this episode: /media/TV/Modern Family
+
+Moving file from /mnt/sgbg2T1/Download/TV/Modern Family S06E15.720p HDTV x264-DIMENSION/Modern.Family.S06E15.720p.HDTV.X264-DIMENSION.mkv to /media/TV/Modern Family/Modern Family - 06x15 - Fight or Flight (HD TV DIMENSION).mkv
+
+Deleted folder: /mnt/sgbg2T1/Download/TV/Modern Family S06E15.720p HDTV x264-DIMENSION
+
+Processing succeeded for /mnt/sgbg2T1/Download/TV/Modern Family S06E15.720p HDTV x264-DIMENSION/Modern.Family.S06E15.720p.HDTV.X264-DIMENSION.mkv
+
+
+      

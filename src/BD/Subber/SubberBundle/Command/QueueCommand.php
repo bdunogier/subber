@@ -48,6 +48,10 @@ class QueueCommand extends ContainerAwareCommand
         );
 
         $em->persist( $task );
-        $em->flush();
+        try {
+            $em->flush();
+        } catch ( \Exception $e ) {
+            // do nothin'
+        }
     }
 }
