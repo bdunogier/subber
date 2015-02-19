@@ -1,5 +1,5 @@
 <?php
-namespace BD\Subber\SubberBundle\Scrapper;
+namespace BD\Subber\SubberBundle\Subber;
 
 class SubtitleScrap
 {

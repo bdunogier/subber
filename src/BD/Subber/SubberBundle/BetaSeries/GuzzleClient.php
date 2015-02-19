@@ -7,7 +7,15 @@
  */
 namespace BD\Subber\SubberBundle\BetaSeries;
 
-class GuzzleClient
+class GuzzleClient implements Client
 {
+    public function __construct( )
+    {
 
+    }
+
+    public function scrap( $filename )
+    {
+
+    }
 }

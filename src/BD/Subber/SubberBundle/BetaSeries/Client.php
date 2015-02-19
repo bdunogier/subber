@@ -8,7 +8,7 @@
 namespace BD\Subber\SubberBundle\BetaSeries;
 
 
-interface BetaSeriesClient
+interface Client
 {
     public function scrap( $filename );
 }

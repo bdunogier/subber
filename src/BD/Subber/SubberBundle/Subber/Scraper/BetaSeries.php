@@ -7,7 +7,18 @@
  */
 namespace BD\Subber\SubberBundle\Subber\Scraper;
 
-class BetaSeries
-{
+use BD\Subber\SubberBundle\BetaSeries\BetaSeriesClient;
+use BD\Subber\SubberBundle\Subber\Scrapper;
 
+class BetaSeries implements Scrapper
+{
+    public function __construct( BetaSeriesClient $client )
+    {
+        $this->client = $client;
+    }
+
+    public function scrap( $showName, $season, $episode )
+    {
+        // TODO: Implement scrap() method.
+    }
 }
