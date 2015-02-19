@@ -1,0 +1,3 @@
+bd_subber_subber_homepage:
+    path:     /hello/{name}
+    defaults: { _controller: BDSubberSubberBundle:Default:index }

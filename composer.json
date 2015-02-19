@@ -18,7 +18,8 @@
         "symfony/monolog-bundle": "~2.4",
         "sensio/distribution-bundle": "~3.0,>=3.0.12",
         "sensio/framework-extra-bundle": "~3.0,>=3.0.2",
-        "incenteev/composer-parameter-handler": "~2.0"
+        "incenteev/composer-parameter-handler": "~2.0",
+        "patbzh/betaseries": "dev-master"
     },
     "require-dev": {
         "sensio/generator-bundle": "~2.3"
@@ -57,5 +58,11 @@
         "branch-alias": {
             "dev-master": "2.6-dev"
         }
-    }
+    },
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "git@github.com:bdunogier/betaseries.git"
+        }
+    ]
 }
