@@ -1,7 +1,7 @@
 bd_subber_subber:
     resource: "@BDSubberSubberBundle/Resources/config/routing.yml"
     prefix:   /
-
-app:
-    resource: @AppBundle/Controller/
-    type:     annotation
+#
+#app:
+#    resource: @AppBundle/Controller/
+#    type:     annotation

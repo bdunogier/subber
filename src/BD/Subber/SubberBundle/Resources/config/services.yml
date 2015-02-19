@@ -1,4 +1,4 @@
 services:
-#    bd_subber_subber.example:
-#        class: BD\Subber\SubberBundle\Example
-#        arguments: [@service_id, "plain_value", %parameter%]
+    bd_subber.queue_controller:
+        class: BD\Subber\SubberBundle\Controller\QueueController
+        arguments: [@doctrine.orm.entity_manager]
