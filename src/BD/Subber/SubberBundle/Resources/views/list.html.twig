@@ -2,6 +2,6 @@
 
 <ul>
     {% for task in tasks %}
-        <li>{{ task.file }}</li>
+        <li>{{ task.file }} ({{ task.originalName }})</li>
     {% endfor %}
 </ul>
