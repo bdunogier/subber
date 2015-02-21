@@ -5,6 +5,7 @@ use BD\Subber\Election\Ballot\BasicBallot;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
@@ -16,6 +17,7 @@ class PickSubtitleCommand extends ContainerAwareCommand
     {
         $this->setName( 'subber:pick-subtitle' );
         $this->addArgument( 'release-filename', InputArgument::REQUIRED, "The filename of the downloaded release" );
+        $this->addOption( 'video-file', null, InputOption::VALUE_OPTIONAL, "The path to the video file the subtitle should be saved for" );
     }
 
     public function execute( InputInterface $input, OutputInterface $output )
@@ -46,5 +48,22 @@ class PickSubtitleCommand extends ContainerAwareCommand
         $output->writeln( "" );
         $output->writeln( "Winner:" );
         $printSubtitleCallback( $subtitle );
+
+        if ( $input->hasOption( 'video-file' ) )
+        {
+            $output->writeln( "Saving best subtitle for " . $input->getOption( 'video-file' ) );
+            copy(
+                $subtitle['url'],
+                $this->computeSubtitleFileName( $input->getOption( 'video-file' ), $subtitle['file'] )
+            );
+        }
+    }
+
+    private function computeSubtitleFileName( $videoFile, $subtitleFile )
+    {
+        $videoExtension = pathinfo( $videoFile, PATHINFO_EXTENSION );
+        $subtitleExtension = pathinfo( $subtitleFile, PATHINFO_EXTENSION );
+
+        return preg_replace( "/\.$videoExtension$/", ".$subtitleExtension", $videoFile );
     }
 }
