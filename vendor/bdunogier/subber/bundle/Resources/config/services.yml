@@ -1,0 +1,18 @@
+services:
+    bd_subber.queue_controller:
+        class: BD\SubberBundle\Controller\QueueController
+        arguments: [@doctrine.orm.entity_manager]
+
+    bd_subber.dashboard_controller:
+        class: BD\SubberBundle\Controller\DashboardController
+        arguments: [@bd_subber.tasks_repository]
+        calls:
+            - [setContainer,[@service_container]]
+
+    bd_subber.tasks_repository:
+        class: Doctrine\ORM\EntityRepository
+        factory_service: doctrine.orm.entity_manager
+        factory_method: getRepository
+        arguments:
+            - BD\SubberBundle\Entity\Task
+
