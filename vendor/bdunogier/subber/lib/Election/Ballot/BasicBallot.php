@@ -51,7 +51,7 @@ class BasicBallot implements Ballot
         $extension = pathinfo( $filename, PATHINFO_EXTENSION );
 
         // english is strongly downgraded. It should never come first if there is VF
-        if ( $language == 'VO' )
+        if ( $language == 'vo' )
             $grade -= 20;
 
         // hearing impaired
