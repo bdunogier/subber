@@ -26,7 +26,7 @@ class DashboardController extends Controller implements ContainerAwareInterface
     public function listAction()
     {
         return $this->render(
-            'BDSubberSubberBundle::list.html.twig',
+            'BDSubberBundle::list.html.twig',
             ['tasks' => $this->repository->findAll()]
         );
     }
