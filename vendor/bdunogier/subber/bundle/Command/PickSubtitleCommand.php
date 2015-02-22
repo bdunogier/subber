@@ -17,7 +17,7 @@ class PickSubtitleCommand extends ContainerAwareCommand
     {
         $this->setName( 'subber:pick-subtitle' );
         $this->addArgument( 'release-filename', InputArgument::REQUIRED, "The filename of the downloaded release" );
-        $this->addOption( 'video-file', null, InputOption::VALUE_OPTIONAL, "The path to the video file the subtitle should be saved for" );
+        $this->addOption( 'video-file', null, InputOption::VALUE_OPTIONAL, "The path to the video file the subtitle should be saved for", false );
     }
 
     public function execute( InputInterface $input, OutputInterface $output )
@@ -49,7 +49,7 @@ class PickSubtitleCommand extends ContainerAwareCommand
         $output->writeln( "Winner:" );
         $printSubtitleCallback( $subtitle );
 
-        if ( $input->hasOption( 'video-file' ) )
+        if ( $input->getOption( 'video-file' ) )
         {
             $output->writeln( "Saving best subtitle for " . $input->getOption( 'video-file' ) );
             copy(
