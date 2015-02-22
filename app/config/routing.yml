@@ -1,5 +1,5 @@
 bd_subber_subber:
-    resource: "@BDSubberSubberBundle/Resources/config/routing.yml"
+    resource: "@BDSubberBundle/Resources/config/routing.yml"
     prefix:   /
 #
 #app:
