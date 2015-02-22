@@ -1,6 +1,8 @@
 <?php
 namespace BD\Subber\Scrapper;
 
+use ZipArchive;
+
 class BetaSeries extends AbstractScraper
 {
     /**
@@ -87,19 +89,16 @@ class BetaSeries extends AbstractScraper
                 }
                 else
                 {
-                    $zip = new ZipArchive;
+                    $zip = new ZipArchive();
                     $zip->open( $targetPath );
                     for( $i = 0; $i < $zip->numFiles; $i++ )
                     {
                         $name = (string)$zip->getNameIndex( $i );
 
-                        $subType = substr( $name, strrpos( $name, '.' ) + 1 );
-
                         $ret[] = array(
                             'name' => $name,
-                            'link' => "{$subtitleLink}/" . rawurlencode( str_replace( '/', '#', $name ) ),
-                            'priority' => $this->computeSubtitlePriority( $name, $originSite ),
-                            'originSite' => $originSite  );
+                            'url' => "@TODO/" . rawurlencode( str_replace( '/', '#', $name ) ),
+                            'source' => $sub );
                     }
                 }
                 // remove temporary file
