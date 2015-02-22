@@ -14,5 +14,5 @@ services:
         factory_service: doctrine.orm.entity_manager
         factory_method: getRepository
         arguments:
-            - BD\SubberBundle\Entity\Task
+            - BD\Subber\Entity\Task
 
