@@ -2,6 +2,7 @@
 namespace BD\SubberBundle\Command;
 
 use BD\Subber\Election\Ballot\BasicBallot;
+use BD\Subber\Subtitles\Subtitle;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -22,29 +23,26 @@ class PickSubtitleCommand extends ContainerAwareCommand
 
     public function execute( InputInterface $input, OutputInterface $output )
     {
-        $betaSeriesClient = $this->getContainer()->get( 'patbzh.betaseries.client' );
+        $printSubtitleCallback = function ( Subtitle $subtitle ) use ( $output ) {
+            $output->writeln( "$subtitle->filename ($subtitle->language, $subtitle->url)" );
+        };
+
+        $scrapper = $this->getContainer()->get( 'bd_subber.scrapper' );
         $ballot = new BasicBallot();
 
         $filename = $input->getArgument( 'release-filename' );
         $output->writeln( "Scrapping subtitles for $filename" );
 
-        $scrapData = $betaSeriesClient->scrapeEpisode( $filename );
-        if ( !isset( $scrapData['episode']['subtitles'] ) )
-        {
-            $output->writeln( "No subtitles were found" );
-        }
+        $subtitles = $scrapper->scrap( $filename );
 
-        $printSubtitleCallback = function ( $subtitle ) use ( $output ) {
-            $output->writeln( $subtitle['file'] . " (" . $subtitle['language'] . ")" );
-        };
         $output->writeln( "" );
         $output->writeln( "Candidates:" );
         array_map(
             $printSubtitleCallback,
-            $scrapData['episode']['subtitles']
+            $subtitles
         );
 
-        $subtitle = $ballot->vote( $filename, $scrapData['episode']['subtitles'] );
+        $subtitle = $ballot->vote( $filename, $subtitles );
         $output->writeln( "" );
         $output->writeln( "Winner:" );
         $printSubtitleCallback( $subtitle );
@@ -53,8 +51,8 @@ class PickSubtitleCommand extends ContainerAwareCommand
         {
             $output->writeln( "Saving best subtitle for " . $input->getOption( 'video-file' ) );
             copy(
-                $subtitle['url'],
-                $this->computeSubtitleFileName( $input->getOption( 'video-file' ), $subtitle['file'] )
+                $subtitle->url,
+                $this->computeSubtitleFileName( $input->getOption( 'video-file' ), $subtitle->filename )
             );
         }
     }

@@ -5,3 +5,4 @@
       Episode data from betaseries ?
       Elections results ?
 - [ ] Treat multiple subs in one zip as variations ? What's the point, just grade them...
+- [ ] Add Subber message in post-processing report

@@ -9,7 +9,7 @@ interface Ballot
      * @param string $originalName Original download name
      * @param array $subtitles An array of subtitles, as returned by the Betaseries API
      *
-     * @return Result
+     * @return \BD\Subber\Subtitles\Subtitle
      */
     public function vote( $originalName, array $subtitles );
 }

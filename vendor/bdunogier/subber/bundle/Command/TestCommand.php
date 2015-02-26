@@ -10,17 +10,45 @@ namespace BD\SubberBundle\Command;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use ZipArchive;
 
 class TestCommand extends ContainerAwareCommand
 {
     public function configure()
     {
         $this->setName( 'bd:test' );
+        $this->addArgument( 'arg' );
     }
 
     public function execute( InputInterface $input, OutputInterface $output )
     {
-        $client = $this->getContainer()->get( 'patbzh.betaseries.client' );
-        print_r( $client->scrapeEpisode( 'Modern Family S06E15.720p HDTV x264-DIMENSION' ) );
+        $subtitle = array(
+            'name' => 'foo',
+            'url' => 'bar',
+            'language' => 'VF',
+            'quality' => 1,
+            'file' => $input->getArgument( 'arg' )
+        );
+        $zip = new ZipArchive;
+        $zip->open( $input->getArgument( 'arg' ) );
+        for( $i = 0; $i < $zip->numFiles; $i++ )
+        {
+            $filename = (string)$zip->getNameIndex( $i );
+            $extension = pathinfo( $filename, PATHINFO_EXTENSION );
+
+            // @todo makde configurable
+            if ( $extension !== 'srt' && $extension !== 'ass' )
+                continue;
+
+            $newSubtitles[] = array_merge(
+                $subtitle,
+                [
+                    'url' => "@TODO/" . rawurlencode( str_replace( '/', '#', $filename ) ),
+                    'file' => $filename
+                ]
+            );
+        }
+
+        print_r( $newSubtitles );
     }
 }

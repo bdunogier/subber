@@ -2,7 +2,7 @@
 namespace BD\Subber\Election\Ballot;
 
 use BD\Subber\Election\Ballot;
-use BD\Subber\Election\Result;
+use BD\Subber\Subtitles\Subtitle;
 use ZipArchive;
 
 /**
@@ -16,15 +16,12 @@ class BasicBallot implements Ballot
      * @param string $originalName Original download name
      * @param array $subtitles An array of subtitles, as returned by the Betaseries API
      *
-     * @return Result
+     * @return \BD\Subber\Subtitles\Subtitle
      */
     public function vote( $originalName, array $subtitles )
     {
         $bestGrade = -100;
         $bestSubtitle = null;
-
-        // @todo This does NOT belong here
-        $this->processZipFiles( $subtitles );
 
         foreach ( $subtitles as $subtitle )
         {
@@ -41,23 +38,26 @@ class BasicBallot implements Ballot
     }
 
     /**
+     * @param \BD\Subber\Subtitles\Subtitle[] $subtitles
+     *
      * @return array The given subtitles array, with zip replaced by the "real" subtitle file(s) (e.g. inside the zip)
      */
-    private function processZipFiles( array $subtitles )
+    private function processZipFiles( array &$subtitles )
     {
         $newSubtitles = [];
 
         foreach ( $subtitles as $subtitle )
         {
-            $extension = pathinfo( $subtitle['file'], PATHINFO_EXTENSION );
+            $extension = pathinfo( $subtitle->filename, PATHINFO_EXTENSION );
             if ( $extension !== 'zip' )
             {
                 $newSubtitles[] = $subtitle;
                 continue;
             }
 
+            copy( $subtitle->url, $zipFilename = tempnam( sys_get_temp_dir(), 'zip' ) );
             $zip = new ZipArchive;
-            $zip->open( $subtitle['uri'] );
+            $zip->open( $zipFilename );
             for( $i = 0; $i < $zip->numFiles; $i++ )
             {
                 $filename = (string)$zip->getNameIndex( $i );
@@ -68,11 +68,16 @@ class BasicBallot implements Ballot
                     continue;
 
                 $newSubtitles[] = array_merge(
-                    ['url' => "@TODO/" . rawurlencode( str_replace( '/', '#', $filename ) ), 'name' => $filename ],
-                    $subtitle
+                    $subtitle,
+                    [
+                        'url' => "@TODO/" . rawurlencode( str_replace( '/', '#', $filename ) ),
+                        'file' => $filename
+                    ]
                 );
             }
         }
+
+        return $newSubtitles;
     }
 
     /**
@@ -81,12 +86,12 @@ class BasicBallot implements Ballot
 
      * return int
      */
-    private function gradeSubtitle( $videoFilename, $subtitle )
+    private function gradeSubtitle( $videoFilename, Subtitle $subtitle )
     {
         $grade = 0;
 
-        $subtitleFilename = strtolower( $subtitle['file'] );
-        $subtitleLanguage = strtolower( $subtitle['language'] );
+        $subtitleFilename = strtolower( $subtitle->filename );
+        $subtitleLanguage = strtolower( $subtitle->language );
         $subtitleExtension = pathinfo( $subtitleFilename, PATHINFO_EXTENSION );
         $videoFilename = strtolower( $videoFilename );
 
@@ -94,14 +99,29 @@ class BasicBallot implements Ballot
         if ( $subtitleLanguage == 'vo' )
             $grade -= 20;
 
-        if ( strstr( $subtitleFilename, 'web-dl' ) !== false )
+        if ( strstr( $videoFilename, 'web-dl' ) !== false )
         {
             $grade += strstr( $subtitleFilename, 'web-dl' ) !== false ? 5 : -5;
         }
 
-        if ( strstr( $subtitleFilename, 'hdtv' ) !== false )
+        if ( strstr( $videoFilename, 'dimension' ) !== false )
         {
-            $grade += strstr( $subtitleFilename, 'hdtv' ) !== false ? 5 : -5;
+            $grade += strstr( $subtitleFilename, 'dimension' ) !== false ? 5 : -5;
+        }
+
+        if ( strstr( $videoFilename, 'lol' ) !== false )
+        {
+            $grade += strstr( $subtitleFilename, 'lol' ) !== false ? 5 : -5;
+        }
+
+        if ( strstr( $videoFilename, 'hdtv' ) !== false || strstr( $videoFilename, '720p' ) !== false)
+        {
+            $grade += strstr( $subtitleFilename, 'hdtv' ) || strstr( $subtitleFilename, '720p' ) !== false ? 5 : -5;
+        }
+
+        if ( strstr( $videoFilename, '1080p' ) !== false )
+        {
+            $grade += strstr( $subtitleFilename, '1080p' ) !== false ? 5 : -5;
         }
 
         // hearing impaired
@@ -116,13 +136,10 @@ class BasicBallot implements Ballot
         if ( strstr( $subtitleFilename, '.tag' ) || strstr( $subtitleFilename, '.notag' ) )
             $grade += 1;
 
-        if ( $subtitleExtension === 'zip' )
-            $grade -= 50;
-
-        switch ( $subtitle['source'] )
+        switch ( $subtitle->source )
         {
             case 'soustitres':  $grade += 2; break;
-            case 'addic7ed':    $grade -= 1; break;
+            case 'addic7ed':    $grade += 1; break;
             case 'tvsubtitles': $grade -= 2; break;
         }
 

@@ -16,3 +16,15 @@ services:
         arguments:
             - BD\Subber\Entity\Task
 
+    bd_subber.scrapper:
+        class: BD\Subber\Subber\Scrapper
+        alias: bd_subber.betaseries.scrapper
+
+    bd_subber.betaseries.scrapper:
+        class: BD\Subber\Betaseries\BetaseriesScrapper
+        arguments:
+            - @patbzh.betaseries.client
+            - @bd_subber.betaseries.scrapper.zip_subtitles_filter
+
+    bd_subber.betaseries.scrapper.zip_subtitles_filter:
+        class: BD\Subber\Betaseries\ZipSubtitleFilter
