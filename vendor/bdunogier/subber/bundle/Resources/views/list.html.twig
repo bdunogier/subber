@@ -1,0 +1,13 @@
+{% extends 'BDSubberBundle::layout.html.twig' %}
+
+{% block title %}{{ parent() }} :: Dashboard{% endblock %}
+
+{% block body %}
+    <h1>Dashboard</h1>
+
+    <div class="row-fluid">
+        {% for task in tasks %}
+            <div class="span12">{{ task.file }} ({{ task.originalName }})</div>
+        {% endfor %}
+    </div>
+{% endblock %}

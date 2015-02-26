@@ -1,4 +1,0 @@
-services:
-    bd_subber.queue_controller:
-        class: BD\Subber\SubberBundle\Controller\QueueController
-        arguments: [@doctrine.orm.entity_manager]

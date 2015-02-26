@@ -21,3 +21,11 @@ parameters:
     betaseries_key: ~
     executable.node.path: /usr/local/bin/node
     executable.node.modules_path: /usr/local/lib/node_modules
+
+    sabnzbd_history.database_driver:   pdo_sqlite
+    sabnzbd_history.database_host:     ~
+    sabnzbd_history.database_port:     ~
+    sabnzbd_history.database_name:     ~
+    sabnzbd_history.database_user:     ~
+    sabnzbd_history.database_password: ~
+    sabnzbd_history.database_path:     "%kernel.root_dir%/sabnzbd-history.db"
