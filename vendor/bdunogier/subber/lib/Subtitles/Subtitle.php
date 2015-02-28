@@ -2,13 +2,13 @@
 namespace BD\Subber\Subtitles;
 
 
-class Subtitle
+use BD\Subber\Release\Release;
+
+class Subtitle extends Release
 {
     public $language;
 
-    public $source;
-
-    public $filename;
+    public $sourceSite;
 
     public $url;
 }

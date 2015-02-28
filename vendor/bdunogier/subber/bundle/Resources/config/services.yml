@@ -17,7 +17,7 @@ services:
             - BD\Subber\Entity\Task
 
     bd_subber.scrapper:
-        class: BD\Subber\Subber\Scrapper
+        class: BD\Subber\Subtitles\Scrapper
         alias: bd_subber.betaseries.scrapper
 
     bd_subber.betaseries.scrapper:
@@ -28,6 +28,19 @@ services:
 
     bd_subber.betaseries.scrapper.zip_subtitles_filter:
         class: BD\Subber\Betaseries\ZipSubtitleFilter
+
+    bd_subber.subtitle_matcher:
+        class: BD\Subber\Subtitles\Matcher
+
+    bd_subber.subtitle_rater:
+        class: BD\Subber\Subtitles\SimpleSubtitleRater
+
+    bd_subber.downloaded_episode_subtitle_collection_factory:
+        class: BD\Subber\Subtitles\DownloadedEpisodeSubtitlesCollectionFactory
+        arguments:
+            - @bd_subber.scrapper
+            - @bd_subber.subtitle_matcher
+            - @bd_subber.subtitle_rater
 
     bd_subber.release_parser.video:
         class: BD\Subber\Release\Parser\VideoReleaseParser
