@@ -28,3 +28,6 @@ services:
 
     bd_subber.betaseries.scrapper.zip_subtitles_filter:
         class: BD\Subber\Betaseries\ZipSubtitleFilter
+
+    bd_subber.release_parser.video:
+        class: BD\Subber\Release\Parser\VideoReleaseParser
