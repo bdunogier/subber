@@ -18,7 +18,13 @@ class PickSubtitleCommand extends ContainerAwareCommand
     {
         $this->setName( 'subber:pick-subtitle' );
         $this->addArgument( 'release-filename', InputArgument::REQUIRED, "The filename of the downloaded release" );
-        $this->addOption( 'video-file', null, InputOption::VALUE_OPTIONAL, "The path to the video file the subtitle should be saved for", false );
+        $this->addOption(
+            'video-file',
+            null,
+            InputOption::VALUE_OPTIONAL,
+            "The path to the video file the subtitle should be saved for",
+            false
+        );
     }
 
     public function execute( InputInterface $input, OutputInterface $output )
@@ -37,10 +43,7 @@ class PickSubtitleCommand extends ContainerAwareCommand
 
         $output->writeln( "" );
         $output->writeln( "Candidates:" );
-        array_map(
-            $printSubtitleCallback,
-            $subtitles
-        );
+        array_map( $printSubtitleCallback, $subtitles );
 
         $subtitle = $ballot->vote( $filename, $subtitles );
         $output->writeln( "" );
