@@ -1,0 +1,38 @@
+{
+    "name": "bdunogier/subber",
+    "license": "OSL-3.0",
+    "authors": [
+        {
+            "name": "Bertrand Dunogier",
+            "email": "bertrand.dunogier@gmail.com"
+        }
+    ],
+    "minimum-stability": "stable",
+    "require": {
+        "php": ">=5.3.3",
+        "symfony/symfony": "2.6.*",
+        "symfony/monolog-bundle": "~2.4",
+        "doctrine/orm": "~2.2,>=2.2.3,<2.5",
+        "doctrine/dbal": "<2.5",
+        "doctrine/doctrine-bundle": "~1.2",
+        "patbzh/betaseries": "dev-master"
+    },
+    "require-dev": {
+        "phpspec/phpspec": "~2.1"
+    },
+    "autoload": {
+        "psr-4": {
+            "BD\\SubberBundle\\": "bundle/",
+            "BD\\Subber\\": "lib/"
+        }
+    },
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "git@github.com:bdunogier/betaseries.git"
+        }
+    ],
+    "config": {
+        "bin-dir": "bin"
+    }
+}

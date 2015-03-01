@@ -1,0 +1,5 @@
+suites:
+  default:
+    namespace: BD\Subber
+    psr4_prefix: BD\Subber
+    src_path: lib

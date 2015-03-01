@@ -8,7 +8,7 @@ class Subtitle extends Release
 {
     public $language;
 
-    public $sourceSite;
+    public $site;
 
     public $url;
 }
