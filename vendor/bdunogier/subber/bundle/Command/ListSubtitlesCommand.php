@@ -17,8 +17,8 @@ class ListSubtitlesCommand extends ContainerAwareCommand
     public function configure()
     {
         $this->setName( 'subber:list-subtitles' );
-        $this->addArgument( 'video-file',         InputArgument::REQUIRED, "The path to the video file the subtitle subtitles must be listed for" );
         $this->addArgument( 'downloaded-release', InputArgument::REQUIRED, "The name of the downloaded release file" );
+        $this->addOption( 'video-file', 'f', InputOption::VALUE_OPTIONAL, "The path to the video file the subtitle subtitles must be listed for", false );
     }
 
     public function execute( InputInterface $input, OutputInterface $output )
@@ -27,10 +27,9 @@ class ListSubtitlesCommand extends ContainerAwareCommand
             $output->writeln( "$subtitle->name ($subtitle->language, $subtitle->url)" );
         };
 
-        $videoFile = $input->getArgument( 'video-file' );
         $downloadedRelease = $input->getArgument( 'downloaded-release' );
 
-        $output->writeln( "Listing subtitles for $videoFile" );
+        $output->writeln( "Listing subtitles for $downloadedRelease" );
 
         $factory = $this->getContainer()->get( 'bd_subber.downloaded_episode_subtitle_collection_factory' );
         $collection = $factory->getCollection( $downloadedRelease );

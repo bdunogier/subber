@@ -45,10 +45,13 @@ class ZipSubtitleFilter
                 if ( $extension !== 'srt' && $extension !== 'ass' )
                     continue;
 
+                $zipUrl = $subtitle['url'];
+                $separator = ( strstr( $zipUrl, '?' ) !== false ) ? '&' : '?';
+                $zipUrl .= $separator . "subber_zipfile=" . rawurlencode( $filename );
                 $newSubtitles[] = array_merge(
                     $subtitle,
                     [
-                        'url' => "@TODO/" . rawurlencode( str_replace( '/', '#', $filename ) ),
+                        'url' => $zipUrl,
                         'file' => $filename
                     ]
                 );
