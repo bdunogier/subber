@@ -1,7 +1,16 @@
 ## To do
+
+### Release Parser
+- [x] Release Parser: implement dispatcher
+- [x] BetaSeries Scrapper: create Subtitle objects using the dispatcher
+- [ ] Release Parser: make sure that the subtitle's extension is given to the parser
+- [ ] Release Parser: update namespace, Release\Parser\SubtitlesParser\Addic7ed => Remove 'Parser'
+
+### Other
 - [ ] Store Subber data along with subbed files (.subber folder ? .subber_<filename>.json)
       Episode data from betaseries ?
       Elections results ?
+
 - [ ] Abstract access to stored (cached ? yes, cached. The consumer don't care if it is "stored") data
 - [ ] Add status field to "tasks" table (pending, suggested, confirmed)
 - [ ] Update UI to highlight files where we have subtitles, and say which original file
