@@ -19,19 +19,21 @@ class BetaseriesScrapper implements Scrapper
      */
     private $client;
 
-    /**
-     * @var \BD\Subber\Betaseries\ZipSubtitleFilter
-     */
+    /** @var \BD\Subber\Betaseries\ZipSubtitleFilter */
     private $zipSubtitleFilter;
+
+    /** @var \BD\Subber\Betaseries\ParserRegistry */
+    private $parserRegistry;
 
     /**
      * @param \Patbzh\BetaseriesBundle\Model\Client $client
      * @param \BD\Subber\Betaseries\ZipSubtitleFilter $zipSubtitleFilter
      */
-    public function __construct( BetaseriesClient $client, ZipSubtitleFilter $zipSubtitleFilter )
+    public function __construct( BetaseriesClient $client, ZipSubtitleFilter $zipSubtitleFilter, ParserRegistry $parserRegistry )
     {
         $this->client = $client;
         $this->zipSubtitleFilter = $zipSubtitleFilter;
+        $this->parserRegistry = $parserRegistry;
     }
 
     /**
@@ -47,12 +49,13 @@ class BetaseriesScrapper implements Scrapper
             $filteredSubtitles = $this->zipSubtitleFilter->filter( $data['episode']['subtitles'] );
             foreach ( $filteredSubtitles as $subtitleArray )
             {
-                $subtitle = new Subtitle();
-                $subtitle->filename = $subtitleArray['file'];
-                $subtitle->language = $subtitleArray['language'];
-                $subtitle->source = $subtitleArray['source'];
+                try {
+                    $subtitle = $this->parserRegistry->getParser( $subtitleArray['source'] )->parseReleaseName( $subtitleArray['file'] );
+                } catch ( \InvalidArgumentException $e ) {
+                    // we ignore unknown sources
+                    continue;
+                }
                 $subtitle->url = $subtitleArray['url'];
-
                 $subtitles[] = $subtitle;
             }
         }

@@ -8,6 +8,7 @@
 namespace BD\Subber\Subtitles;
 
 use BD\Subber\Election\Ballot;
+use BD\Subber\Release\Parser\VideoReleaseParser;
 
 /**
  * Instantiates EpisodeSubtitleCollection objects from an episode and a download.
@@ -19,17 +20,22 @@ class ReleaseSubtitlesCollectionFactory
     /** @var \BD\Subber\Subtitles\Scrapper */
     private $scrapper;
 
-    /** @var \BD\Subber\Subtitles\Matcher */
+    /** @var \BD\Subber\Subtitles\SubtitleReleaseMatcher */
     private $matcher;
 
     /** @var \BD\Subber\Subtitles\SubtitleRater */
     private $rater;
+    /**
+     * @var \BD\Subber\Release\Parser\VideoReleaseParser
+     */
+    private $videoReleaseParser;
 
-    public function __construct( Scrapper $scrapper, Matcher $matcher, SubtitleRater $rater )
+    public function __construct( Scrapper $scrapper, VideoReleaseParser $videoReleaseParser, SubtitleReleaseMatcher $matcher, SubtitleRater $rater )
     {
         $this->scrapper = $scrapper;
         $this->matcher = $matcher;
         $this->rater = $rater;
+        $this->videoReleaseParser = $videoReleaseParser;
     }
 
     /**
@@ -40,13 +46,14 @@ class ReleaseSubtitlesCollectionFactory
     public function getCollection( $downloadedFileName )
     {
         $subtitles = $this->scrapper->scrap( $downloadedFileName );
+        $videoRelease = $this->videoReleaseParser->parseReleaseName( $downloadedFileName );
 
         $acceptableSubtitles = [];
         $unacceptableSubtitles = [];
 
         foreach ( $subtitles as $subtitle )
         {
-            if ( $this->matcher->matches( $subtitle, $downloadedFileName ) )
+            if ( $this->matcher->matches( $subtitle, $videoRelease ) )
             {
                 $acceptableSubtitles[] = $subtitle;
             }
@@ -63,9 +70,9 @@ class ReleaseSubtitlesCollectionFactory
             if ( $aRate === $bRate )
                 return 0;
             if ( $aRate > $bRate )
-                return 1;
-            if ( $aRate < $bRate )
                 return -1;
+            if ( $aRate < $bRate )
+                return 1;
         };
 
         usort( $acceptableSubtitles, $subtitleSortCallback );

@@ -25,22 +25,47 @@ services:
         arguments:
             - @patbzh.betaseries.client
             - @bd_subber.betaseries.scrapper.zip_subtitles_filter
+            - @bd_subber.release_parser.subtitles_registry
 
     bd_subber.betaseries.scrapper.zip_subtitles_filter:
         class: BD\Subber\Betaseries\ZipSubtitleFilter
 
-    bd_subber.subtitle_matcher:
-        class: BD\Subber\Subtitles\Matcher
+    bd_subber.subtitle_release_matcher:
+        class: BD\Subber\Subtitles\SubtitleReleaseMatcher
 
     bd_subber.subtitle_rater:
         class: BD\Subber\Subtitles\SimpleSubtitleRater
 
     bd_subber.downloaded_episode_subtitle_collection_factory:
-        class: BD\Subber\Subtitles\DownloadedEpisodeSubtitlesCollectionFactory
+        class: BD\Subber\Subtitles\ReleaseSubtitlesCollectionFactory
         arguments:
             - @bd_subber.scrapper
-            - @bd_subber.subtitle_matcher
+            - @bd_subber.release_parser.video
+            - @bd_subber.subtitle_release_matcher
             - @bd_subber.subtitle_rater
 
     bd_subber.release_parser.video:
         class: BD\Subber\Release\Parser\VideoReleaseParser
+
+    bd_subber.release_parser.subtitles_registry:
+        class: BD\Subber\Betaseries\ParserRegistry
+        arguments:
+            -
+                soustitres: @bd_subber.release_parser.subtitle.soustitres
+                tvsubtitles: @bd_subber.release_parser.subtitle.tvsubtitles
+                addic7ed: @bd_subber.release_parser.subtitle.addic7ed
+
+    bd_subber.release_parser.subtitle.addic7ed:
+        class: BD\Subber\Release\Parser\SubtitleRelease\Addic7edParser
+        tags:
+            - { name: bd_subber.subtitle_release_parser, key: addic7ed }
+
+    bd_subber.release_parser.subtitle.soustitres:
+        class: BD\Subber\Release\Parser\SubtitleRelease\SoustitresParser
+        tags:
+            - { name: bd_subber.subtitle_release_parser, key: soustitres }
+
+    bd_subber.release_parser.subtitle.tvsubtitles:
+        class: BD\Subber\Release\Parser\SubtitleRelease\TvsubtitlesParser
+        tags:
+            - { name: bd_subber.subtitle_release_parser, key: tvsubtitles }
