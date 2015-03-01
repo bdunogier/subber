@@ -10,29 +10,21 @@ class SimpleSubtitleRater implements SubtitleRater
     {
         $rate = 0;
 
-        $subtitleFilename = strtolower( $subtitle->filename );
-        $subtitleLanguage = strtolower( $subtitle->language );
-        $subtitleExtension = pathinfo( $subtitleFilename, PATHINFO_EXTENSION );
-
         // language
-        if ( $subtitleLanguage == 'vo' )
-            $rate -= -5;
-
-        // language
-        if ( $subtitleLanguage == 'vo' )
-            $rate -= -5;
+        if ( $subtitle->language == 'en' )
+            $rate -= 5;
 
         // hearing impaired
-        if ( strstr( $subtitleFilename, '.hi.' ) )
+        if ( $subtitle->isHearingImpaired )
             $rate -= 3;
 
         // type
-        if ( $subtitleExtension == 'ass' )
+        if ( $subtitle->subtitleFormat == 'ass' )
             $rate += 2;
 
         // tag/notag
-        if ( $this->contains( $subtitleFilename, '.tag' ) )
-            $rate += 2;
+        if ( $subtitle->hasTags )
+            $rate += 1;
 
         switch ( $subtitle->source )
         {
@@ -42,10 +34,5 @@ class SimpleSubtitleRater implements SubtitleRater
         }
 
         return $rate;
-    }
-
-    private function contains( $string, $substring )
-    {
-        return strstr( $string, $substring ) !== false;
     }
 }
