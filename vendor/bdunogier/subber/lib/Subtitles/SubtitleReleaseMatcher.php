@@ -15,10 +15,7 @@ class SubtitleReleaseMatcher implements SubtitleReleaseMatcherInterface
      */
     public function matches( Subtitle $subtitle, Release $release )
     {
-        if ($subtitle->group != $release->group) {
-            return false;
-        }
-
+        // we should test the group, but they can be compatible...
         if ($subtitle->source != $release->source) {
             return false;
         }
