@@ -21,12 +21,15 @@ class ParseVideoReleaseCommand extends ContainerAwareCommand
     {
         $release = $input->getArgument( 'release' );
         $parser = $this->getContainer()->get( 'bd_subber.release_parser.video' );
+
         $output->writeln( "Release: $release" );
         $output->writeln( "" );
+
         $episode = $parser->parseReleaseName( $release );
+        $output->writeln( "Parsed properties" );
         foreach( $episode as $field => $value )
         {
-            $output->writeln( "$field: $value" );
+            $output->writeln( "- $field: $value" );
         }
     }
 }

@@ -14,12 +14,12 @@ use BD\Subber\Election\Ballot;
  *
  * Scraps the downloaded filename for subtitles, and filters the subtitles based on the download.
  */
-class DownloadedEpisodeSubtitlesCollectionFactory
+class ReleaseSubtitlesCollectionFactory
 {
     /** @var \BD\Subber\Subtitles\Scrapper */
     private $scrapper;
 
-    /** @var \BD\Subber\Election\Ballot */
+    /** @var \BD\Subber\Subtitles\Matcher */
     private $matcher;
 
     /** @var \BD\Subber\Subtitles\SubtitleRater */
@@ -35,7 +35,7 @@ class DownloadedEpisodeSubtitlesCollectionFactory
     /**
      * @param string $downloadedFileName
      *
-     * @return \BD\Subber\Subtitles\EpisodeSubtitlesCollection
+     * @return \BD\Subber\Subtitles\ReleaseSubtitlesCollection
      */
     public function getCollection( $downloadedFileName )
     {
@@ -71,6 +71,6 @@ class DownloadedEpisodeSubtitlesCollectionFactory
         usort( $acceptableSubtitles, $subtitleSortCallback );
         usort( $unacceptableSubtitles, $subtitleSortCallback );
 
-        return new EpisodeSubtitlesCollection( $acceptableSubtitles, $unacceptableSubtitles );
+        return new ReleaseSubtitlesCollection( $acceptableSubtitles, $unacceptableSubtitles );
     }
 }

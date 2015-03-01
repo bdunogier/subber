@@ -3,6 +3,11 @@ namespace BD\Subber\Release;
 
 class Release
 {
+    public function __construct( $name )
+    {
+        $this->name = $name;
+    }
+
     /**
      * The release's name, complete
      * @var string
