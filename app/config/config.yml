@@ -59,15 +59,15 @@ doctrine:
                 path:     "%database_path%"
                 charset:  UTF8
 
-            sabnzbd_history:
-                driver:   "%sabnzbd_history.database_driver%"
-                host:     "%sabnzbd_history.database_host%"
-                port:     "%sabnzbd_history.database_port%"
-                dbname:   "%sabnzbd_history.database_name%"
-                user:     "%sabnzbd_history.database_user%"
-                password: "%sabnzbd_history.database_password%"
-                path:     "%sabnzbd_history.database_path%"
-                charset:  UTF8
+#            sabnzbd_history:
+#                driver:   "%sabnzbd_history.database_driver%"
+#                host:     "%sabnzbd_history.database_host%"
+#                port:     "%sabnzbd_history.database_port%"
+#                dbname:   "%sabnzbd_history.database_name%"
+#                user:     "%sabnzbd_history.database_user%"
+#                password: "%sabnzbd_history.database_password%"
+#                path:     "%sabnzbd_history.database_path%"
+#                charset:  UTF8
 
     orm:
         auto_generate_proxy_classes: "%kernel.debug%"
