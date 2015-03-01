@@ -15,6 +15,7 @@ class VideoReleaseParser implements ReleaseParser
     public function parseReleaseName( $releaseName )
     {
         $release = new Release();
+        $releaseName = strtolower( $releaseName );
         $release->name = $releaseName;
 
         list( $releaseName, $release->group ) = explode( '-', $releaseName );
