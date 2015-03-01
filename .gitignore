@@ -28,3 +28,9 @@ vendor/swiftmailer/
 vendor/symfony/
 vendor/twbs/
 vendor/twig/
+vendor/sebastian/
+vendor/phpspec/
+vendor/phpdocumentor/
+web/bundles/
+web/css/
+web/js/
