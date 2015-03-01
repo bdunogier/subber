@@ -8,17 +8,14 @@ class Addic7edParserTest extends \PHPUnit_Framework_TestCase
     /** @var \BD\Subber\Release\Parser\SubtitleRelease\Addic7edParser */
     private $parser;
 
-    public function setUp()
-    {
-        $this->parser = new \BD\Subber\Release\Parser\SubtitleRelease\Addic7edParser();
-    }
-
     /**
      * @dataProvider getValidReleases
      */
     public function testParseValidRelease( $releaseName, $expectedProperties )
     {
-        $release = $this->parser->parseReleaseName( $releaseName );
+        $parser = new Addic7edParser();
+        $release = $parser->parseReleaseName( $releaseName );
+
         foreach ( $expectedProperties as $property => $value )
         {
             self::assertAttributeEquals( $value, $property, $release );
@@ -56,6 +53,25 @@ class Addic7edParserTest extends \PHPUnit_Framework_TestCase
                     'language' => 'fr'
                 ]
             ],
+            [
+                'Vikings - 03x01 - Mercenary.KILLERS.English.HI.C.orig.Addic7ed.com',
+                [
+                    'name' => 'Vikings - 03x01 - Mercenary.KILLERS.English.HI.C.orig.Addic7ed.com',
+                    'group' => 'killers',
+                    'author' => 'addic7ed',
+                    'language' => 'en',
+                    'isHearingImpaired' => true
+                ]
+            ],
+            [
+                'Gotham - 01x17 - Red Hood.LOL.French.C.updated.Addic7ed.com',
+                [
+                    'name' => 'Gotham - 01x17 - Red Hood.LOL.French.C.updated.Addic7ed.com',
+                    'group' => 'lol',
+                    'author' => 'addic7ed',
+                    'language' => 'fr'
+                ]
+            ]
         ];
     }
 }

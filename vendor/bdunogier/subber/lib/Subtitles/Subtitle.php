@@ -21,4 +21,10 @@ class Subtitle extends Release
      * @var string
      */
     public $url;
+
+    /**
+     * Wether or not this subtitle is a hearing impaired one
+     * @var bool
+     */
+    public $isHearingImpaired = false;
 }
