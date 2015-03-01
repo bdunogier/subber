@@ -16,23 +16,29 @@ class Addic7edParserSpec extends ObjectBehavior
         $this->shouldHaveType('BD\Subber\Release\Parser\SubtitleRelease\Addic7edParser');
     }
 
-    function it_parses_a_subtitle_filename()
+    function it_parses_a_valid_release()
     {
-        $release = $this->parseReleaseName( 'Vikings - 03x02 - The Wanderer.WEB-DL-BS.English.C.orig.Addic7ed.com' );
-
+        $release = $this->parseReleaseName( 'Bitten - 02x04 - Dead Meat.KILLERS.English.C.orig.Addic7ed.com' );
         $release->shouldBeAnInstanceOf( 'BD\Subber\Subtitles\Subtitle' );
+    }
 
-        $release->shouldHaveProperty( 'name', 'Vikings - 03x02 - The Wanderer.WEB-DL-BS.English.C.orig.Addic7ed.com' );
-        $release->shouldHaveProperty( 'source', 'web-dl' );
-        $release->shouldHaveProperty( 'language', 'en' );
-        $release->shouldHaveProperty( 'author', 'addic7ed' );
+    function it_throws_exception_on_unhandled_release()
+    {
+        $this->shouldThrow('\InvalidArgumentException')->duringParseReleaseName( 'this is not valid' );
     }
 
     public function getMatchers()
     {
         return [
-            'haveProperty' => function( Subtitle $subtitle, $property, $value ) {
-                return $subtitle->$property == $value;
+            'haveProperties' => function( Subtitle $subtitle, array $properties ) {
+                foreach ( $properties as $property => $value )
+                {
+                    if ( $subtitle->$property !== $value )
+                    {
+                        return false;
+                    }
+                }
+                return true;
             }
         ];
     }

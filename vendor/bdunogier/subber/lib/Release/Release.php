@@ -3,9 +3,14 @@ namespace BD\Subber\Release;
 
 class Release
 {
-    public function __construct( $name )
+    public function __construct( array $properties = [] )
     {
-        $this->name = $name;
+        foreach ( $properties as $property => $value )
+        {
+            if ( !property_exists( $this, $property ) )
+                throw new \InvalidArgumentException( "Unknown property $property in class " . __CLASS__ );
+            $this->$property = $value;
+        }
     }
 
     /**

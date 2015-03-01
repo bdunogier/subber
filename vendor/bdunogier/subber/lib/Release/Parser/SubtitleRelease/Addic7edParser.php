@@ -19,11 +19,33 @@ class Addic7edParser implements ReleaseParser
      */
     public function parseReleaseName( $releaseName )
     {
-        $release = new Subtitle( $releaseName );
-        $release->source = 'web-dl';
-        $release->language = 'en';
+        $release = new Subtitle( ['name' => $releaseName] );
         $release->author = 'addic7ed';
-        preg_match( '//', $releaseName, $matches );
+
+        if ( !preg_match( '/([^\.]+)\.(english|french)\.c\.(updated|orig)\.addic7ed\.com$/i', strtolower( $releaseName ), $matches ) )
+            throw new \InvalidArgumentException( "Unable to parse $releaseName" );
+
+        switch ( $matches[2] )
+        {
+            case 'english': $release->language = 'en'; break;
+            case 'french': $release->language = 'fr'; break;
+        }
+
+        if ( $matches[1] == 'killers' || $matches[1] == 'killers-translate')
+        {
+            $release->group = 'killers';
+        }
+
+        if ( $matches[1] == 'web-dl' )
+        {
+            $release->source = 'web-dl';
+        }
+
+        if ( $matches[1] == 'web-dl-bs' )
+        {
+            $release->source = 'web-dl';
+            $release->group = 'bs';
+        }
 
         return $release;
     }
