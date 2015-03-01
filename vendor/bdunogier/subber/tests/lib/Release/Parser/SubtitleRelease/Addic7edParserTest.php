@@ -1,5 +1,5 @@
 <?php
-namespace tests\BD\Subber\Release\Parser\SubtitleRelease\Addic7edParser;
+namespace tests\BD\Subber\Release\Parser\SubtitleRelease;
 
 use BD\Subber\Release\Parser\SubtitleRelease\Addic7edParser;
 

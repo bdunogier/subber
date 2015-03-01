@@ -27,4 +27,10 @@ class Subtitle extends Release
      * @var bool
      */
     public $isHearingImpaired = false;
+
+    /** @var string */
+    public $subtitleFormat = 'srt';
+
+    /** @var bool */
+    public $hasTags = false;
 }

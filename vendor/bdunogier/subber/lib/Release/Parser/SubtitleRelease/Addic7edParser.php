@@ -20,11 +20,10 @@ class Addic7edParser implements ReleaseParser
      */
     public function parseReleaseName( $releaseName )
     {
-        $release = new Subtitle( ['name' => $releaseName] );
-        $release->author = 'addic7ed';
+        $release = new Subtitle( ['name' => $releaseName, 'author' => 'addic7ed'] );
+        $releaseParts = explode( '.', strtolower( $releaseName ) );
 
         // addic7ed.com
-        $releaseParts = explode( '.', strtolower( $releaseName ) );
         if ( array_pop( $releaseParts ) != 'com' || array_pop( $releaseParts ) != 'addic7ed' )
             throw new ReleaseParserException( $releaseName, "addic7ed.com string not found" );
 
