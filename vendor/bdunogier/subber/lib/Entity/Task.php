@@ -27,6 +27,20 @@ class Task
      */
     protected $originalName;
 
+    /**
+     * @ORM\Column(name="created", type="datetime", nullable=true)
+     */
+    protected $createdAt = 0;
+
+    /**
+     * @ORM\Column(name="updated", type="datetime", nullable=true)
+     */
+    protected $updatedAt = 0;
+
+    /**
+     * @ORM\Column(name="status", type="integer", nullable=true)
+     */
+    protected $status = 0;
 
     /**
      * Set file
@@ -72,5 +86,53 @@ class Task
     public function getOriginalName()
     {
         return $this->originalName;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getStatus()
+    {
+        return $this->status;
+    }
+
+    /**
+     * @param mixed $status
+     */
+    public function setStatus( $status )
+    {
+        $this->status = $status;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getUpdatedAt()
+    {
+        return $this->updatedAt;
+    }
+
+    /**
+     * @param mixed $updatedAt
+     */
+    public function setUpdatedAt( $updatedAt )
+    {
+        $this->updatedAt = $updatedAt;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCreatedAt()
+    {
+        return $this->createdAt;
+    }
+
+    /**
+     * @param mixed $createdAt
+     */
+    public function setCreatedAt( $createdAt )
+    {
+        $this->createdAt = $createdAt;
     }
 }
