@@ -36,7 +36,7 @@ services:
     bd_subber.subtitle_rater:
         class: BD\Subber\Subtitles\SimpleSubtitleRater
 
-    bd_subber.downloaded_episode_subtitle_collection_factory:
+    bd_subber.release_subtitles_collection_factory:
         class: BD\Subber\Subtitles\ReleaseSubtitlesCollectionFactory
         arguments:
             - @bd_subber.scrapper

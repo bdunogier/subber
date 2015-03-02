@@ -4,7 +4,7 @@ namespace BD\Subber\Subtitles;
 use Exception;
 
 /**
- * Collection of Subtitles for an Episode
+ * Contains subtitles for a release file.
  */
 class ReleaseSubtitlesCollection
 {

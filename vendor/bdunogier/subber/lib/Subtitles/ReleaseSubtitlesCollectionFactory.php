@@ -11,7 +11,7 @@ use BD\Subber\Election\Ballot;
 use BD\Subber\Release\Parser\VideoReleaseParser;
 
 /**
- * Instantiates EpisodeSubtitleCollection objects from an episode and a download.
+ * Instantiates ReleaseSubtitlesCollectionFactory objects from an episode and a download.
  *
  * Scraps the downloaded filename for subtitles, and filters the subtitles based on the download.
  */
@@ -25,9 +25,8 @@ class ReleaseSubtitlesCollectionFactory
 
     /** @var \BD\Subber\Subtitles\SubtitleRater */
     private $rater;
-    /**
-     * @var \BD\Subber\Release\Parser\VideoReleaseParser
-     */
+
+    /** @var \BD\Subber\Release\Parser\VideoReleaseParser */
     private $videoReleaseParser;
 
     public function __construct( Scrapper $scrapper, VideoReleaseParser $videoReleaseParser, SubtitleReleaseMatcher $matcher, SubtitleRater $rater )
@@ -43,10 +42,10 @@ class ReleaseSubtitlesCollectionFactory
      *
      * @return \BD\Subber\Subtitles\ReleaseSubtitlesCollection
      */
-    public function getCollection( $downloadedFileName )
+    public function build( $releaseName )
     {
-        $subtitles = $this->scrapper->scrap( $downloadedFileName );
-        $videoRelease = $this->videoReleaseParser->parseReleaseName( $downloadedFileName );
+        $subtitles = $this->scrapper->scrap( $releaseName );
+        $videoRelease = $this->videoReleaseParser->parseReleaseName( $releaseName);
 
         $acceptableSubtitles = [];
         $unacceptableSubtitles = [];
