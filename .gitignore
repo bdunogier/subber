@@ -34,3 +34,6 @@ vendor/phpdocumentor/
 web/bundles/
 web/css/
 web/js/
+vendor/bdunogier/subber/vendor
+branches.txt
+app/*.db
