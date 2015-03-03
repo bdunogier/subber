@@ -38,7 +38,7 @@ class ReleaseSubtitlesCollectionFactory
     }
 
     /**
-     * @param string $downloadedFileName
+     * @param string $releaseName
      *
      * @return \BD\Subber\Subtitles\ReleaseSubtitlesCollection
      */
@@ -47,18 +47,18 @@ class ReleaseSubtitlesCollectionFactory
         $subtitles = $this->scrapper->scrap( $releaseName );
         $videoRelease = $this->videoReleaseParser->parseReleaseName( $releaseName);
 
-        $acceptableSubtitles = [];
-        $unacceptableSubtitles = [];
+        $compatible = [];
+        $incompatible = [];
 
         foreach ( $subtitles as $subtitle )
         {
             if ( $this->matcher->matches( $subtitle, $videoRelease ) )
             {
-                $acceptableSubtitles[] = $subtitle;
+                $compatible[] = $subtitle;
             }
             else
             {
-                $unacceptableSubtitles[] = $subtitle;
+                $incompatible[] = $subtitle;
             }
         }
 

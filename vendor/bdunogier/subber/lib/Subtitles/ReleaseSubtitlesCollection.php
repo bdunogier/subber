@@ -9,19 +9,19 @@ use Exception;
 class ReleaseSubtitlesCollection
 {
     /** @var Subtitle[] */
-    private $acceptableSubtitles;
+    private $incompatible;
 
     /** @var Subtitle[] */
-    private $unacceptableSubtitles;
+    private $compatible;
 
     /**
      * @param Subtitle[] $acceptableSubtitles
      * @param Subtitle[] $unacceptableSubtitles
      */
-    public function __construct( array $acceptableSubtitles, array $unacceptableSubtitles )
+    public function __construct( array $compatible, array $incompatible )
     {
-        $this->acceptableSubtitles = $acceptableSubtitles;
-        $this->unacceptableSubtitles = $unacceptableSubtitles;
+        $this->compatible = $compatible;
+        $this->incompatible = $incompatible;
     }
 
     /**
@@ -29,35 +29,36 @@ class ReleaseSubtitlesCollection
      */
     public function hasBestSubtitle()
     {
-        return ( count( $this->acceptableSubtitles ) > 0 );
+        return count( $this->compatible ) > 0;
     }
 
     /**
-     * @return Subtitle
+     * @return Subtitle[]
+     * @throws \Exception if there is no Best Subtitle
      */
     public function getBestSubtitle()
     {
-        if ( !count( $this->acceptableSubtitles ) > 0 )
+        if ( !$this->hasBestSubtitle() )
         {
             throw new Exception( "No acceptable subtitles, no best subtitle" );
         }
 
-        return $this->acceptableSubtitles[0];
+        return $this->compatible[0];
     }
 
     /**
      * @return Subtitle[]
      */
-    public function getAcceptableSubtitles()
+    public function getCompatibleSubtitles()
     {
-        return $this->acceptableSubtitles;
+        return $this->compatible;
     }
 
     /**
      * @return Subtitle[]
      */
-    public function getUnacceptableSubtitles()
+    public function getIncompatibleSubtitles()
     {
-        return $this->unacceptableSubtitles;
+        return $this->incompatible;
     }
 }
