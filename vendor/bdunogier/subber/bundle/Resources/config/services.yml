@@ -69,3 +69,7 @@ services:
         class: BD\Subber\Release\Parser\SubtitleRelease\TvsubtitlesParser
         tags:
             - { name: bd_subber.subtitle_release_parser, key: tvsubtitles }
+
+    bd_subber_subber_doctrine_queue_processor:
+        class: BD\Subber\Subber\Doctrine\DoctrineQueueProcessor
+        arguments: [ @bd_subber.tasks_repository, @bd_subber.release_subtitles_collection_factory ]
