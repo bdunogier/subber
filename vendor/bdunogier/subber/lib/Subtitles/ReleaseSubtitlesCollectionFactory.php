@@ -74,9 +74,9 @@ class ReleaseSubtitlesCollectionFactory
                 return 1;
         };
 
-        usort( $acceptableSubtitles, $subtitleSortCallback );
-        usort( $unacceptableSubtitles, $subtitleSortCallback );
+        usort( $compatible, $subtitleSortCallback );
+        usort( $incompatible, $subtitleSortCallback );
 
-        return new ReleaseSubtitlesCollection( $acceptableSubtitles, $unacceptableSubtitles );
+        return new ReleaseSubtitlesCollection( $compatible, $incompatible );
     }
 }

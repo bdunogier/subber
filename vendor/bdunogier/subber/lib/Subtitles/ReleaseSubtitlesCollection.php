@@ -33,7 +33,7 @@ class ReleaseSubtitlesCollection
     }
 
     /**
-     * @return Subtitle[]
+     * @return Subtitle
      * @throws \Exception if there is no Best Subtitle
      */
     public function getBestSubtitle()

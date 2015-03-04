@@ -8,6 +8,7 @@
 namespace BD\SubberBundle\Command;
 
 use BD\Subber\Entity\Task;
+use DateTime;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -48,6 +49,9 @@ class QueueCommand extends ContainerAwareCommand
             ? $input->getOption( 'original-name' )
             : basename( $filePathName )
         );
+
+        $task->setCreatedAt( new DateTime() );
+        $task->setUpdatedAt( new DateTime() );
 
         $em->persist( $task );
         try {

@@ -31,6 +31,11 @@ monolog:
                 VERBOSITY_VERBOSE: NOTICE
                 VERBOSITY_VERY_VERBOSE: NOTICE
                 VERBOSITY_DEBUG: DEBUG
+
+        subber:
+            type: stream
+            path: "%kernel.logs_dir%/subber.%kernel.environment%.log"
+            channels: [subber]
 #            channels: ["doctrine"]
         # uncomment to get logging in your browser
         # you may have to allow bigger header sizes in your Web server configuration

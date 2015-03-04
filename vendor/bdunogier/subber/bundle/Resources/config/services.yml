@@ -71,5 +71,20 @@ services:
             - { name: bd_subber.subtitle_release_parser, key: tvsubtitles }
 
     bd_subber_subber_doctrine_queue_processor:
-        class: BD\Subber\Subber\Doctrine\DoctrineQueueProcessor
-        arguments: [ @bd_subber.tasks_repository, @bd_subber.release_subtitles_collection_factory ]
+        class: BD\Subber\Subber\DoctrineQueueProcessor
+        arguments:
+            - @bd_subber.tasks_repository
+            - @bd_subber.release_subtitles_collection_factory
+            - @bd_subber.subtitle_saver
+        calls:
+            - [setEventDispatcher, [@event_dispatcher]]
+
+    bd_subber.logger_event_listener:
+        class: BD\Subber\Subber\LoggerEventListener
+        arguments: [@logger]
+        tags:
+            - { name: kernel.event_subscriber }
+            - { name: monolog.logger, channel: subber }
+
+    bd_subber.subtitle_saver:
+        class: BD\Subber\Subtitles\BasicSubtitleSaver
