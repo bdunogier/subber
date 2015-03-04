@@ -12,8 +12,9 @@
 - [x] BetaSeries Scrapper: create Subtitle objects using the dispatcher
 
 ### Application/architecture
-- [ ] PostRateSubtitleEvent after a subtitle has been rated
-- [ ] PreQueueTaskEvent before a task is queued
+- [ ] ScrapReleaseEvent when a release gets scrapped for subtitles
+- [ ] RateSubtitleEvent when a subtitle gets rated
+- [ ] QueueTaskEvent when a task gets queued
 
 ### Other
 - [ ] Change Commands to commands as a service
