@@ -1,16 +1,22 @@
 ## Things to do and ideas
 
 ### Release Parser
+- [ ] Add "The Simpsons S24E17 1080p WEB-DL H 264 DD5 1-NTb" to tests
 - [ ] Release Parser: make sure that the subtitle's extension is given to the parser
 - [ ] Release Parser: update namespace, Release\Parser\SubtitlesParser\Addic7ed => Remove 'Parser'
 - [ ] Add handling of Proper releases
 - [ ] What if a Subtitle's content was a callback, that downloads, and either extracts from the zip file, or
       returns the contents directly ?
+- [ ] Read extra episode data from the betaseries scrap call, and put those in the Release object
 - [x] Release Parser: implement dispatcher
 - [x] BetaSeries Scrapper: create Subtitle objects using the dispatcher
-- [ ] Read extra episode data from the betaseries scrap call, and put those in the Release object
+
+### Application/architecture
+- [ ] PostRateSubtitleEvent after a subtitle has been rated
+- [ ] PreQueueTaskEvent before a task is queued
 
 ### Other
+- [ ] Change Commands to commands as a service
 - [ ] Factorize zip file handling. Consider adding a zipFilename property to the Subtitle object...
 - [ ] Store Subber data along with subbed files (.subber folder ? .subber_<filename>.json)
       Or in the cache folder... we might not want to wake the disks up.
