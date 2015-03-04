@@ -23,7 +23,7 @@ class BasicSubtitleSaver implements SubtitleSaver
         foreach (explode( '&', parse_url( $subtitle->url, PHP_URL_QUERY ) ) as $queryPart) {
             list( $name, $value ) = explode( '=', $queryPart );
             if ($name == 'subber_zipfile') {
-                $wantedSubName = $value;
+                $wantedSubName = urldecode( $value );
             }
         }
 
@@ -43,7 +43,7 @@ class BasicSubtitleSaver implements SubtitleSaver
         $zip->close();
 
         if ( !isset( $saved ) ) {
-            //throw new \Exception( "No file '$wantedSubName' extracted from zip file, something went wrong" );
+            throw new \Exception( "No file '$wantedSubName' extracted from zip file, something went wrong" );
         }
 
         unlink( $zipPath );
