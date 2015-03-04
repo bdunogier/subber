@@ -1,7 +1,7 @@
 services:
     bd_subber.queue_controller:
         class: BD\SubberBundle\Controller\QueueController
-        arguments: [@doctrine.orm.entity_manager]
+        arguments: [@bd_subber.tasks_repository]
 
     bd_subber.dashboard_controller:
         class: BD\SubberBundle\Controller\DashboardController
