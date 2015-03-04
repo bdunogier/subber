@@ -15,6 +15,8 @@ services:
         factory_method: getRepository
         arguments:
             - BD\Subber\Entity\Task
+        calls:
+            - [setEventDispatcher, [@event_dispatcher]]
 
     bd_subber.scrapper:
         class: BD\Subber\Subtitles\Scrapper

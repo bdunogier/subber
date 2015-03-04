@@ -1,6 +1,7 @@
 <?php
 namespace BD\Subber\Subber;
 
+use BD\Subber\Event\QueueTaskEvent;
 use BD\Subber\Event\SaveSubtitleEvent;
 use BD\Subber\Event\ScrapReleaseEvent;
 use Monolog\Logger;
@@ -23,7 +24,8 @@ class LoggerEventListener implements EventSubscriberInterface
     {
         return [
             'subber.save_subtitle' => ['onSaveSubtitle'],
-            'subber.post_scrap_release' => ['onScrapRelease']
+            'subber.post_scrap_release' => ['onScrapRelease'],
+            'subber.post_queue_task' => ['onQueueTask']
         ];
     }
 
@@ -44,6 +46,17 @@ class LoggerEventListener implements EventSubscriberInterface
                 "Scrapped %d subtitles for %s",
                 $event->getReleaseName(),
                 count( $event->getSubtitles() )
+            )
+        );
+    }
+
+    public function onQueueTask( QueueTaskEvent $event )
+    {
+        $this->logger->info(
+            sprintf(
+                "Queued release '%s' (%s)",
+                $event->getTask()->getOriginalName(),
+                $event->getTask()->getFile()
             )
         );
     }
