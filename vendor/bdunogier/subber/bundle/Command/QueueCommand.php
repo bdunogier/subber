@@ -38,7 +38,7 @@ class QueueCommand extends ContainerAwareCommand
 
     public function execute( InputInterface $input, OutputInterface $output )
     {
-        $em = $this->getContainer()->get( 'doctrine.orm.entity_manager' );
+        $repository = $this->getContainer()->get( 'bd_subber.tasks_repository' );
 
         $task = new Task();
 
@@ -53,11 +53,6 @@ class QueueCommand extends ContainerAwareCommand
         $task->setCreatedAt( new DateTime() );
         $task->setUpdatedAt( new DateTime() );
 
-        $em->persist( $task );
-        try {
-            $em->flush();
-        } catch ( \Exception $e ) {
-            // do nothin'
-        }
+        $repository->addTask( $task );
     }
 }
