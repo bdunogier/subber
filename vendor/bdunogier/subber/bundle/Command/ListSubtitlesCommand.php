@@ -24,7 +24,7 @@ class ListSubtitlesCommand extends ContainerAwareCommand
     public function execute( InputInterface $input, OutputInterface $output )
     {
         $printSubtitleCallback = function ( Subtitle $subtitle ) use ( $output ) {
-            $output->writeln( "$subtitle->name ($subtitle->language, $subtitle->url)" );
+            $output->writeln( sprintf( "%s (%s)", $subtitle->name, strtoupper( $subtitle->language ) ) );
         };
 
         $downloadedRelease = $input->getArgument( 'downloaded-release' );
@@ -32,53 +32,29 @@ class ListSubtitlesCommand extends ContainerAwareCommand
         $output->writeln( "Listing subtitles for $downloadedRelease" );
 
         $factory = $this->getContainer()->get( 'bd_subber.release_subtitles_collection_factory' );
-        $collection = $factory->getCollection( $downloadedRelease );
+        $collection = $factory->build( $downloadedRelease );
 
         if ( $collection->hasBestSubtitle() )
         {
             $output->writeln( "" );
-            $output->writeln( "Best subtitle:" );
-            $printSubtitleCallback( $collection->getBestSub );
+            $output->write( "Best subtitle: " );
+            $printSubtitleCallback( $collection->getBestSubtitle() );
         }
 
-        $acceptableSubtitles = $collection->getAcceptableSubtitles();
-        if ( count( $acceptableSubtitles ) )
+        $acceptableSubtitles = $collection->getCompatibleSubtitles();
+        if ( count( $acceptableSubtitles ) > 1 )
         {
 
             $output->writeln( "" );
-            $output->writeln( "Acceptable subtitles (" . count( $collection->getAcceptableSubtitles() ) . "):" );
+            $output->writeln( "Other compatible subtitles (" . count( $collection->getCompatibleSubtitles() ) . "):" );
             array_map( $printSubtitleCallback, $acceptableSubtitles );
-
-        }
-        else
-        {
-            $output->writeln( "No acceptable subtitles" );
         }
 
         $output->writeln( "" );
-        $output->writeln( "Unacceptable subtitles (" . count( $collection->getUnacceptableSubtitles() ) . "):" );
-        array_map( $printSubtitleCallback, $collection->getUnacceptableSubtitles() );
-
-//        $subtitle = $ballot->vote( $filename, $subtitles );
-//        $output->writeln( "" );
-//        $output->writeln( "Winner:" );
-//        $printSubtitleCallback( $subtitle );
-//
-//        if ( $input->getOption( 'video-file' ) )
-//        {
-//            $output->writeln( "Saving best subtitle for " . $input->getOption( 'video-file' ) );
-//            copy(
-//                $subtitle->url,
-//                $this->computeSubtitleFileName( $input->getOption( 'video-file' ), $subtitle->filename )
-//            );
-//        }
-    }
-
-    private function computeSubtitleFileName( $videoFile, $subtitleFile )
-    {
-        $videoExtension = pathinfo( $videoFile, PATHINFO_EXTENSION );
-        $subtitleExtension = pathinfo( $subtitleFile, PATHINFO_EXTENSION );
-
-        return preg_replace( "/\.$videoExtension$/", ".$subtitleExtension", $videoFile );
+        $incompatibleSubtitles = $collection->getIncompatibleSubtitles();
+        if ( count( $incompatibleSubtitles ) > 1 ) {
+            $output->writeln( "Incompatible subtitles (" . count( $incompatibleSubtitles ) . "):" );
+            array_map( $printSubtitleCallback, $incompatibleSubtitles );
+        }
     }
 }
