@@ -1,7 +1,8 @@
 <?php
-namespace BD\Subber\Subtitles;
+namespace BD\Subber\Subtitles\Saver;
 
-use BD\Subber\Event\SaveSubtitleEvent;
+use BD\Subber\Subtitles\Saver;
+use BD\Subber\Subtitles\Subtitle;
 use ZipArchive;
 
 /**
@@ -9,7 +10,7 @@ use ZipArchive;
  *
  * Handles subtitles in zip files
  */
-class BasicSubtitleSaver implements SubtitleSaver
+class BasicSaver implements Saver
 {
     public function save( Subtitle $subtitle, $forFile )
     {

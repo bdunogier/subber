@@ -31,7 +31,7 @@ class ListSubtitlesCommand extends ContainerAwareCommand
 
         $output->writeln( "Listing subtitles for $downloadedRelease" );
 
-        $factory = $this->getContainer()->get( 'bd_subber.release_subtitles_collection_factory' );
+        $factory = $this->getContainer()->get( 'bd_subber.release_subtitles.index_factory' );
         $collection = $factory->build( $downloadedRelease );
 
         if ( $collection->hasBestSubtitle() )

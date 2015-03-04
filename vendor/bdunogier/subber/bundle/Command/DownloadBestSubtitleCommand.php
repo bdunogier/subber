@@ -32,7 +32,7 @@ class DownloadBestSubtitleCommand extends ContainerAwareCommand
     {
         $releaseName = $input->getArgument( 'release-filename' );
 
-        $factory = $this->getContainer()->get( 'bd_subber.release_subtitles_collection_factory' );
+        $factory = $this->getContainer()->get( 'bd_subber.release_subtitles.index_factory' );
         $downloader = $this->getContainer()->get( 'bd_subber.subtitle_saver' );
 
         $collection = $factory->build( $releaseName );

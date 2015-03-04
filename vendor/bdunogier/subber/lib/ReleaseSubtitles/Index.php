@@ -1,22 +1,22 @@
 <?php
-namespace BD\Subber\Subtitles;
+namespace BD\Subber\ReleaseSubtitles;
 
 use Exception;
 
 /**
  * Contains subtitles for a release file.
  */
-class ReleaseSubtitlesCollection
+class Index
 {
-    /** @var Subtitle[] */
+    /** @var \BD\Subber\Subtitles\Subtitle[] */
     private $incompatible;
 
-    /** @var Subtitle[] */
+    /** @var \BD\Subber\Subtitles\Subtitle[] */
     private $compatible;
 
     /**
-     * @param Subtitle[] $acceptableSubtitles
-     * @param Subtitle[] $unacceptableSubtitles
+     * @param \BD\Subber\Subtitles\Subtitle[] $acceptableSubtitles
+     * @param \BD\Subber\Subtitles\Subtitle[] $unacceptableSubtitles
      */
     public function __construct( array $compatible, array $incompatible )
     {
@@ -33,7 +33,7 @@ class ReleaseSubtitlesCollection
     }
 
     /**
-     * @return Subtitle
+     * @return \BD\Subber\Subtitles\Subtitle
      * @throws \Exception if there is no Best Subtitle
      */
     public function getBestSubtitle()
@@ -47,7 +47,7 @@ class ReleaseSubtitlesCollection
     }
 
     /**
-     * @return Subtitle[]
+     * @return \BD\Subber\Subtitles\Subtitle[]
      */
     public function getCompatibleSubtitles()
     {
@@ -55,7 +55,7 @@ class ReleaseSubtitlesCollection
     }
 
     /**
-     * @return Subtitle[]
+     * @return \BD\Subber\Subtitles\Subtitle[]
      */
     public function getIncompatibleSubtitles()
     {

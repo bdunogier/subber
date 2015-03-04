@@ -1,10 +1,13 @@
 <?php
-namespace BD\Subber\Subtitles;
+namespace BD\Subber\Subtitles\Rater;
+
+use BD\Subber\Subtitles\Subtitle;
+use BD\Subber\Subtitles\Rater;
 
 /**
- * Rates a subtitle according to preferences
+ * Rates a subtitle according to static, hardcoded preferences
  */
-class SimpleSubtitleRater implements SubtitleRater
+class StaticRater implements Rater
 {
     public function rate( Subtitle $subtitle )
     {

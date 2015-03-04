@@ -1,35 +1,38 @@
 <?php
-/**
- * This file is part of the eZ Publish Kernel package
- *
- * @copyright Copyright (C) eZ Systems AS. All rights reserved.
- * @license For full copyright and license information view LICENSE file distributed with this source code.
- */
-namespace BD\Subber\Subtitles;
+namespace BD\Subber\ReleaseSubtitles;
 
 use BD\Subber\Election\Ballot;
 use BD\Subber\Release\Parser\VideoReleaseParser;
+use BD\Subber\Subtitles\Scrapper;
+use BD\Subber\Subtitles\Subtitle;
+use BD\Subber\Subtitles\Rater;
+use BD\Subber\ReleaseSubtitles\Matcher;
 
 /**
- * Instantiates ReleaseSubtitlesCollectionFactory objects from an episode and a download.
+ * Builds up Index objects from an episode and a download.
  *
  * Scraps the downloaded filename for subtitles, and filters the subtitles based on the download.
  */
-class ReleaseSubtitlesCollectionFactory
+class IndexFactory
 {
     /** @var \BD\Subber\Subtitles\Scrapper */
     private $scrapper;
 
-    /** @var \BD\Subber\Subtitles\SubtitleReleaseMatcher */
+    /** @var \BD\Subber\ReleaseSubtitles\Matcher */
     private $matcher;
 
-    /** @var \BD\Subber\Subtitles\SubtitleRater */
+    /** @var \BD\Subber\Subtitles\Rater */
     private $rater;
 
     /** @var \BD\Subber\Release\Parser\VideoReleaseParser */
     private $videoReleaseParser;
 
-    public function __construct( Scrapper $scrapper, VideoReleaseParser $videoReleaseParser, SubtitleReleaseMatcher $matcher, SubtitleRater $rater )
+    public function __construct(
+        Scrapper $scrapper,
+        VideoReleaseParser $videoReleaseParser,
+        Matcher $matcher,
+        Rater $rater
+    )
     {
         $this->scrapper = $scrapper;
         $this->matcher = $matcher;
@@ -40,7 +43,7 @@ class ReleaseSubtitlesCollectionFactory
     /**
      * @param string $releaseName
      *
-     * @return \BD\Subber\Subtitles\ReleaseSubtitlesCollection
+     * @return \BD\Subber\ReleaseSubtitles\Index
      */
     public function build( $releaseName )
     {
@@ -77,6 +80,6 @@ class ReleaseSubtitlesCollectionFactory
         usort( $compatible, $subtitleSortCallback );
         usort( $incompatible, $subtitleSortCallback );
 
-        return new ReleaseSubtitlesCollection( $compatible, $incompatible );
+        return new Index( $compatible, $incompatible );
     }
 }

@@ -30,18 +30,18 @@ services:
     bd_subber.betaseries.scrapper.zip_subtitles_filter:
         class: BD\Subber\Betaseries\ZipSubtitleFilter
 
-    bd_subber.subtitle_release_matcher:
-        class: BD\Subber\Subtitles\SubtitleReleaseMatcher
+    bd_subber.subtitle_release.matcher:
+        class: BD\Subber\ReleaseSubtitles\Matcher\SourceMatcher
 
     bd_subber.subtitle_rater:
-        class: BD\Subber\Subtitles\SimpleSubtitleRater
+        class: BD\Subber\Subtitles\Rater\StaticRater
 
-    bd_subber.release_subtitles_collection_factory:
-        class: BD\Subber\Subtitles\ReleaseSubtitlesCollectionFactory
+    bd_subber.release_subtitles.index_factory:
+        class: BD\Subber\ReleaseSubtitles\IndexFactory
         arguments:
             - @bd_subber.scrapper
             - @bd_subber.release_parser.video
-            - @bd_subber.subtitle_release_matcher
+            - @bd_subber.subtitle_release.matcher
             - @bd_subber.subtitle_rater
 
     bd_subber.release_parser.video:
@@ -74,7 +74,7 @@ services:
         class: BD\Subber\Subber\DoctrineQueueProcessor
         arguments:
             - @bd_subber.tasks_repository
-            - @bd_subber.release_subtitles_collection_factory
+            - @bd_subber.release_subtitles.index_factory
             - @bd_subber.subtitle_saver
         calls:
             - [setEventDispatcher, [@event_dispatcher]]
@@ -87,4 +87,4 @@ services:
             - { name: monolog.logger, channel: subber }
 
     bd_subber.subtitle_saver:
-        class: BD\Subber\Subtitles\BasicSubtitleSaver
+        class: BD\Subber\Subtitles\Saver\BasicSaver

@@ -1,9 +1,13 @@
 <?php
-namespace BD\Subber\Subtitles;
+namespace BD\Subber\ReleaseSubtitles;
 
 use BD\Subber\Release\Release;
+use BD\Subber\Subtitles\Subtitle;
 
-interface SubtitleReleaseMatcherInterface
+/**
+ * Matches Subtitles to Releases
+ */
+interface Matcher
 {
     /**
      * Tests if $subtitle is a match for $release

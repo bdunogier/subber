@@ -4,7 +4,7 @@ namespace BD\Subber\Subtitles;
 /**
  * Saves subtitles to disk
  */
-interface SubtitleSaver
+interface Saver
 {
     /**
      * Save $subtitle for file $forFile
