@@ -2,6 +2,7 @@
 namespace BD\Subber\Subber;
 
 use BD\Subber\Event\SaveSubtitleEvent;
+use BD\Subber\Event\ScrapReleaseEvent;
 use Monolog\Logger;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
@@ -21,7 +22,8 @@ class LoggerEventListener implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            'subber.save_subtitle' => ['onSaveSubtitle']
+            'subber.save_subtitle' => ['onSaveSubtitle'],
+            'subber.post_scrap_release' => ['onScrapRelease']
         ];
     }
 
@@ -31,6 +33,17 @@ class LoggerEventListener implements EventSubscriberInterface
             sprintf(
                 "Saving subtitle '%s' for file '%s'",
                 $event->getFrom(), $event->getTo()
+            )
+        );
+    }
+
+    public function onScrapRelease( ScrapReleaseEvent $event )
+    {
+        $this->logger->info(
+            sprintf(
+                "Scrapped %d subtitles for %s",
+                $event->getReleaseName(),
+                count( $event->getSubtitles() )
             )
         );
     }

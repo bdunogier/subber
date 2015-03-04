@@ -43,6 +43,8 @@ services:
             - @bd_subber.release_parser.video
             - @bd_subber.subtitle_release.matcher
             - @bd_subber.subtitle_rater
+        calls:
+            - [setEventDispatcher, [@event_dispatcher]]
 
     bd_subber.release_parser.video:
         class: BD\Subber\Release\Parser\VideoReleaseParser

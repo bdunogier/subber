@@ -2,11 +2,13 @@
 namespace BD\Subber\ReleaseSubtitles;
 
 use BD\Subber\Election\Ballot;
+use BD\Subber\Event\ScrapReleaseEvent;
 use BD\Subber\Release\Parser\VideoReleaseParser;
 use BD\Subber\Subtitles\Scrapper;
 use BD\Subber\Subtitles\Subtitle;
 use BD\Subber\Subtitles\Rater;
 use BD\Subber\ReleaseSubtitles\Matcher;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * Builds up Index objects from an episode and a download.
@@ -26,6 +28,9 @@ class IndexFactory
 
     /** @var \BD\Subber\Release\Parser\VideoReleaseParser */
     private $videoReleaseParser;
+
+    /** @var \Symfony\Component\EventDispatcher\EventDispatcherInterface */
+    private $eventDispatcher;
 
     public function __construct(
         Scrapper $scrapper,
@@ -47,7 +52,12 @@ class IndexFactory
      */
     public function build( $releaseName )
     {
+        $event = new ScrapReleaseEvent( $releaseName );
+        $this->eventDispatcher->dispatch( 'subber.pre_scrap_release', $event );
         $subtitles = $this->scrapper->scrap( $releaseName );
+        $event->setSubtitles( $subtitles );
+        $this->eventDispatcher->dispatch( 'subber.post_scrap_release', $event );
+
         $videoRelease = $this->videoReleaseParser->parseReleaseName( $releaseName);
 
         $compatible = [];
@@ -81,5 +91,13 @@ class IndexFactory
         usort( $incompatible, $subtitleSortCallback );
 
         return new Index( $compatible, $incompatible );
+    }
+
+    /**
+     * @param EventDispatcherInterface $eventDispatcher
+     */
+    public function setEventDispatcher( $eventDispatcher )
+    {
+        $this->eventDispatcher = $eventDispatcher;
     }
 }
