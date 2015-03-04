@@ -42,4 +42,9 @@ class Release
      * @var string
      */
     public $format;
+
+    /**
+     * @var bool
+     */
+    public $isRepack;
 }
