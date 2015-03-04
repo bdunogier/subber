@@ -31,15 +31,19 @@ class ListSubtitlesCommand extends ContainerAwareCommand
 
         $output->writeln( "Listing subtitles for $downloadedRelease" );
 
-        $factory = $this->getContainer()->get( 'bd_subber.downloaded_episode_subtitle_collection_factory' );
+        $factory = $this->getContainer()->get( 'bd_subber.release_subtitles_collection_factory' );
         $collection = $factory->getCollection( $downloadedRelease );
+
+        if ( $collection->hasBestSubtitle() )
+        {
+            $output->writeln( "" );
+            $output->writeln( "Best subtitle:" );
+            $printSubtitleCallback( $collection->getBestSub );
+        }
 
         $acceptableSubtitles = $collection->getAcceptableSubtitles();
         if ( count( $acceptableSubtitles ) )
         {
-            $output->writeln( "" );
-            $output->writeln( "Best subtitle:" );
-            $printSubtitleCallback( $acceptableSubtitles[0] );
 
             $output->writeln( "" );
             $output->writeln( "Acceptable subtitles (" . count( $collection->getAcceptableSubtitles() ) . "):" );
