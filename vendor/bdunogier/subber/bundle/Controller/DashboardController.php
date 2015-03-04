@@ -7,7 +7,7 @@
  */
 namespace BD\SubberBundle\Controller;
 
-use Doctrine\ORM\EntityRepository;
+use BD\Subber\Entity\TaskRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 
@@ -18,7 +18,7 @@ class DashboardController extends Controller implements ContainerAwareInterface
      */
     private $repository;
 
-    public function __construct( EntityRepository $repository )
+    public function __construct( TaskRepository $repository )
     {
         $this->repository = $repository;
     }
@@ -27,7 +27,7 @@ class DashboardController extends Controller implements ContainerAwareInterface
     {
         return $this->render(
             'BDSubberBundle::list.html.twig',
-            ['tasks' => $this->repository->findAll()]
+            ['tasks' => $this->repository->findAllPendingTasks()]
         );
     }
 }

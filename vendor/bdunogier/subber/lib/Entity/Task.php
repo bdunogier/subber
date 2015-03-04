@@ -10,7 +10,7 @@ namespace BD\Subber\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="BD\Subber\Entity\DoctrineTaskRepository")
  * @ORM\Table(name="tasks")
  */
 class Task
