@@ -30,8 +30,12 @@ class DownloadBestSubtitleCommand extends ContainerAwareCommand
 
     public function execute( InputInterface $input, OutputInterface $output )
     {
-        $factory = $this->getContainer()->get( 'bd_subber.downloaded_episode_subtitle_collection_factory' );
-        $collection = $factory->getCollection( $input->getArgument( 'release-filename' ) );
+        $releaseName = $input->getArgument( 'release-filename' );
+
+        $factory = $this->getContainer()->get( 'bd_subber.release_subtitles_collection_factory' );
+        $downloader = $this->getContainer()->get( 'bd_subber.subtitle_saver' );
+
+        $collection = $factory->build( $releaseName );
 
         if (!$collection->hasBestSubtitle()) {
             $output->writeln( "No best subtitle found for this release" );
@@ -39,49 +43,13 @@ class DownloadBestSubtitleCommand extends ContainerAwareCommand
         }
 
         $subtitle = $collection->getBestSubtitle();
+        $output->writeln( "Best subtitle for $releaseName is " . $subtitle->name );
 
         if ( $input->getOption( 'video-file' ) )
         {
-            $output->writeln( "Saving best subtitle for " . $input->getOption( 'video-file' ) );
-            $subtitleFilePath = $this->computeSubtitleFileName( $input->getOption( 'video-file' ), $subtitle->name );
-
-            echo $subtitle->url . "\n";
-            if ( strstr( $subtitle->url, 'subber_zipfile' ) === false )
-            {
-                copy( $subtitle->url, $subtitleFilePath );
-            }
-            else
-            {
-                foreach ( explode( '&', parse_url( $subtitle->url, PHP_URL_QUERY ) ) as $queryPart ) {
-                    list( $name, $value ) = explode( '=', $queryPart );
-                    if ( $name == 'subber_zipfile' ) {
-                        $wantedSubName = $value;
-                    }
-                }
-
-                $zipPath = tempnam( sys_get_temp_dir(), 'subberzip_' );
-                copy( $subtitle->url, $zipPath );
-                $zip = new ZipArchive;
-                $zip->open( $zipPath );
-                for( $i = 0; $i < $zip->numFiles; $i++ )
-                {
-                    $filename = (string)$zip->getNameIndex( $i );
-                    if ( $filename === $wantedSubName ) {
-                        file_put_contents( $subtitleFilePath, $zip->getFromName( $filename ) );
-                        break;
-                    }
-                }
-                $zip->close();
-                unlink( $zipPath );
-            }
+            $videoFile = $input->getOption( 'video-file' );
+            $output->writeln( "Saving subtitle for $videoFile" );
+            $downloader->save( $subtitle, $videoFile );
         }
-    }
-
-    private function computeSubtitleFileName( $videoFile, $subtitleFile )
-    {
-        $videoExtension = pathinfo( $videoFile, PATHINFO_EXTENSION );
-        $subtitleExtension = pathinfo( $subtitleFile, PATHINFO_EXTENSION );
-
-        return preg_replace( "/\.$videoExtension$/", ".$subtitleExtension", $videoFile );
     }
 }
