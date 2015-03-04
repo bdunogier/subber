@@ -6,6 +6,9 @@
 - [ ] Release Parser: make sure that the subtitle's extension is given to the parser
 - [ ] Release Parser: update namespace, Release\Parser\SubtitlesParser\Addic7ed => Remove 'Parser'
 - [ ] Add handling of Proper releases
+- [ ] What if a Subtitle's content was a callback, that downloads, and either extracts from the zip file, or
+      returns the contents directly ?
+
 
 ### Other
 - [ ] Factorize zip file handling. Consider adding a zipFilename property to the Subtitle object...
