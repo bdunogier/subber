@@ -1,5 +1,5 @@
 <?php
-namespace BD\Subber\Entity;
+namespace BD\Subber\Queue;
 
 use BD\Subber\Event\QueueTaskEvent;
 use Doctrine\ORM\EntityManager;

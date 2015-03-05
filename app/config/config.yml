@@ -76,9 +76,9 @@ doctrine:
             default:
                 connection: default
                 mappings:
-                    subber:
+                    subber_queue:
                         type: annotation
-                        dir: %kernel.root_dir%/../vendor/bdunogier/subber/lib/Entity
-                        prefix: BD\Subber\Entity
-                        alias: Subber
+                        dir: %kernel.root_dir%/../vendor/bdunogier/subber/lib/Queue
+                        prefix: BD\Subber\Queue
+                        alias: SubberQueue
                         is_bundle: false

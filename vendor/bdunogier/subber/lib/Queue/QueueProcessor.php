@@ -1,5 +1,5 @@
 <?php
-namespace BD\Subber\Subber;
+namespace BD\Subber\Queue;
 
 interface QueueProcessor
 {

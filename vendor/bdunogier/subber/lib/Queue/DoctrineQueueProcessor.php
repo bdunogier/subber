@@ -1,7 +1,7 @@
 <?php
-namespace BD\Subber\Subber;
+namespace BD\Subber\Queue;
 
-use BD\Subber\Entity\TaskRepository;
+use BD\Subber\Queue\TaskRepository;
 use BD\Subber\Event\SaveSubtitleEvent;
 use BD\Subber\ReleaseSubtitles\IndexFactory;
 use BD\Subber\Subtitles\Saver;
@@ -9,7 +9,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class DoctrineQueueProcessor implements QueueProcessor
 {
-    /** @var \BD\Subber\Entity\TaskRepository */
+    /** @var \BD\Subber\Queue\TaskRepository */
     private $tasksRepository;
 
     /** @var \BD\Subber\ReleaseSubtitles\IndexFactory */
@@ -34,7 +34,7 @@ class DoctrineQueueProcessor implements QueueProcessor
 
     public function process()
     {
-        /** @var \BD\Subber\Entity\Task $task */
+        /** @var \BD\Subber\Queue\Task $task */
         foreach( $this->tasksRepository->findAllPendingTasks() as $task )
         {
             // $output->writeln( "Processing " . $task->getOriginalName() );

@@ -23,6 +23,10 @@ class Addic7edParser implements ReleaseParser
         $release = new Subtitle( ['name' => $releaseName, 'author' => 'addic7ed'] );
         $releaseParts = explode( '.', strtolower( $releaseName ) );
 
+        if ( in_array( $releaseParts[count($releaseParts) - 1], ['srt', 'ass'] ) ) {
+            $release->subtitleFormat = array_pop( $releaseParts );
+        }
+
         // addic7ed.com
         if ( array_pop( $releaseParts ) != 'com' || array_pop( $releaseParts ) != 'addic7ed' )
             throw new ReleaseParserException( $releaseName, "addic7ed.com string not found" );

@@ -2,7 +2,9 @@
 namespace BD\Subber\Betaseries;
 
 use BD\Subber\Event\ScrapErrorEvent;
+use BD\Subber\Release\Parser\ReleaseParserException;
 use BD\Subber\Subtitles\Scrapper;
+use InvalidArgumentException;
 use Patbzh\BetaseriesBundle\Exception\PatbzhBetaseriesException;
 use Patbzh\BetaseriesBundle\Model\Client as BetaseriesClient;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -59,7 +61,13 @@ class BetaseriesScrapper implements Scrapper
             {
                 try {
                     $subtitle = $this->parserRegistry->getParser( $subtitleArray['source'] )->parseReleaseName( $subtitleArray['file'] );
-                } catch ( \InvalidArgumentException $e ) {
+                } catch ( ReleaseParserException $e ) {
+                    $this->eventDispatcher->dispatch(
+                        'subber.scrap_error',
+                        new ScrapErrorEvent( $filename, "Parsing error: " . $e->getMessage() )
+                    );
+                    continue;
+                } catch ( InvalidArgumentException $e ) {
                     $this->eventDispatcher->dispatch(
                         'subber.scrap_error',
                         new ScrapErrorEvent( $filename, "Unknown source " . $subtitleArray['source'] )

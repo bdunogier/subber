@@ -7,7 +7,7 @@
  */
 namespace BD\SubberBundle\Controller;
 
-use BD\Subber\Entity\TaskRepository;
+use BD\Subber\Queue\TaskRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 

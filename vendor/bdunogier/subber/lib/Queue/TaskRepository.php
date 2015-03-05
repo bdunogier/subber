@@ -1,5 +1,5 @@
 <?php
-namespace BD\Subber\Entity;
+namespace BD\Subber\Queue;
 
 use Doctrine\Common\Persistence\ObjectRepository;
 

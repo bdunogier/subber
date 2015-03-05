@@ -1,8 +1,8 @@
 <?php
 namespace BD\SubberBundle\Controller;
 
-use BD\Subber\Entity\Task;
-use BD\Subber\Entity\TaskRepository;
+use BD\Subber\Queue\Task;
+use BD\Subber\Queue\TaskRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class QueueController extends Controller
 {
-    /** @var \BD\Subber\Entity\TaskRepository */
+    /** @var \BD\Subber\Queue\TaskRepository */
     private $taskRepository;
 
     public function __construct( TaskRepository $taskRepository )

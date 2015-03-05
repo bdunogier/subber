@@ -1,16 +1,10 @@
 <?php
-/**
- * This file is part of the eZ Publish Kernel package
- *
- * @copyright Copyright (C) eZ Systems AS. All rights reserved.
- * @license For full copyright and license information view LICENSE file distributed with this source code.
- */
-namespace BD\Subber\Entity;
+namespace BD\Subber\Queue;
 
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="BD\Subber\Entity\DoctrineTaskRepository")
+ * @ORM\Entity(repositoryClass="BD\Subber\Queue\DoctrineTaskRepository")
  * @ORM\Table(name="tasks")
  */
 class Task

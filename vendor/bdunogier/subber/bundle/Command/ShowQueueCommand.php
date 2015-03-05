@@ -7,7 +7,7 @@
  */
 namespace BD\SubberBundle\Command;
 
-use BD\Subber\Entity\Task;
+use BD\Subber\Queue\Task;
 use DateTime;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputArgument;

@@ -1,7 +1,7 @@
 <?php
 namespace BD\Subber\Event;
 
-use BD\Subber\Entity\Task;
+use BD\Subber\Queue\Task;
 use Symfony\Component\EventDispatcher\Event;
 
 class QueueTaskEvent extends Event

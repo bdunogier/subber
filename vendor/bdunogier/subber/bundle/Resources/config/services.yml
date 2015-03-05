@@ -10,11 +10,11 @@ services:
             - [setContainer,[@service_container]]
 
     bd_subber.tasks_repository:
-        class: BD\Subber\Entity\DoctrineTaskRepository
+        class: BD\Subber\Queue\DoctrineTaskRepository
         factory_service: doctrine.orm.entity_manager
         factory_method: getRepository
         arguments:
-            - BD\Subber\Entity\Task
+            - BD\Subber\Queue\Task
         calls:
             - [setEventDispatcher, [@event_dispatcher]]
 
@@ -83,7 +83,7 @@ services:
             - { name: bd_subber.subtitle_release_parser, key: betaseries }
 
     bd_subber_subber_doctrine_queue_processor:
-        class: BD\Subber\Subber\DoctrineQueueProcessor
+        class: BD\Subber\Queue\DoctrineQueueProcessor
         arguments:
             - @bd_subber.tasks_repository
             - @bd_subber.release_subtitles.index_factory
