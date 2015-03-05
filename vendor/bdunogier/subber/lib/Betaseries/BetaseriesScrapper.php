@@ -1,21 +1,17 @@
 <?php
-/**
- * This file is part of the eZ Publish Kernel package
- *
- * @copyright Copyright (C) eZ Systems AS. All rights reserved.
- * @license For full copyright and license information view LICENSE file distributed with this source code.
- */
 namespace BD\Subber\Betaseries;
 
+use BD\Subber\Event\ScrapErrorEvent;
 use BD\Subber\Subtitles\Scrapper;
-use BD\Subber\Subtitles\Subtitle;
+use Patbzh\BetaseriesBundle\Exception\PatbzhBetaseriesException;
 use Patbzh\BetaseriesBundle\Model\Client as BetaseriesClient;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class BetaseriesScrapper implements Scrapper
 {
     /**
      * Betaseries client
-     * @var \Patbzh\BetaseriesBundle\Model\
+     * @var \Patbzh\BetaseriesBundle\Model\Client
      */
     private $client;
 
@@ -24,6 +20,9 @@ class BetaseriesScrapper implements Scrapper
 
     /** @var \BD\Subber\Betaseries\ParserRegistry */
     private $parserRegistry;
+
+    /** @var EventDispatcherInterface */
+    private $eventDispatcher;
 
     /**
      * @param \Patbzh\BetaseriesBundle\Model\Client $client
@@ -38,11 +37,20 @@ class BetaseriesScrapper implements Scrapper
 
     /**
      * Scraps a filename, and returns subtitles for it if any.
-     * @return array
+     * @return \BD\Subber\Subtitles\Subtitle[]
      */
     public function scrap( $filename )
     {
-        $data = $this->client->scrapeEpisode( $filename );
+        try {
+            $data = $this->client->scrapeEpisode( $filename );
+        } catch ( PatbzhBetaseriesException $e ) {
+            $this->eventDispatcher->dispatch(
+                'subber.scrap_error',
+                new ScrapErrorEvent( $filename, $e->getMessage() )
+            );
+
+            return array();
+        }
         $subtitles = [];
         if ( isset( $data['episode']['subtitles'] ) )
         {
@@ -52,7 +60,10 @@ class BetaseriesScrapper implements Scrapper
                 try {
                     $subtitle = $this->parserRegistry->getParser( $subtitleArray['source'] )->parseReleaseName( $subtitleArray['file'] );
                 } catch ( \InvalidArgumentException $e ) {
-                    // we ignore unknown sources
+                    $this->eventDispatcher->dispatch(
+                        'subber.scrap_error',
+                        new ScrapErrorEvent( $filename, "Unknown source " . $subtitleArray['source'] )
+                    );
                     continue;
                 }
                 $subtitle->url = $subtitleArray['url'];
@@ -60,5 +71,13 @@ class BetaseriesScrapper implements Scrapper
             }
         }
         return $subtitles;
+    }
+
+    /**
+     * @param EventDispatcherInterface $eventDispatcher
+     */
+    public function setEventDispatcher( $eventDispatcher )
+    {
+        $this->eventDispatcher = $eventDispatcher;
     }
 }

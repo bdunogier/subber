@@ -28,6 +28,8 @@ services:
             - @patbzh.betaseries.client
             - @bd_subber.betaseries.scrapper.zip_subtitles_filter
             - @bd_subber.release_parser.subtitles_registry
+        calls:
+            - [setEventDispatcher, [@event_dispatcher]]
 
     bd_subber.betaseries.scrapper.zip_subtitles_filter:
         class: BD\Subber\Betaseries\ZipSubtitleFilter

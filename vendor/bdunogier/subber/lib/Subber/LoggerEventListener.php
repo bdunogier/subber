@@ -3,6 +3,7 @@ namespace BD\Subber\Subber;
 
 use BD\Subber\Event\QueueTaskEvent;
 use BD\Subber\Event\SaveSubtitleEvent;
+use BD\Subber\Event\ScrapErrorEvent;
 use BD\Subber\Event\ScrapReleaseEvent;
 use Monolog\Logger;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -25,7 +26,8 @@ class LoggerEventListener implements EventSubscriberInterface
         return [
             'subber.save_subtitle' => ['onSaveSubtitle'],
             'subber.post_scrap_release' => ['onScrapRelease'],
-            'subber.post_queue_task' => ['onQueueTask']
+            'subber.post_queue_task' => ['onQueueTask'],
+            'subber.scrap_error' => ['onScrapError']
         ];
     }
 
@@ -57,6 +59,16 @@ class LoggerEventListener implements EventSubscriberInterface
                 "Queued release '%s' (%s)",
                 $event->getTask()->getOriginalName(),
                 $event->getTask()->getFile()
+            )
+        );
+    }
+
+    public function onScrapError( ScrapErrorEvent $event )
+    {
+        $this->logger->error(
+            sprintf(
+                "A scrapping error occured on %s: %s",
+                $event->getReleaseName(), $event->getMessage()
             )
         );
     }
