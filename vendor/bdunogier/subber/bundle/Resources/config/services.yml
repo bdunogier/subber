@@ -58,6 +58,7 @@ services:
                 soustitres: @bd_subber.release_parser.subtitle.soustitres
                 tvsubtitles: @bd_subber.release_parser.subtitle.tvsubtitles
                 addic7ed: @bd_subber.release_parser.subtitle.addic7ed
+                betaseries: @bd_subber.release_parser.subtitle.betaseries
 
     bd_subber.release_parser.subtitle.addic7ed:
         class: BD\Subber\Release\Parser\SubtitleRelease\Addic7edParser
@@ -73,6 +74,11 @@ services:
         class: BD\Subber\Release\Parser\SubtitleRelease\TvsubtitlesParser
         tags:
             - { name: bd_subber.subtitle_release_parser, key: tvsubtitles }
+
+    bd_subber.release_parser.subtitle.betaseries:
+        class: BD\Subber\Release\Parser\SubtitleRelease\BetaseriesParser
+        tags:
+            - { name: bd_subber.subtitle_release_parser, key: betaseries }
 
     bd_subber_subber_doctrine_queue_processor:
         class: BD\Subber\Subber\DoctrineQueueProcessor
