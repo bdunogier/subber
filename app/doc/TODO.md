@@ -1,18 +1,18 @@
 ## Things to do and ideas
 
 ### Release Parser
-- [ ] Add "The Simpsons S24E17 1080p WEB-DL H 264 DD5 1-NTb" to tests
 - [ ] Release Parser: make sure that the subtitle's extension is given to the parser
-- [ ] Release Parser: update namespace, Release\Parser\SubtitlesParser\Addic7ed => Remove 'Parser'
 - [ ] Add handling of Proper releases
 - [ ] What if a Subtitle's content was a callback, that downloads, and either extracts from the zip file, or
       returns the contents directly ?
 - [ ] Read extra episode data from the betaseries scrap call, and put those in the Release object
+- [x] Release Parser: update namespace, Release\Parser\SubtitlesParser\Addic7ed => Remove 'Parser'
+- [x] Add "The Simpsons S24E17 1080p WEB-DL H 264 DD5 1-NTb" to tests
 - [x] Release Parser: implement dispatcher
 - [x] BetaSeries Scrapper: create Subtitle objects using the dispatcher
 
 ### Application/architecture
-- [ ] ScrapReleaseEvent when a release gets scrapped for subtitles
+- [x] ScrapReleaseEvent when a release gets scrapped for subtitles
 - [ ] RateSubtitleEvent when a subtitle gets rated
 - [ ] QueueTaskEvent when a task gets queued
 
