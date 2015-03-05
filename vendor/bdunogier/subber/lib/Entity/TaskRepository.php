@@ -11,4 +11,6 @@ interface TaskRepository
     public function findAllPendingTasks();
 
     public function addTask( Task $task );
+
+    public function setTaskComplete( Task $task );
 }

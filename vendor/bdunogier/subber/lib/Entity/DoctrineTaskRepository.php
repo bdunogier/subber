@@ -31,4 +31,10 @@ class DoctrineTaskRepository extends EntityRepository implements TaskRepository
     {
         $this->eventDispatcher = $eventDispatcher;
     }
+
+    public function setTaskComplete( Task $task )
+    {
+        $task->setStatus( 1 );
+        $this->_em->persist( $task );
+    }
 }

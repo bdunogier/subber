@@ -52,7 +52,8 @@ class DoctrineQueueProcessor implements QueueProcessor
                     );
                 }
                 $this->saver->save( $subtitle, $task->getFile() );
-                // update collections status & timestamp
+
+                $this->tasksRepository->setTaskComplete( $task );
             }
         }
     }
