@@ -44,8 +44,8 @@ class LoggerEventListener implements EventSubscriberInterface
         $this->logger->info(
             sprintf(
                 "Scrapped %d subtitles for %s",
-                $event->getReleaseName(),
-                count( $event->getSubtitles() )
+                count( $event->getSubtitles() ),
+                $event->getReleaseName()
             )
         );
     }
