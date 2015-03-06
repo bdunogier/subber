@@ -1,22 +1,21 @@
 <?php
-namespace BD\Subber\ReleaseSubtitles;
+namespace BD\Subber\ReleaseSubtitles\IndexFactory;
 
 use BD\Subber\Election\Ballot;
 use BD\Subber\Event\ScrapReleaseEvent;
+use BD\Subber\EventDispatcher\EventDispatcherAware;
 use BD\Subber\Release\Parser\VideoReleaseParser;
+use BD\Subber\ReleaseSubtitles\Index;
+use BD\Subber\ReleaseSubtitles\IndexFactory;
 use BD\Subber\Subtitles\Scrapper;
 use BD\Subber\Subtitles\Subtitle;
 use BD\Subber\Subtitles\Rater;
 use BD\Subber\ReleaseSubtitles\Matcher;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
-/**
- * Builds up Index objects from an episode and a download.
- *
- * Scraps the downloaded filename for subtitles, and filters the subtitles based on the download.
- */
-class IndexFactory
+class ScrapperBasedIndexFactory implements IndexFactory
 {
+    use EventDispatcherAware;
+
     /** @var \BD\Subber\Subtitles\Scrapper */
     private $scrapper;
 
@@ -28,9 +27,6 @@ class IndexFactory
 
     /** @var \BD\Subber\Release\Parser\VideoReleaseParser */
     private $videoReleaseParser;
-
-    /** @var \Symfony\Component\EventDispatcher\EventDispatcherInterface */
-    private $eventDispatcher;
 
     public function __construct(
         Scrapper $scrapper,
@@ -45,18 +41,13 @@ class IndexFactory
         $this->videoReleaseParser = $videoReleaseParser;
     }
 
-    /**
-     * @param string $releaseName
-     *
-     * @return \BD\Subber\ReleaseSubtitles\Index
-     */
     public function build( $releaseName )
     {
         $event = new ScrapReleaseEvent( $releaseName );
-        $this->eventDispatcher->dispatch( 'subber.pre_scrap_release', $event );
+        $this->dispatch( 'subber.pre_scrap_release', $event );
         $subtitles = $this->scrapper->scrap( $releaseName );
         $event->setSubtitles( $subtitles );
-        $this->eventDispatcher->dispatch( 'subber.post_scrap_release', $event );
+        $this->dispatch( 'subber.post_scrap_release', $event );
 
         $videoRelease = $this->videoReleaseParser->parseReleaseName( $releaseName);
 
@@ -79,25 +70,16 @@ class IndexFactory
             $aRate = $this->rater->rate( $a );
             $bRate = $this->rater->rate( $b );
 
-            if ( $aRate === $bRate )
-                return 0;
             if ( $aRate > $bRate )
                 return -1;
             if ( $aRate < $bRate )
                 return 1;
+            return 0;
         };
 
         usort( $compatible, $subtitleSortCallback );
         usort( $incompatible, $subtitleSortCallback );
 
         return new Index( $compatible, $incompatible );
-    }
-
-    /**
-     * @param EventDispatcherInterface $eventDispatcher
-     */
-    public function setEventDispatcher( $eventDispatcher )
-    {
-        $this->eventDispatcher = $eventDispatcher;
     }
 }
