@@ -39,3 +39,4 @@ branches.txt
 app/*.db
 vendor/bdunogier/subber/bin/phpunit
 vendor/bdunogier/subber/bin/phpspec
+vendor/tedivm/
