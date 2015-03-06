@@ -43,7 +43,7 @@ class VideoReleaseParserTest extends \PHPUnit_Framework_TestCase
                     'format' => 'x264',
                     'source' => 'webrip',
                     'resolution' => '720p',
-                    'isRepack' => true
+                    'isProper' => true
                 ]
             ],
 
@@ -63,7 +63,18 @@ class VideoReleaseParserTest extends \PHPUnit_Framework_TestCase
                     'format' => 'x264',
                     'source' => 'hdtv',
                     'resolution' => '720p',
-                    'isRepack' => true
+                    'isProper' => true
+                ]
+            ],
+
+            [
+                'The.Simpsons.S24E18.PROPER.720p.WEB-DL.DD5.1.H.264-LFF',
+                [
+                    'group' => 'lff',
+                    'format' => 'x264',
+                    'isProper' => true,
+                    'source' => 'web-dl',
+                    'resolution' => '720p'
                 ]
             ],
 

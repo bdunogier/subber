@@ -20,7 +20,7 @@ class SourceMatcher implements Matcher
             return false;
         }
 
-        if ($subtitle->isRepack != $release->isRepack) {
+        if ($subtitle->isProper != $release->isProper) {
             return false;
         }
 

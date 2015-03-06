@@ -24,14 +24,14 @@ class VideoReleaseParser implements ReleaseParser
         $release->format = $this->parseFormat( $releaseName );
         $release->source = $this->parseSource( $releaseName );
         $release->resolution = $this->parseResolution( $releaseName );
-        $release->isRepack = $this->parseRepack( $releaseName );
+        $release->isProper = $this->parseProper( $releaseName );
 
         return $release;
     }
 
     public function parseFormat( $releaseName )
     {
-        if ( strstr( $releaseName, 'x264' ) || strstr( $releaseName, 'h 264' ) ) {
+        if ( strstr( $releaseName, 'x264' ) || strstr( $releaseName, 'h 264' ) || strstr( $releaseName, 'h.264' ) ) {
             return 'x264';
         } elseif ( strstr( $releaseName, 'xvid' ) ) {
             return 'xvid';
@@ -62,8 +62,8 @@ class VideoReleaseParser implements ReleaseParser
         }
     }
 
-    public function parseRepack( $releaseName )
+    public function parseProper( $releaseName )
     {
-        return strstr( $releaseName, 'repack' ) !== false;
+        return strstr( $releaseName, 'repack' ) !== false || strstr( $releaseName, 'proper' ) !== false;
     }
 }

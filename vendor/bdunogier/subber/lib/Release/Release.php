@@ -46,5 +46,5 @@ class Release
     /**
      * @var bool
      */
-    public $isRepack;
+    public $isProper;
 }
