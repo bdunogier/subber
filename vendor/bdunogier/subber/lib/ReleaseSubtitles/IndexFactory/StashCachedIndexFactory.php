@@ -21,6 +21,13 @@ class StashCachedIndexFactory implements IndexFactory
 
     public function build( $releaseName )
     {
-        return $this->cachedFactory->build( $releaseName );
+        $cacheItem = $this->cachePool->getItem( $releaseName, 'subber_release_subtitles_index' );
+        if ( $cacheItem->isMiss() )
+        {
+            $index = $this->cachedFactory->build( $releaseName );
+            $cacheItem->set( $index );
+        }
+
+        return $cacheItem->get();
     }
 }
