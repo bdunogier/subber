@@ -15,7 +15,8 @@
         "doctrine/orm": "~2.2,>=2.2.3,<2.5",
         "doctrine/dbal": "<2.5",
         "doctrine/doctrine-bundle": "~1.2",
-        "patbzh/betaseries": "dev-master"
+        "patbzh/betaseries": "dev-master",
+        "tedivm/stash-bundle": "0.4.*"
     },
     "require-dev": {
         "phpspec/phpspec": "~2.1",

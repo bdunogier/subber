@@ -40,8 +40,8 @@ services:
     bd_subber.subtitle_rater:
         class: BD\Subber\Subtitles\Rater\StaticRater
 
-    bd_subber.release_subtitles.index_factory:
-        class: BD\Subber\ReleaseSubtitles\IndexFactory
+    bd_subber.release_subtitles.index_factory.scrapper_based:
+        class: BD\Subber\ReleaseSubtitles\IndexFactory\ScrapperBasedIndexFactory
         arguments:
             - @bd_subber.scrapper
             - @bd_subber.release_parser.video
@@ -49,6 +49,16 @@ services:
             - @bd_subber.subtitle_rater
         calls:
             - [setEventDispatcher, [@event_dispatcher]]
+
+    bd_subber.release_subtitles.index_factory.stash_cached:
+        class: BD\Subber\ReleaseSubtitles\IndexFactory\StashCachedIndexFactory
+        arguments:
+            - @bd_subber.release_subtitles.index_factory.scrapper_based
+            - @stash.default_cache
+
+    bd_subber.release_subtitles.index_factory:
+        class: BD\Subber\ReleaseSubtitles\IndexFactory
+        alias: bd_subber.release_subtitles.index_factory.stash_cached
 
     bd_subber.release_parser.video:
         class: BD\Subber\Release\Parser\VideoReleaseParser

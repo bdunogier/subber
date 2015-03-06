@@ -20,7 +20,7 @@ class AppKernel extends Kernel
             new BD\SubberBundle\BDSubberBundle(),
             new Patbzh\BetaseriesBundle\PatbzhBetaseriesBundle(),
             new Braincrafted\Bundle\BootstrapBundle\BraincraftedBootstrapBundle(),
-
+            new Tedivm\StashBundle\TedivmStashBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

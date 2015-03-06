@@ -26,7 +26,8 @@
         "patbzh/betaseries": "dev-master",
         "braincrafted/bootstrap-bundle": "~2.0",
         "twbs/bootstrap": "3.0.*",
-        "jquery/jquery": "1.11.*"
+        "jquery/jquery": "1.11.*",
+        "tedivm/stash-bundle": "0.4.*"
     },
     "require-dev": {
         "sensio/generator-bundle": "~2.3",

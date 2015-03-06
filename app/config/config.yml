@@ -82,3 +82,9 @@ doctrine:
                         prefix: BD\Subber\Queue
                         alias: SubberQueue
                         is_bundle: false
+
+stash:
+    drivers: [ FileSystem ]
+    FileSystem: ~
+    registerDoctrineAdapter: false
+    #logger: logger
