@@ -2,10 +2,13 @@
 
 ### Release Parser
 - [ ] Release Parser: make sure that the subtitle's extension is given to the parser
-- [ ] Add handling of Proper releases
+- [x] Add handling of Proper releases
 - [ ] What if a Subtitle's content was a callback, that downloads, and either extracts from the zip file, or
       returns the contents directly ?
 - [ ] Read extra episode data from the betaseries scrap call, and put those in the Release object
+- [ ] Check proper in Matcher. Find a way to "tolerate" subtitles that aren't marked as proper with proper releases.
+      Ideally, this would only be triggered if there are no Proper Subtitles, as it would indicate that the Proper
+      does not affect subtitles.
 - [x] Release Parser: update namespace, Release\Parser\SubtitlesParser\Addic7ed => Remove 'Parser'
 - [x] Add "The Simpsons S24E17 1080p WEB-DL H 264 DD5 1-NTb" to tests
 - [x] Release Parser: implement dispatcher
@@ -14,18 +17,18 @@
 ### Application/architecture
 - [x] ScrapReleaseEvent when a release gets scrapped for subtitles
 - [ ] RateSubtitleEvent when a subtitle gets rated
-- [ ] QueueTaskEvent when a task gets queued
+- [x] QueueTaskEvent when a task gets queued
 
 ### Other
 - [ ] Change Commands to commands as a service
 - [ ] Factorize zip file handling. Consider adding a zipFilename property to the Subtitle object...
-- [ ] Store Subber data along with subbed files (.subber folder ? .subber_<filename>.json)
-      Or in the cache folder... we might not want to wake the disks up.
-      Episode data from betaseries ?
-      Matching/Sorting details ?
 - [ ] Rename and rework the subtitles collection thing with 3 lists: match, possible
 - [ ] Abstract access to stored (cached ? yes, cached. The consumer don't care if it is "stored") data
 - [ ] Keep track of the sub that is currently downloaded (and keep its hash, in case it changes...)
+- [x] ~Store Subber data along with subbed files (.subber folder ? .subber_<filename>.json)~
+      Or in the cache folder... we might not want to wake the disks up. Cached with stash.
+      Episode data from betaseries ?
+      Matching/Sorting details ?
 - [x] Finish zip file handling, with URI processing. Do we need a local callback ? Or should the downloader take care of it ?
 - [x] Add status field to "tasks" table (pending, suggested, confirmed)
 - [x] Add a timestamp to tasks
