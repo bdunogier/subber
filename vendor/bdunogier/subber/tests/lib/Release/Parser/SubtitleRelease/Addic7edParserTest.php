@@ -71,6 +71,15 @@ class Addic7edParserTest extends \PHPUnit_Framework_TestCase
                     'author' => 'addic7ed',
                     'language' => 'fr'
                 ]
+            ],
+            [
+                'Modern Family - 06x16 - Connection Lost.LOL.French.orig.Addic7ed.com.srt',
+                [
+                    'name' => 'Modern Family - 06x16 - Connection Lost.LOL.French.orig.Addic7ed.com.srt',
+                    'group' => 'lol',
+                    'author' => 'addic7ed',
+                    'language' => 'fr'
+                ]
             ]
         ];
     }

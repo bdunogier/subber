@@ -38,12 +38,13 @@ class Addic7edParser implements ReleaseParser
         }
 
         // C thing in the release name
-        $c = array_pop( $releaseParts );
-        if ( $c != 'c' )
-            throw new ReleaseParserException( $releaseName, "$c isn't the 'C' thing" );
+        $next = array_pop( $releaseParts );
+        if ( $next == 'c' )
+        {
+            $next = array_pop( $releaseParts );
+        }
 
         // can be hearing impaired, or language
-        $next = array_pop( $releaseParts );
         if ( $next == 'hi' )
         {
             $release->isHearingImpaired = true;
