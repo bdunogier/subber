@@ -71,6 +71,7 @@ services:
                 tvsubtitles: @bd_subber.release_parser.subtitle.tvsubtitles
                 addic7ed: @bd_subber.release_parser.subtitle.addic7ed
                 betaseries: @bd_subber.release_parser.subtitle.betaseries
+                seriessub: @bd_subber.release_parser.subtitle.soustitres
 
     bd_subber.release_parser.subtitle.addic7ed:
         class: BD\Subber\Release\Parser\SubtitleRelease\Addic7edParser
