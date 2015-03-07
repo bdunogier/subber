@@ -111,3 +111,15 @@ services:
 
     bd_subber.subtitle_saver:
         class: BD\Subber\Subtitles\Saver\BasicSaver
+
+    bd_subber.release.episode_release_factory:
+        class: BD\Subber\Release\Episode\EpisodeReleaseFactory
+        arguments:
+            - @bd_subber.release.episode_metadata_file_parser
+
+    bd_subber.release.episode_metadata_file_parser:
+        class: BD\Subber\Release\Episode\EpisodeMetadataFileParser
+        alias: bd_subber.release.episode_metadata_file_parser.xbmc_nfo
+
+    bd_subber.release.episode_metadata_file_parser.xbmc_nfo:
+        class: BD\Subber\Release\Episode\XbmcNfoParser
