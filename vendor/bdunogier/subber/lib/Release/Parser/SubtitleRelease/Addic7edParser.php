@@ -71,9 +71,8 @@ class Addic7edParser implements ReleaseParser
         {
             $source = 'web-dl';
         }
-
         // killers-translate, web-dl-bs, ...
-        if ( preg_match( '/^(.*?)\-([^\-]+)$/', $sourceThingString, $m ) )
+        else if ( preg_match( '/^(.*?)\-([^\-]+)$/', $sourceThingString, $m ) )
         {
             if ( $m[1] == 'web-dl' ) {
                 $source = $m[1];

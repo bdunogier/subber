@@ -80,6 +80,15 @@ class Addic7edParserTest extends \PHPUnit_Framework_TestCase
                     'author' => 'addic7ed',
                     'language' => 'fr'
                 ]
+            ],
+            [
+                '12 Monkeys - 01x02 - Mentally Divergent.WEB-DL.French.C.orig.Addic7ed.com.srt',
+                [
+                    'name' => '12 Monkeys - 01x02 - Mentally Divergent.WEB-DL.French.C.orig.Addic7ed.com.srt',
+                    'author' => 'addic7ed',
+                    'source' => 'web-dl',
+                    'language' => 'fr'
+                ]
             ]
         ];
     }
