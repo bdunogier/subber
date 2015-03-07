@@ -2,7 +2,10 @@
 /**
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  */
-namespace BD\Subber\Release\Episode;
+namespace BD\Subber\Episode\EpisodeMetadataFileParser;
+
+use BD\Subber\Episode\Episode;
+use BD\Subber\Episode\EpisodeMetadataFileParser;
 
 class XbmcNfoParser implements EpisodeMetadataFileParser
 {
@@ -25,7 +28,7 @@ class XbmcNfoParser implements EpisodeMetadataFileParser
             throw new \InvalidArgumentException( "The XBMC metadata file $metadataFilePath does not seem to be valid XML" );
         }
 
-        $episodeRelease = new EpisodeRelease(
+        $episodeRelease = new Episode(
             [
                 'showTitle' => (string)$xml->showtitle,
                 'episodeTitle' => (string)$xml->title,

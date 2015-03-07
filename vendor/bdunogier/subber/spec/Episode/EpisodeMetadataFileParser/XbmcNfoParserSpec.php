@@ -1,21 +1,16 @@
 <?php
-namespace spec\BD\Subber\Release\Episode;
+namespace spec\BD\Subber\Episode\EpisodeMetadataFileParser;
 
-use BD\Subber\Release\Episode\EpisodeRelease;
+use BD\Subber\Episode\Episode;
 use org\bovigo\vfs\vfsStream;
-use org\bovigo\vfs\visitor\vfsStreamStructureVisitor;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
 class XbmcNfoParserSpec extends ObjectBehavior
 {
-    /**
-     * @param \BD\Subber\Release\Episode\EpisodeMetadataFileParser $metadataParser
-     */
-    function let( $metadataParser )
+    function let()
     {
         $this->setupVfs();
-        $this->beConstructedWith( $metadataParser );
     }
 
     private function setupVfs()
@@ -41,7 +36,7 @@ XML;
 
     function it_is_initializable()
     {
-        $this->shouldHaveType( 'BD\Subber\Release\Episode\XbmcNfoParser' );
+        $this->shouldHaveType( 'BD\Subber\Episode\EpisodeMetadataFileParser\XbmcNfoParser' );
     }
 
     function it_throws_an_exception_if_the_episode_metadatafile_does_not_exist()
@@ -62,7 +57,7 @@ XML;
     {
         $result = $this->parseFromEpisodeFilePath( $this->validEpisodePath() );
 
-        $result->shouldBeAnInstanceOf('BD\Subber\Release\Episode\EpisodeRelease');
+        $result->shouldBeAnEpisode();
         $result->shouldHaveProperty( 'showTitle', 'A Great TV Show' );
         $result->shouldHaveProperty( 'episodeTitle', 'A great episode' );
         $result->shouldHaveProperty( 'seasonNumber', 8 );
@@ -73,7 +68,7 @@ XML;
     {
         $result = $this->parseFromEpisodeFilePath( $this->validEpisodePath() );
 
-        $result->shouldBeAnInstanceOf('BD\Subber\Release\Episode\EpisodeRelease');
+        $result->shouldBeAnEpisode();
         $result->shouldHaveEpisodeThumbWithContents( $this->episodeThumbPath(), 'episode thumbnail contents' );
         $result->shouldHaveShowPosterWithContents( $this->showPosterPath(), 'show poster contents' );
     }
@@ -81,18 +76,21 @@ XML;
     public function getMatchers()
     {
         return [
-            'haveProperty' => function(EpisodeRelease $result, $propertyName, $propertyValue ) {
+            'haveProperty' => function(Episode $result, $propertyName, $propertyValue ) {
                 return $result->$propertyName === $propertyValue;
             },
-            'haveShowPosterWithContents' => function(EpisodeRelease $result, $expectedPath, $expectedContents ) {
+            'haveShowPosterWithContents' => function(Episode $result, $expectedPath, $expectedContents ) {
                 return
                     $result->showPoster === $expectedPath &&
                     file_get_contents( $result->showPoster ) === $expectedContents;
             },
-            'haveEpisodeThumbWithContents' => function(EpisodeRelease $result, $expectedPath, $expectedContents ) {
+            'haveEpisodeThumbWithContents' => function(Episode $result, $expectedPath, $expectedContents ) {
                 return
                     $result->episodeThumb === $expectedPath &&
                     file_get_contents( $result->episodeThumb ) === $expectedContents;
+            },
+            'beAnEpisode' => function(Episode $result) {
+                return $result instanceof Episode;
             }
         ];
     }

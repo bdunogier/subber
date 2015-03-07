@@ -2,17 +2,17 @@
 /**
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  */
-namespace BD\Subber\Release\Episode;
+namespace BD\Subber\Episode;
 
 use InvalidArgumentException;
 
 /**
- * Parses metadata from an episode
+ * Parses an Episode from a Metadata File
  */
 interface EpisodeMetadataFileParser
 {
     /**
-     * @return EpisodeRelease
+     * @return Episode
      *
      * @throws InvalidArgumentException if no metadata file could be found matching this episode file path
      */
