@@ -1,7 +1,8 @@
 ## Things to do and ideas
 
 ### Release Parser
-- [ ] Release Parser: make sure that the subtitle's extension is given to the parser
+- [ ] Write Matcher tests: EpisodeRelease + SubtitleRelease, and expected result (true/false)
+- [ ] Release Parser: make sure that the subtitle's extension is given to the parser (should be ok on some)
 - [ ] What if a Subtitle's content was a callback, that downloads, and either extracts from the zip file, or
       returns the contents directly ?
 - [ ] Check proper in Matcher. Find a way to "tolerate" subtitles that aren't marked as proper with proper releases.
@@ -9,6 +10,16 @@
       does not affect subtitles.
 - [ ] Rethink subtitles matching a bit. If a subtitle specifies source+resolution, it means it only applies to this
       source AND resolution, does it not ?
+
+### SubtitleReleaseList Consolidator
+Consolidates a list of Subtitle Releases (before Indexing).
+The goal is to get Subtitles with properties we can rely upon during Matching.
+
+- [ ] SHOULD Fork Subtitles that have array properties (multiple resolutions/groups)
+- [ ] SHOULD Fork Subtitles or inconsistent properties (lol.720p)
+- [ ] SHOULD take care of Propers/Repacks: if some Subtitles Releases in the list specify Proper or Repack, then
+      Subtitles that don't probably don't match.
+- [ ] COULD complete properties with known data: lol = 480p, dimension = 720p (not sure it's actually a good idea)
 
 ### Application/architecture
 - [ ] RateSubtitleEvent when a subtitle gets rated
