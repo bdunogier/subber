@@ -21,6 +21,10 @@
 - [ ] Rename 'Video' to 'Episode'
 
 ### Other
+- [ ] Compatible groups are a bit of an issue.
+      lol is usually compatible with dimension *only* if one of the two releases doesn't have an explicit subtitle.
+      This could only be done if the subtitle Matcher received the whole list, and had higher level information.
+      Kind of a multiple pass matching... ?
 - [ ] Change Commands to commands as a service
 - [ ] Factorize zip file handling. Consider adding a zipFilename property to the Subtitle object...
 - [ ] Rename and rework the subtitles collection thing with 3 lists: match, possible
