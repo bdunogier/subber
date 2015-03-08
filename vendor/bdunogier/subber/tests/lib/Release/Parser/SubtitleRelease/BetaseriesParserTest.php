@@ -31,7 +31,7 @@ class BetaseriesParserTest extends \PHPUnit_Framework_TestCase
                     'name' => 'The Simpsons.S24E17.What Animated Women Want.LOL.720p.srt',
                     'group' => 'lol',
                     'source' => 'hdtv',
-                    'language' => 'fr',
+                    'language' => 'fr'
                 ]
             ],
             [

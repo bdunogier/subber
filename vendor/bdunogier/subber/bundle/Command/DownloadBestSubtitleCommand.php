@@ -1,14 +1,11 @@
 <?php
 namespace BD\SubberBundle\Command;
 
-use BD\Subber\Election\Ballot\BasicBallot;
-use BD\Subber\Subtitles\Subtitle;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use ZipArchive;
 
 /**
  * Gets subtitles for tasks

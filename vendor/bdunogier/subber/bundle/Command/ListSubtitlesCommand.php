@@ -1,7 +1,6 @@
 <?php
 namespace BD\SubberBundle\Command;
 
-use BD\Subber\Election\Ballot\BasicBallot;
 use BD\Subber\Subtitles\Subtitle;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputArgument;

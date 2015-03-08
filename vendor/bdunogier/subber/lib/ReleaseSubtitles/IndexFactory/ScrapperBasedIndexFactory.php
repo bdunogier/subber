@@ -1,7 +1,6 @@
 <?php
 namespace BD\Subber\ReleaseSubtitles\IndexFactory;
 
-use BD\Subber\Election\Ballot;
 use BD\Subber\Event\ScrapReleaseEvent;
 use BD\Subber\EventDispatcher\EventDispatcherAware;
 use BD\Subber\Release\Parser\VideoReleaseParser;
