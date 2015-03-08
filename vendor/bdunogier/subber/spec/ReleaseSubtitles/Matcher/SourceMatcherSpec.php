@@ -21,6 +21,13 @@ class SourceMatcherSpec extends ObjectBehavior
         $this->matches( $subtitle, $release )->shouldEqual( true );
     }
 
+    function it_does_not_match_different_sources()
+    {
+        $release = new Release(['source' => 'hdtv']);
+        $subtitle = new Subtitle(['source' => 'web-dl']);
+        $this->matches( $subtitle, $release )->shouldEqual( false );
+    }
+
     function it_matches_webrip_with_webdl()
     {
         $release = new Release(['source' => 'webrip']);
