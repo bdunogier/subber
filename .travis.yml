@@ -22,8 +22,8 @@ before_script:
 script:
   - cd vendor/bdunogier/subber
   - pwd
-  - if [ "$TARGET" == "phpunit" ] ; then php -d date.timezone=$TEST_TIMEZONE vendor/bin/phpunit ; fi
-  - if [ "$TARGET" == "phpspec" ] ; then php vendor/bin/phpspec run --format=pretty; fi
+  - if [ "$TARGET" == "phpunit" ] ; then php -d date.timezone=$TEST_TIMEZONE ./bin/phpunit ; fi
+  - if [ "$TARGET" == "phpspec" ] ; then php ./bin/phpspec run --format=pretty; fi
 
 # disable mail notifications
 notification:
