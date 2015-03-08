@@ -7,7 +7,7 @@
 
     <div class="row-fluid">
         {% for task in tasks %}
-            <div class="span12">{{ task.file }} ({{ task.originalName }})</div>
+            {{ render(controller('bd_subber.release_controller:showReleaseByNameAction', {'releaseName': task.originalName})) }}
         {% endfor %}
     </div>
 {% endblock %}

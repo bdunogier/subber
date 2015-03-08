@@ -11,8 +11,8 @@ class ProcessQueuedReleaseCommand extends ContainerAwareCommand
 {
     public function configure()
     {
-        $this->setName( 'subber:process-queued-release' );
-        $this->setDescription( 'Processes a queued release' );
+        $this->setName( 'subber:show-queued-release' );
+        $this->setDescription( 'Shows a queued release information' );
         $this->addArgument( 'release-name', InputArgument::REQUIRED, "The release name" );
     }
 

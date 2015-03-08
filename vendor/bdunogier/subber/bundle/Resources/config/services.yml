@@ -7,7 +7,13 @@ services:
         class: BD\SubberBundle\Controller\DashboardController
         arguments: [@bd_subber.tasks_repository]
         calls:
-            - [setContainer,[@service_container]]
+            - [setContainer, [@service_container]]
+
+    bd_subber.release_controller:
+        class: BD\SubberBundle\Controller\ReleaseController
+        arguments: [@bd_subber.subtitled_episode_release_factory]
+        calls:
+            - [setContainer, [@service_container]]
 
     bd_subber.tasks_repository:
         class: BD\Subber\Queue\DoctrineTaskRepository

@@ -11,8 +11,8 @@ class ProcessQueuedFileCommand extends ContainerAwareCommand
 {
     public function configure()
     {
-        $this->setName( 'subber:process-queued-file' );
-        $this->setDescription( 'Processes a queued file' );
+        $this->setName( 'subber:show-queued-file' );
+        $this->setDescription( 'Shows a queued file information' );
         $this->addArgument( 'release-file', InputArgument::REQUIRED, "The local release file path" );
     }
 
