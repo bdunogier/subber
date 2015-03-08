@@ -24,7 +24,12 @@ class ListSubtitlesCommand extends ContainerAwareCommand
     public function execute( InputInterface $input, OutputInterface $output )
     {
         $printSubtitleCallback = function ( Subtitle $subtitle ) use ( $output ) {
-            $output->writeln( sprintf( "%s (%s)", $subtitle->name, strtoupper( $subtitle->language ) ) );
+            $output->writeln(
+                sprintf(
+                    "%s (%s, %s)",
+                    $subtitle->name, strtoupper( $subtitle->language ), $subtitle->author
+                )
+            );
         };
 
         $downloadedRelease = $input->getArgument( 'downloaded-release' );
