@@ -82,6 +82,8 @@ services:
         class: BD\Subber\Release\Parser\SubtitleRelease\SoustitresParser
         tags:
             - { name: bd_subber.subtitle_release_parser, key: soustitres }
+        arguments:
+            - @bd_subber.release_parser.video
 
     bd_subber.release_parser.subtitle.tvsubtitles:
         class: BD\Subber\Release\Parser\SubtitleRelease\TvsubtitlesParser
