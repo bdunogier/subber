@@ -31,7 +31,7 @@ class Addic7edParserTest extends \PHPUnit_Framework_TestCase
                     'name' => 'Bitten - 02x04 - Dead Meat.KILLERS.English.C.orig.Addic7ed.com',
                     'group' => 'killers',
                     'author' => 'addic7ed',
-                    'language' => 'en'
+                    'language' => 'en',
                 ]
             ],
             [
@@ -41,7 +41,7 @@ class Addic7edParserTest extends \PHPUnit_Framework_TestCase
                     'group' => 'bs',
                     'author' => 'addic7ed',
                     'language' => 'en',
-                    'source' => 'web-dl'
+                    'source' => 'web-dl',
                 ]
             ],
             [
@@ -87,7 +87,8 @@ class Addic7edParserTest extends \PHPUnit_Framework_TestCase
                     'name' => '12 Monkeys - 01x02 - Mentally Divergent.WEB-DL.French.C.orig.Addic7ed.com.srt',
                     'author' => 'addic7ed',
                     'source' => 'web-dl',
-                    'language' => 'fr'
+                    'language' => 'fr',
+                    'group' => null
                 ]
             ]
         ];

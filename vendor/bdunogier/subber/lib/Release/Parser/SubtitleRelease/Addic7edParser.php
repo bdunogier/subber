@@ -86,7 +86,7 @@ class Addic7edParser implements ReleaseParser
 
         }
 
-        if ( $group === null )
+        if ( $group === null && $sourceThingString !== 'web-dl' )
         {
             $group = $sourceThingString;
         }
