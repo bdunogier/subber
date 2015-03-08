@@ -1,0 +1,28 @@
+language: php
+
+php:
+  - 5.6
+
+# test only master (+ Pull requests)
+branches:
+  only:
+    - master
+
+env:
+  matrix:
+    - TARGET="phpunit"
+    - TARGET="phpspec"
+
+# setup requirements for running unit tests
+before_script:
+  - cd vendor/bdunogier/subber
+  - composer install
+
+# execute phpunit as the script command
+script:
+  - if [ "$TARGET" == "phpunit" ] ; then php -d date.timezone=$TEST_TIMEZONE vendor/bin/phpunit ; fi
+  - if [ "$TARGET" == "phpspec" ] ; php vendor/bin/phpspec run --format=pretty; fi
+
+# disable mail notifications
+notification:
+  email: false
