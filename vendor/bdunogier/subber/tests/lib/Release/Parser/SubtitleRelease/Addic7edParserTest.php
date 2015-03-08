@@ -90,6 +90,16 @@ class Addic7edParserTest extends \PHPUnit_Framework_TestCase
                     'language' => 'fr',
                     'group' => null
                 ]
+            ],
+            [
+                "Vikings - 03x03 - Warrior's Fate.REPACK-2HD.English.HI.C.orig.Addic7ed.com.srt",
+                [
+                    'name' => "Vikings - 03x03 - Warrior's Fate.REPACK-2HD.English.HI.C.orig.Addic7ed.com.srt",
+                    'isHearingImpaired' => true,
+                    'group' => '2hd',
+                    'isRepack' => true,
+                    'language' => 'en'
+                ]
             ]
         ];
     }

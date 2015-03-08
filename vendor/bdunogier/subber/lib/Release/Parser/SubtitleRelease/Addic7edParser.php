@@ -54,44 +54,31 @@ class Addic7edParser implements ReleaseParser
         // language
         if ( in_array( $next, ['english', 'french'] ) ) {
             $release->language = $this->getLanguageCode( $next );
+            $next = array_pop( $releaseParts );
         }
 
-        // group thing
-        list( $release->source, $release->group ) = $this->resolveSourceThing( array_pop( $releaseParts ) );
-
-        return $release;
-    }
-
-    private function resolveSourceThing( $sourceThingString )
-    {
-        $source = null;
-        $group = null;
-
-        if ( $sourceThingString === 'web-dl' )
-        {
-            $source = 'web-dl';
-        }
-        // killers-translate, web-dl-bs, ...
-        else if ( preg_match( '/^(.*?)\-([^\-]+)$/', $sourceThingString, $m ) )
-        {
-            if ( $m[1] == 'web-dl' ) {
-                $source = $m[1];
-                $group = $m[2];
+        // strings separated by dashes (possibly)
+        $next = str_replace( 'web-dl', 'webdl', $next );
+        $parts = explode( '-', $next );
+        foreach ($parts as $part) {
+            if ( $part == 'webdl' ) {
+                $release->source = 'web-dl';
+            } else if ( $part == 'repack' ) {
+                $release->isRepack = true;
+            } else if ($part == 'proper') {
+                $release->isProper = true;
+            } else if ($part == 'translate') {
+                // we don't care
             } else {
-                $group = $m[1];
-                if ( $m[2] != 'translate' ) {
-                    $source = $m[2];
+                if ( isset( $release->group ) ) {
+                    $release->group = [$release->group, $part];
+                } else {
+                    $release->group = $part;
                 }
             }
-
         }
 
-        if ( $group === null && $sourceThingString !== 'web-dl' )
-        {
-            $group = $sourceThingString;
-        }
-
-        return [$source, $group];
+        return $release;
     }
 
     private function getLanguageCode( $languageString )
