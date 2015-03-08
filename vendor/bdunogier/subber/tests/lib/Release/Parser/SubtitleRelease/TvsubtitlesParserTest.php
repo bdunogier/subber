@@ -34,7 +34,7 @@ class TvsubtitlesParserTest extends \PHPUnit_Framework_TestCase
                     'language' => 'fr',
                     'source' => 'hdtv'
                 ]
-            ],
+        ],
             [
                 'Gotham - 1x16 - The Blind Fortune Teller.HDTV.LOL+720p.DIMENSION.fr.srt',
                 [
@@ -51,6 +51,16 @@ class TvsubtitlesParserTest extends \PHPUnit_Framework_TestCase
                     'group' => 'lol',
                     'language' => 'en',
                     'source' => 'hdtv'
+                ]
+            ],
+            [
+                "Two and a Half Men - 12x15-16 - Of Course He's Dead - Part One.720p HDTV.fr.srt",
+                [
+                    'name' => "Two and a Half Men - 12x15-16 - Of Course He's Dead - Part One.720p HDTV.fr.srt",
+                    'group' => null,
+                    'language' => 'fr',
+                    'source' => 'hdtv',
+                    'resolution' => '720p'
                 ]
             ]
         ];

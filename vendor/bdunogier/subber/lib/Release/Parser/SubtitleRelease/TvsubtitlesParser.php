@@ -19,19 +19,46 @@ class TvsubtitlesParser implements ReleaseParser
     public function parseReleaseName( $releaseName )
     {
         $release = new Subtitle( ['name' => $releaseName, 'author' => 'tvsubtitles'] );
-        $releaseParts = explode( '.', strtolower( $releaseName ) );
+        $releaseName = $this->normalize( $releaseName );
+        $releaseParts = explode( '.', $releaseName );
 
         $release->subtitleFormat = array_pop( $releaseParts );
         $release->language = array_pop( $releaseParts );
 
-        $release->group = array_pop( $releaseParts );
-        if ( ( $next = array_pop( $releaseParts ) ) === 'lol+720p' ) {
-            $release->group = [$release->group, 'lol'];
-            $next = array_pop( $releaseParts );
+        while ( $next = array_pop( $releaseParts ) ) {
+            if (in_array( $next, ['720p', '1080p'] )) {
+                $release->resolution = $next;
+            } else if ( $next == 'hdtv' ) {
+                $release->source = 'hdtv';
+            } else {
+                if ( isset( $release->group ) ) {
+                    $release->group = [$release->group, $next];
+                } else {
+                    $release->group = $next;
+                }
+            }
         }
 
-        $release->source = $next;
-
         return $release;
+    }
+
+    private function normalize( $releaseName )
+    {
+        $releaseName = strtolower( $releaseName );
+        $releaseName = $this->cutReleaseName( $releaseName );
+        return str_replace( [' ', '+'], '.', $releaseName );
+    }
+
+    private function cutReleaseName( $releaseName )
+    {
+        $releaseNamePiece = '';
+        foreach ( ['720p', 'hdtv'] as $cutWord ) {
+            $newReleaseNamePiece = strstr( $releaseName, $cutWord );
+            if (strlen($newReleaseNamePiece) > strlen($releaseNamePiece)) {
+                $releaseNamePiece = $newReleaseNamePiece;
+            }
+        }
+
+        return $releaseNamePiece ?: $releaseName;
     }
 }
