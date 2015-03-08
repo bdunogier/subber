@@ -62,6 +62,16 @@ class TvsubtitlesParserTest extends \PHPUnit_Framework_TestCase
                     'source' => 'hdtv',
                     'resolution' => '720p'
                 ]
+            ],
+            [
+                "Vikings - 3x03 - Warrior's Fate.HDTV.REPACK.2HD.en.srt",
+                [
+                    'name' => "Vikings - 3x03 - Warrior's Fate.HDTV.REPACK.2HD.en.srt",
+                    'source' => 'hdtv',
+                    'group' => '2hd',
+                    'language' => 'en',
+                    'isRepack' => true
+                ]
             ]
         ];
     }

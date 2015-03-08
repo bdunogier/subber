@@ -28,6 +28,10 @@ class TvsubtitlesParser implements ReleaseParser
         while ( $next = array_pop( $releaseParts ) ) {
             if (in_array( $next, ['720p', '1080p'] )) {
                 $release->resolution = $next;
+            } else if ( $next == 'repack' ) {
+                $release->isRepack = true;
+            } else if ( $next == 'proper' ) {
+                $release->isProper = true;
             } else if ( $next == 'hdtv' ) {
                 $release->source = 'hdtv';
             } else {
