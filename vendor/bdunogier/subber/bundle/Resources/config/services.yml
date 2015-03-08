@@ -53,6 +53,7 @@ services:
             - @bd_subber.release_parser.video
             - @bd_subber.subtitle_release.matcher
             - @bd_subber.subtitle_rater
+            - @bd_subber.subtitle_list_consolidator
         calls:
             - [setEventDispatcher, [@event_dispatcher]]
 
@@ -134,3 +135,6 @@ services:
             - @bd_subber.release.episode_metadata_file_parser
             - @bd_subber.release_parser.video
             - @bd_subber.tasks_repository
+
+    bd_subber.subtitle_list_consolidator:
+        class: BD\Subber\Subtitles\ListConsolidator

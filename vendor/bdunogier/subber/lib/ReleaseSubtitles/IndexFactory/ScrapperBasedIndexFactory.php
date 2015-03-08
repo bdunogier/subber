@@ -6,6 +6,7 @@ use BD\Subber\EventDispatcher\EventDispatcherAware;
 use BD\Subber\Release\Parser\VideoReleaseParser;
 use BD\Subber\ReleaseSubtitles\Index;
 use BD\Subber\ReleaseSubtitles\IndexFactory;
+use BD\Subber\Subtitles\ListConsolidator;
 use BD\Subber\Subtitles\Scrapper;
 use BD\Subber\Subtitles\Subtitle;
 use BD\Subber\Subtitles\Rater;
@@ -27,17 +28,22 @@ class ScrapperBasedIndexFactory implements IndexFactory
     /** @var \BD\Subber\Release\Parser\VideoReleaseParser */
     private $videoReleaseParser;
 
+    /** @var \BD\Subber\Subtitles\ListConsolidator */
+    private $subtitleListConsolidator;
+
     public function __construct(
         Scrapper $scrapper,
         VideoReleaseParser $videoReleaseParser,
         Matcher $matcher,
-        Rater $rater
+        Rater $rater,
+        ListConsolidator $subtitleListConsolidator
     )
     {
         $this->scrapper = $scrapper;
         $this->matcher = $matcher;
         $this->rater = $rater;
         $this->videoReleaseParser = $videoReleaseParser;
+        $this->subtitleListConsolidator = $subtitleListConsolidator;
     }
 
     public function build( $releaseName )
@@ -53,6 +59,7 @@ class ScrapperBasedIndexFactory implements IndexFactory
         $compatible = [];
         $incompatible = [];
 
+        $this->subtitleListConsolidator->consolidate( $subtitles );
         foreach ( $subtitles as $subtitle )
         {
             if ( $this->matcher->matches( $subtitle, $videoRelease ) )
