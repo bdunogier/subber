@@ -37,4 +37,20 @@ class DoctrineTaskRepository extends EntityRepository implements TaskRepository
         $task->setStatus( 1 );
         $this->_em->persist( $task );
     }
+
+    /**
+     * @return Task
+     */
+    public function loadByReleaseName( $releaseName )
+    {
+        return $this->findOneByOriginalName( $releaseName );
+    }
+
+    /**
+     * @return Task
+     */
+    public function loadByLocalReleasePath( $localReleasePath )
+    {
+        return $this->findOneByFile( $localReleasePath );
+    }
 }
