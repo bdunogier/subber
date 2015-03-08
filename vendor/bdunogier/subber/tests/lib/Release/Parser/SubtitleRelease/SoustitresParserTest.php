@@ -88,6 +88,15 @@ class SoustitresParserTest extends \PHPUnit_Framework_TestCase
                     'language' => 'fr',
                     'hasTags' => true
                 ]
+            ],
+            [
+                'The.Big.Bang.Theory.S08E16.LOL.720p.DIMENSION.VF.ass',
+                [
+                    'resolution' => '720p',
+                    'source' => 'hdtv',
+                    'language' => 'fr',
+                    'group' => 'dimension'
+                ]
             ]
         ];
     }

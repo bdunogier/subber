@@ -55,7 +55,7 @@ class SoustitresParser implements ReleaseParser
             }
             $next = array_pop( $releaseParts );
         }
-        $release->language = $next;
+        $release->language = $this->fixupLanguage( $next );
 
         $next = array_pop( $releaseParts );
         if ( $next == 'web-dl' ) {
@@ -85,5 +85,10 @@ class SoustitresParser implements ReleaseParser
         }
 
         return $release;
+    }
+
+    private function fixupLanguage( $next )
+    {
+        return str_replace( [ 'vf', 'vo' ], [ 'fr', 'en' ], $next );
     }
 }
