@@ -3,7 +3,7 @@ namespace tests\BD\Subber\Release\Parser\SubtitleRelease;
 
 use BD\Subber\Release\Parser\SubtitleRelease\BetaseriesParser;
 
-class Addic7edParserTest extends \PHPUnit_Framework_TestCase
+class BetaseriesParserTest extends \PHPUnit_Framework_TestCase
 {
     /** @var \BD\Subber\Release\Parser\SubtitleRelease\Addic7edParser */
     private $parser;
@@ -31,7 +31,7 @@ class Addic7edParserTest extends \PHPUnit_Framework_TestCase
                     'name' => 'The Simpsons.S24E17.What Animated Women Want.LOL.720p.srt',
                     'group' => 'lol',
                     'source' => 'hdtv',
-                    'language' => 'fr'
+                    'language' => 'fr',
                 ]
             ],
             [
@@ -41,7 +41,8 @@ class Addic7edParserTest extends \PHPUnit_Framework_TestCase
                     'author' => 'betaseries',
                     'language' => 'fr',
                     'resolution' => '1080p',
-                    'source' => 'web-dl'
+                    'source' => 'web-dl',
+                    'group' => null,
                 ]
             ],
         ];
