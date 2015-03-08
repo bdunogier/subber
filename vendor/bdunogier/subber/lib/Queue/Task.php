@@ -9,6 +9,16 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Task
 {
+    public function __construct( array $properties = [] )
+    {
+        foreach ( $properties as $property => $value )
+        {
+            if ( !property_exists( $this, $property ) )
+                throw new \InvalidArgumentException( "Unknown property $property in class " . __CLASS__ );
+            $this->$property = $value;
+        }
+    }
+
     /**
      * Local path to the file that needs subbing
      * @ORM\Column(type="string", length=255)

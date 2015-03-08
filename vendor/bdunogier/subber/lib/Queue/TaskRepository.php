@@ -1,8 +1,6 @@
 <?php
 namespace BD\Subber\Queue;
 
-use Doctrine\Common\Persistence\ObjectRepository;
-
 interface TaskRepository
 {
     /**
@@ -13,4 +11,14 @@ interface TaskRepository
     public function addTask( Task $task );
 
     public function setTaskComplete( Task $task );
+
+    /**
+     * @return Task
+     */
+    public function loadByReleaseName( $releaseName );
+
+    /**
+     * @return Task
+     */
+    public function loadByLocalReleasePath( $localReleasePath );
 }
