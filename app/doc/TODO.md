@@ -11,12 +11,22 @@
 - [ ] Rethink subtitles matching a bit. If a subtitle specifies source+resolution, it means it only applies to this
       source AND resolution, does it not ?
 
+### Subtitle Matching Context
+Each episode release has its own Context, that is hard to determine based on a subtitle release or episode release alone.
+
+If we have a Repack Release or a Proper Release, does it affect the subtitles ?
+Are the 720p and 1080p hdtv releases compatible ?
+
+This Context can be built based on the Episode Release + Subtitle Releases list, and passed during to the Matcher.
+
 ### SubtitleReleaseList Consolidator
 Consolidates a list of Subtitle Releases (before Indexing).
 The goal is to get Subtitles with properties we can rely upon during Matching.
 
-- [ ] SHOULD Fork Subtitles that have array properties (multiple resolutions/groups)
-- [ ] SHOULD Fork Subtitles or inconsistent properties (lol.720p)
+- [ ] SHOULD be refactored so that each operation has its own Consolidator
+- [ ] SHOULD offer parameters to set release group properties (resolution, source, ...)
+- [x] SHOULD Fork Subtitles that have array properties (multiple resolutions/groups)
+- [x] SHOULD Fork Subtitles or inconsistent properties (lol.720p)
 - [ ] SHOULD take care of Propers/Repacks: if some Subtitles Releases in the list specify Proper or Repack, then
       Subtitles that don't probably don't match.
 - [ ] COULD complete properties with known data: lol = 480p, dimension = 720p (not sure it's actually a good idea)
@@ -26,10 +36,6 @@ The goal is to get Subtitles with properties we can rely upon during Matching.
 - [ ] Rename 'Video' to 'Episode'
 
 ### Other
-- [ ] Compatible groups are a bit of an issue.
-      lol is usually compatible with dimension *only* if one of the two releases doesn't have an explicit subtitle.
-      This could only be done if the subtitle Matcher received the whole list, and had higher level information.
-      Kind of a multiple pass matching... ?
 - [ ] Change Commands to commands as a service
 - [ ] Factorize zip file handling. Consider adding a zipFilename property to the Subtitle object...
 - [ ] Rename and rework the subtitles collection thing with 3 lists: match, possible
