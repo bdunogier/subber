@@ -21,7 +21,7 @@ before_script:
 # execute phpunit as the script command
 script:
   - if [ "$TARGET" == "phpunit" ] ; then php -d date.timezone=$TEST_TIMEZONE vendor/bin/phpunit ; fi
-  - if [ "$TARGET" == "phpspec" ] ; php vendor/bin/phpspec run --format=pretty; fi
+  - if [ "$TARGET" == "phpspec" ] ; then php vendor/bin/phpspec run --format=pretty; fi
 
 # disable mail notifications
 notification:
