@@ -3,8 +3,10 @@
 {% block title %}{{ parent() }} :: Dashboard{% endblock %}
 
 {% block body %}
-    <h1>Dashboard</h1>
+    <h1>Now playing</h1>
+    {{ render(controller('bd_subber.now_playing_controller:showNowPlayingReleaseAction')) }}
 
+    <h1>Tasks</h1>
     <div class="row-fluid">
         {% for task in tasks %}
             {{ render(controller('bd_subber.release_controller:showReleaseByNameAction', {'releaseName': task.originalName})) }}

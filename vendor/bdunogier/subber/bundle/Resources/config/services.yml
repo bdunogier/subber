@@ -14,6 +14,11 @@ services:
         arguments: [@bd_subber.subtitled_episode_release_factory]
         calls:
             - [setContainer, [@service_container]]
+    bd_subber.now_playing_controller:
+        class: BD\SubberBundle\Controller\NowPlayingController
+        arguments: [@bd_subber.subtitled_episode_release_factory, @bd_subber.now_playing.plex]
+        calls:
+            - [setContainer, [@service_container]]
 
     bd_subber.tasks_repository:
         class: BD\Subber\Queue\DoctrineTaskRepository
@@ -138,3 +143,7 @@ services:
 
     bd_subber.subtitle_release.compatiblity_matcher:
         class: BD\Subber\ReleaseSubtitles\CompatibilityMatcher
+
+    bd_subber.now_playing.plex:
+        class: BD\Subber\NowPlaying\PlexNowPlaying
+        arguments: [http://192.168.1.50:32400]
