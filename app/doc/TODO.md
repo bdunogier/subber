@@ -18,6 +18,7 @@
 - [x] ScrapReleaseEvent when a release gets scrapped for subtitles
 - [ ] RateSubtitleEvent when a subtitle gets rated
 - [x] QueueTaskEvent when a task gets queued
+- [ ] Rename 'Video' to 'Episode'
 
 ### Other
 - [ ] Change Commands to commands as a service
