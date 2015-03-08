@@ -8,7 +8,7 @@ interface ReleaseParser
 {
     /**
      * @param string $episodeName
-     * @return Release
+     * @return \BD\Subber\Release\Release
      */
-    public function parseReleaseName( $parseReleaseName );
+    public function parseReleaseName( $releaseName );
 }
