@@ -5,6 +5,8 @@
 namespace BD\Subber\SubtitledEpisodeRelease;
 
 use BD\Subber\Episode\EpisodeMetadataFileParser;
+use BD\Subber\Queue\Task;
+use BD\Subber\Queue\TaskNotFoundException;
 use BD\Subber\Queue\TaskRepository;
 use BD\Subber\Release\Parser\ReleaseParser;
 use BD\Subber\Release\Release;
@@ -38,22 +40,27 @@ class SubtitledEpisodeReleaseFactory
     }
 
     /**
-     * @return SubtitledEpisodeRelease
+     * @param $releaseName
+     *
+     * @return \BD\Subber\SubtitledEpisodeRelease\SubtitledEpisodeRelease
+     * @throws \BD\Subber\Queue\TaskNotFoundException
      */
     public function buildFromReleaseName( $releaseName )
     {
-        return $this->build(
-            $releaseName,
-            $this->taskRepository->loadByReleaseName( $releaseName )->getFile()
-        );
+        $task = $this->taskRepository->loadByReleaseName( $releaseName );
+        if ( !$task instanceof Task ) {
+            throw new TaskNotFoundException( 'originalName', $releaseName );
+        }
+        return $this->build( $releaseName, $task->getFile() );
     }
 
     public function buildFromLocalReleasePath( $localReleasePath )
     {
-        return $this->build(
-            $this->taskRepository->loadByLocalReleasePath( $localReleasePath )->getOriginalName(),
-            $localReleasePath
-        );
+        $task = $this->taskRepository->loadByLocalReleasePath( $localReleasePath );
+        if ( !$task instanceof Task ) {
+            throw new TaskNotFoundException( 'file', $localReleasePath );
+        }
+        return $this->build( $task->getOriginalName(), $localReleasePath );
     }
 
 

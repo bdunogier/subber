@@ -3,7 +3,9 @@
 {% block title %}{{ parent() }} :: Dashboard{% endblock %}
 
 {% block body %}
-    {{ render(controller('bd_subber.now_playing_controller:showNowPlayingAction')) }}
+    {% if enableNowPlaying %}
+        {{ render(controller('bd_subber.now_playing_controller:showNowPlayingAction')) }}
+    {% endif %}
 
     <h1>Tasks</h1>
     <div class="row-fluid">
