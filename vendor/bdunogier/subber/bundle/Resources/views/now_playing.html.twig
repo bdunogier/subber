@@ -1,0 +1,7 @@
+<div id="now_playing">
+    <h1>Now playing</h1>
+    {{ render(controller(
+        'bd_subber.release_controller:showReleaseByNameAction',
+        {'releaseName': release_name})
+    ) }}
+</div>

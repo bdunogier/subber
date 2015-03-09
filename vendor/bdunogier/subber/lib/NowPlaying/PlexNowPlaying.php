@@ -24,11 +24,15 @@ class PlexNowPlaying implements NowPlaying
         $xmlString = file_get_contents( $this->plexUri . '/status/sessions' );
 
         $xml = simplexml_load_string( $xmlString );
-        $element = $xml->xpath( '//Part' );
-        foreach ($element[0]->attributes() as $attributeName => $attributeValue) {
+        $parts = $xml->xpath( '//Part' );
+        if ( !isset( $parts[0] ) ) {
+            return null;
+        }
+        foreach ($parts[0]->attributes() as $attributeName => $attributeValue) {
             if ($attributeName == 'file') {
                 return $attributeValue;
             }
         }
+        return null;
     }
 }

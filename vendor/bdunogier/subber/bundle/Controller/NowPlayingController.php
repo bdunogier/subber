@@ -2,6 +2,8 @@
 namespace BD\SubberBundle\Controller;
 
 use BD\Subber\NowPlaying\NowPlaying;
+use BD\Subber\Queue\Task;
+use BD\Subber\Queue\TaskRepository;
 use BD\Subber\SubtitledEpisodeRelease\SubtitledEpisodeReleaseFactory;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -11,30 +13,32 @@ use Symfony\Component\HttpFoundation\Response;
 
 class NowPlayingController extends Controller implements ContainerAwareInterface
 {
-    /** @var \BD\Subber\SubtitledEpisodeRelease\SubtitledEpisodeReleaseFactory */
-    private $factory;
-    /**
-     * @var \BD\Subber\NowPlaying\NowPlaying
-     */
+    /** @var \BD\Subber\NowPlaying\NowPlaying */
     private $nowPlaying;
 
-    public function __construct( SubtitledEpisodeReleaseFactory $factory, NowPlaying $nowPlaying )
+    /** @var \BD\Subber\Queue\TaskRepository */
+    private $taskRepository;
+
+    public function __construct( TaskRepository $taskRepository, NowPlaying $nowPlaying )
     {
-        $this->factory = $factory;
         $this->nowPlaying = $nowPlaying;
+        $this->taskRepository = $taskRepository;
     }
 
-    public function showNowPlayingReleaseAction()
+    public function showNowPlayingAction()
     {
         $nowPlayingFile = $this->nowPlaying->getNowPlayingFilePath();
-        if ($nowPlayingFile === false) {
+        if ($nowPlayingFile === null) {
             return new Response();
         }
 
-
+        $task = $this->taskRepository->loadByLocalReleasePath( $nowPlayingFile );
+        if ( !$task instanceof Task ) {
+            return new Response();
+        }
         return $this->render(
-            'BDSubberBundle::release.html.twig',
-            ['release' => $this->factory->buildFromLocalReleasePath( $nowPlayingFile)]
+            'BDSubberBundle::now_playing.html.twig',
+            ['release_name' => $task->getOriginalName()]
         );
     }
 }
