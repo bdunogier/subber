@@ -1,15 +1,12 @@
 ## Things to do and ideas
 
 ### Release Parser
-- [ ] Write Matcher tests: EpisodeRelease + SubtitleRelease, and expected result (true/false)
+- [ ] Handle addic7ed Subtitle "The Big Bang Theory - 08x18 - The Leftover Thermalization.DIMENSION.colored.English.HI.C.orig.Addic7ed.com.srt"
+      (parses 'colored' as the group name)
+- [ ] Handle tvsubtitles Subtitle "Person of Interest - 4x17 - Karma.HDTV.LOL+720p.DIMENSION+AFG+mSD.fr.srt"
 - [ ] Release Parser: make sure that the subtitle's extension is given to the parser (should be ok on some)
 - [ ] What if a Subtitle's content was a callback, that downloads, and either extracts from the zip file, or
       returns the contents directly ?
-- [ ] Check proper in Matcher. Find a way to "tolerate" subtitles that aren't marked as proper with proper releases.
-      Ideally, this would only be triggered if there are no Proper Subtitles, as it would indicate that the Proper
-      does not affect subtitles.
-- [ ] Rethink subtitles matching a bit. If a subtitle specifies source+resolution, it means it only applies to this
-      source AND resolution, does it not ?
 
 ### Subtitle Matching Context
 Each episode release has its own Context, that is hard to determine based on a subtitle release or episode release alone.
@@ -27,8 +24,6 @@ The goal is to get Subtitles with properties we can rely upon during Matching.
 - [ ] SHOULD offer parameters to set release group properties (resolution, source, ...)
 - [x] SHOULD Fork Subtitles that have array properties (multiple resolutions/groups)
 - [x] SHOULD Fork Subtitles or inconsistent properties (lol.720p)
-- [ ] SHOULD take care of Propers/Repacks: if some Subtitles Releases in the list specify Proper or Repack, then
-      Subtitles that don't probably don't match.
 - [ ] COULD complete properties with known data: lol = 480p, dimension = 720p (not sure it's actually a good idea)
 
 ### Application/architecture
@@ -51,6 +46,12 @@ The goal is to get Subtitles with properties we can rely upon during Matching.
       - [ ] Rebuild the download file's name based on the data in brackets, when possible
 
 ## Done
+- [x] Write Matcher tests: EpisodeRelease + SubtitleRelease, and expected result (true/false)
+- [x] Check proper in Matcher. Find a way to "tolerate" subtitles that aren't marked as proper with proper releases.
+      Ideally, this would only be triggered if there are no Proper Subtitles, as it would indicate that the Proper
+      does not affect subtitles.
+- [x] Rethink subtitles matching a bit. If a subtitle specifies source+resolution, it means it only applies to this
+      source AND resolution, does it not ?
 - [x] Add handling of Proper releases
 - [x] Read extra episode data from the betaseries scrap call, and put those in the Release object
 - [x] Release Parser: update namespace, Release\Parser\SubtitlesParser\Addic7ed => Remove 'Parser'
