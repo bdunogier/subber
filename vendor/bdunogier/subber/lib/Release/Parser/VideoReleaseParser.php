@@ -25,6 +25,7 @@ class VideoReleaseParser implements ReleaseParser
         $release->source = $this->parseSource( $releaseName );
         $release->resolution = $this->parseResolution( $releaseName );
         $release->isProper = $this->parseProper( $releaseName );
+        $release->isRepack = $this->parseRepack( $releaseName );
 
         return $release;
     }
@@ -64,6 +65,11 @@ class VideoReleaseParser implements ReleaseParser
 
     public function parseProper( $releaseName )
     {
-        return strstr( $releaseName, 'repack' ) !== false || strstr( $releaseName, 'proper' ) !== false;
+        return strstr( $releaseName, 'proper' ) !== false;
+    }
+
+    public function parseRepack( $releaseName )
+    {
+        return strstr( $releaseName, 'repack' ) !== false;
     }
 }
