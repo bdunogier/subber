@@ -1,9 +1,6 @@
 ## Things to do and ideas
 
 ### Release Parser
-- [x] Handle addic7ed Subtitle "The Big Bang Theory - 08x18 - The Leftover Thermalization.DIMENSION.colored.English.HI.C.orig.Addic7ed.com.srt"
-      (parses 'colored' as the group name)
-- [x] Handle tvsubtitles Subtitle "Person of Interest - 4x17 - Karma.HDTV.LOL+720p.DIMENSION+AFG+mSD.fr.srt"
 - [ ] Release Parser: make sure that the subtitle's extension is given to the parser (should be ok on some)
 - [ ] What if a Subtitle's content was a callback, that downloads, and either extracts from the zip file, or
       returns the contents directly ?
@@ -33,7 +30,7 @@ The goal is to get Subtitles with properties we can rely upon during Matching.
 ### Other
 - [ ] Change Commands to commands as a service
 - [ ] Factorize zip file handling. Consider adding a zipFilename property to the Subtitle object...
-- [ ] Rename and rework the subtitles collection thing with 3 lists: match, possible
+- [x] Rename and rework the subtitles collection thing with 3 lists: match, possible
 
 ### UI
 - [ ] Update UI to highlight files where we have subtitles, and say which original file
@@ -73,3 +70,6 @@ The goal is to get Subtitles with properties we can rely upon during Matching.
 - [x] Treat multiple subs in one zip as variations ? What's the point, just grade them...
 - [x] ScrapReleaseEvent when a release gets scrapped for subtitles
 - [x] QueueTaskEvent when a task gets queued
+- [x] Handle addic7ed Subtitle "The Big Bang Theory - 08x18 - The Leftover Thermalization.DIMENSION.colored.English.HI.C.orig.Addic7ed.com.srt"
+      (parses 'colored' as the group name)
+- [x] Handle tvsubtitles Subtitle "Person of Interest - 4x17 - Karma.HDTV.LOL+720p.DIMENSION+AFG+mSD.fr.srt"
