@@ -18,7 +18,7 @@ class CompatibilityMatcher
     public function match( Release $release, array $testedSubtitles )
     {
         if ( !count( $testedSubtitles ) ) {
-            return array;
+            return array();
         }
         $testedSubtitles = $this->makeSubtitlesTestable( $release, $testedSubtitles );
 
