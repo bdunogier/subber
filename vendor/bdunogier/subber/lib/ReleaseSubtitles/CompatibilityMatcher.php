@@ -34,8 +34,12 @@ class CompatibilityMatcher
                 continue;
             }
             if ( isset( $subtitle->group ) && $subtitle->group != $release->group ) {
-                $subtitle->setIncompatible();
-                continue;
+                // At this point, the source is different, but the source is the same.
+                // we may test if the resolution is set on sub & release. If it ain't, they're probably compatible
+                if ( isset( $subtitle->resolution ) || isset( $release->resolution ) ) {
+                    $subtitle->setIncompatible();
+                    continue;
+                }
             }
         }
 
