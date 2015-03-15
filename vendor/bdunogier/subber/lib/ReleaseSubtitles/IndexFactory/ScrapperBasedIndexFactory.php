@@ -6,11 +6,12 @@ use BD\Subber\EventDispatcher\EventDispatcherAware;
 use BD\Subber\Release\Parser\VideoReleaseParser;
 use BD\Subber\ReleaseSubtitles\Index;
 use BD\Subber\ReleaseSubtitles\IndexFactory;
+use BD\Subber\ReleaseSubtitles\TestedReleaseSubtitle;
 use BD\Subber\Subtitles\ListConsolidator;
 use BD\Subber\Subtitles\Scrapper;
 use BD\Subber\Subtitles\Subtitle;
 use BD\Subber\Subtitles\Rater;
-use BD\Subber\ReleaseSubtitles\Matcher;
+use BD\Subber\ReleaseSubtitles\CompatibilityMatcher;
 
 class ScrapperBasedIndexFactory implements IndexFactory
 {
@@ -19,8 +20,8 @@ class ScrapperBasedIndexFactory implements IndexFactory
     /** @var \BD\Subber\Subtitles\Scrapper */
     private $scrapper;
 
-    /** @var \BD\Subber\ReleaseSubtitles\Matcher */
-    private $matcher;
+    /** @var \BD\Subber\ReleaseSubtitles\CompatibilityMatcher */
+    private $compatiblityMatcher;
 
     /** @var \BD\Subber\Subtitles\Rater */
     private $rater;
@@ -34,13 +35,13 @@ class ScrapperBasedIndexFactory implements IndexFactory
     public function __construct(
         Scrapper $scrapper,
         VideoReleaseParser $videoReleaseParser,
-        Matcher $matcher,
+        CompatibilityMatcher $compatibilityMatcher,
         Rater $rater,
         ListConsolidator $subtitleListConsolidator
     )
     {
         $this->scrapper = $scrapper;
-        $this->matcher = $matcher;
+        $this->compatiblityMatcher = $compatibilityMatcher;
         $this->rater = $rater;
         $this->videoReleaseParser = $videoReleaseParser;
         $this->subtitleListConsolidator = $subtitleListConsolidator;
@@ -56,21 +57,8 @@ class ScrapperBasedIndexFactory implements IndexFactory
 
         $videoRelease = $this->videoReleaseParser->parseReleaseName( $releaseName);
 
-        $compatible = [];
-        $incompatible = [];
-
         $this->subtitleListConsolidator->consolidate( $subtitles );
-        foreach ( $subtitles as $subtitle )
-        {
-            if ( $this->matcher->matches( $subtitle, $videoRelease ) )
-            {
-                $compatible[] = $subtitle;
-            }
-            else
-            {
-                $incompatible[] = $subtitle;
-            }
-        }
+        $subtitles = $this->compatiblityMatcher->match( $videoRelease, $subtitles );
 
         $subtitleSortCallback = function( Subtitle $a, Subtitle $b ) {
             $aRate = $this->rater->rate( $a );
@@ -83,9 +71,29 @@ class ScrapperBasedIndexFactory implements IndexFactory
             return 0;
         };
 
-        usort( $compatible, $subtitleSortCallback );
-        usort( $incompatible, $subtitleSortCallback );
+        usort( $subtitles, $subtitleSortCallback );
 
-        return new Index( $compatible, $incompatible );
+        $compatibleSubtitles = array_values(
+            array_filter(
+                $subtitles,
+                function ( TestedReleaseSubtitle $subtitle ) {
+                    return $subtitle->isCompatible();
+                }
+            )
+        );
+
+        $incompatibleSubtitles = array_values(
+                array_filter(
+                $subtitles,
+                function ( TestedReleaseSubtitle $subtitle ) {
+                    return !$subtitle->isCompatible();
+                }
+            )
+        );
+
+        return new Index(
+            $compatibleSubtitles,
+            $incompatibleSubtitles
+        );
     }
 }
