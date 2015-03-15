@@ -19,13 +19,23 @@ class VideoReleaseParserTest extends \PHPUnit_Framework_TestCase
 
         foreach ( $expectedProperties as $property => $value )
         {
-            self::assertAttributeEquals( $value, $property, $release );
+            self::assertAttributeEquals( $value, $property, $release, "Subtitle::$property has wrong value");
         }
     }
 
     public function getValidReleases()
     {
         return [
+            [
+                'greys.anatomy.s11e15.repack.720p.hdtv.x264-dimension',
+                [
+                    'group' => 'dimension',
+                    'source' => 'hdtv',
+                    'resolution' => '720p',
+                    'isRepack' => true,
+                    'isProper' => false
+                ]
+            ],
             [
                 'Marvels Agents Of S H I E L D S02E11.720p HDTV x264-KILLERS',
                 [
@@ -35,7 +45,6 @@ class VideoReleaseParserTest extends \PHPUnit_Framework_TestCase
                     'resolution' => '720p'
                 ]
             ],
-
             [
                 'House Of Cards 2013 S03E03 Repack 720p Nf WEBRip Dd5.1 x264-NTB',
                 [
@@ -43,10 +52,9 @@ class VideoReleaseParserTest extends \PHPUnit_Framework_TestCase
                     'format' => 'x264',
                     'source' => 'webrip',
                     'resolution' => '720p',
-                    'isProper' => true
+                    'isRepack' => true
                 ]
             ],
-
             [
                 'Red.Dwarf.S10E06.BDRip.XviD-TASTETV',
                 [
@@ -55,7 +63,6 @@ class VideoReleaseParserTest extends \PHPUnit_Framework_TestCase
                     'source' => 'bdrip'
                 ]
             ],
-
             [
                 'The.Simpsons.S26E15.REAL.REPACK.720p.HDTV.x264-KILLERS',
                 [
@@ -63,7 +70,7 @@ class VideoReleaseParserTest extends \PHPUnit_Framework_TestCase
                     'format' => 'x264',
                     'source' => 'hdtv',
                     'resolution' => '720p',
-                    'isProper' => true
+                    'isRepack' => true
                 ]
             ],
 
