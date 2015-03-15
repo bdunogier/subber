@@ -40,9 +40,6 @@ services:
     bd_subber.betaseries.scrapper.zip_subtitles_filter:
         class: BD\Subber\Betaseries\ZipSubtitleFilter
 
-    bd_subber.subtitle_release.matcher:
-        class: BD\Subber\ReleaseSubtitles\Matcher\SourceMatcher
-
     bd_subber.subtitle_rater:
         class: BD\Subber\Subtitles\Rater\StaticRater
 
