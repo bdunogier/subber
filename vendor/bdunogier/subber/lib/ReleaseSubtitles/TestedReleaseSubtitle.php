@@ -65,13 +65,18 @@ class TestedReleaseSubtitle extends Subtitle
         $this->compatibility = $compatibility;
     }
 
+    public function setCompatible()
+    {
+        $this->compatibility = self::COMPATIBLE;
+    }
+
     public function setIncompatible()
     {
         $this->compatibility = self::INCOMPATIBLE;
     }
 
-    public function isIncompatible()
+    public function isCompatible()
     {
-        return $this->compatibility === self::INCOMPATIBLE;
+        return $this->compatibility === self::COMPATIBLE || $this->compatibility === self::UNDETERMINED;
     }
 }
