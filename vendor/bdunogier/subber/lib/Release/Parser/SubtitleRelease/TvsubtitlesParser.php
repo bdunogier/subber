@@ -36,7 +36,11 @@ class TvsubtitlesParser implements ReleaseParser
                 $release->source = 'hdtv';
             } else {
                 if ( isset( $release->group ) ) {
-                    $release->group = [$release->group, $next];
+                    if ( is_array( $release->group ) ) {
+                    $release->group[] = $next;
+                } else {
+                        $release->group = [$release->group, $next];
+                    }
                 } else {
                     $release->group = $next;
                 }

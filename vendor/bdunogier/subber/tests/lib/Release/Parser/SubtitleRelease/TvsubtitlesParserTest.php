@@ -27,6 +27,12 @@ class TvsubtitlesParserTest extends \PHPUnit_Framework_TestCase
     {
         return [
             [
+                'Person of Interest - 4x17 - Karma.HDTV.LOL+720p.DIMENSION+AFG+mSD.fr.srt',
+                [
+                    'group' => ['msd', 'afg', 'dimension', 'lol']
+                ]
+            ],
+            [
                 'Gotham - 1x11 - Episode 11.HDTV.LOL.fr.srt',
                 [
                     'name' => 'Gotham - 1x11 - Episode 11.HDTV.LOL.fr.srt',
@@ -34,7 +40,7 @@ class TvsubtitlesParserTest extends \PHPUnit_Framework_TestCase
                     'language' => 'fr',
                     'source' => 'hdtv'
                 ]
-        ],
+            ],
             [
                 'Gotham - 1x16 - The Blind Fortune Teller.HDTV.LOL+720p.DIMENSION.fr.srt',
                 [
