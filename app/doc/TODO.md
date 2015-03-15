@@ -1,7 +1,7 @@
 ## Things to do and ideas
 
 ### Release Parser
-- [ ] Handle addic7ed Subtitle "The Big Bang Theory - 08x18 - The Leftover Thermalization.DIMENSION.colored.English.HI.C.orig.Addic7ed.com.srt"
+- [x] Handle addic7ed Subtitle "The Big Bang Theory - 08x18 - The Leftover Thermalization.DIMENSION.colored.English.HI.C.orig.Addic7ed.com.srt"
       (parses 'colored' as the group name)
 - [ ] Handle tvsubtitles Subtitle "Person of Interest - 4x17 - Karma.HDTV.LOL+720p.DIMENSION+AFG+mSD.fr.srt"
 - [ ] Release Parser: make sure that the subtitle's extension is given to the parser (should be ok on some)

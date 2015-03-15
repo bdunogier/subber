@@ -57,6 +57,12 @@ class Addic7edParser implements ReleaseParser
             $next = array_pop( $releaseParts );
         }
 
+        // language
+        if ( $next == 'colored' ) {
+            $release->hasTags = true;
+            $next = array_pop( $releaseParts );
+        }
+
         // strings separated by dashes (possibly)
         $next = str_replace( 'web-dl', 'webdl', $next );
         $parts = explode( '-', $next );

@@ -26,6 +26,16 @@ class Addic7edParserTest extends \PHPUnit_Framework_TestCase
     {
         return [
             [
+                'The Big Bang Theory - 08x18 - The Leftover Thermalization.DIMENSION.colored.English.HI.C.orig.Addic7ed.com.srt',
+                [
+                    'group' => 'dimension',
+                    'isHearingImpaired' => true,
+                    'hasTags' => true,
+                    'author' => 'addic7ed',
+                    'language' => 'en'
+                ]
+            ],
+            [
                 'Bitten - 02x04 - Dead Meat.KILLERS.English.C.orig.Addic7ed.com',
                 [
                     'name' => 'Bitten - 02x04 - Dead Meat.KILLERS.English.C.orig.Addic7ed.com',
