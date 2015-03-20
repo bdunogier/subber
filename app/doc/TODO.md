@@ -33,6 +33,7 @@ The goal is to get Subtitles with properties we can rely upon during Matching.
 - [x] Rename and rework the subtitles collection thing with 3 lists: match, possible
 
 ### UI
+- [ ] Add a download subtitle button to the subtitle view, to download either the best sub (+ others)
 - [ ] Update UI to highlight files where we have subtitles, and say which original file
 - [ ] Add a confirm button
 - [ ] Offer other files for download
