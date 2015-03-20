@@ -33,7 +33,7 @@ class Index
     }
 
     /**
-     * @return \BD\Subber\Subtitles\Subtitle
+     * @return \BD\Subber\ReleaseSubtitles\TestedReleaseSubtitle
      * @throws \Exception if there is no Best Subtitle
      */
     public function getBestSubtitle()

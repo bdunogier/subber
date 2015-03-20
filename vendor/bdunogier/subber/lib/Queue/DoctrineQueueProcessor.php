@@ -40,11 +40,15 @@ class DoctrineQueueProcessor implements QueueProcessor
             // $output->writeln( "Processing " . $task->getOriginalName() );
 
             // see if we need to check again ?
-            $collection = $this->indexFactory->build( $task->getOriginalName() );
+            $index = $this->indexFactory->build( $task->getOriginalName() );
 
-            if ( $collection->hasBestSubtitle() )
+            if ( $index->hasBestSubtitle() )
             {
-                $subtitle = $collection->getBestSubtitle();
+                $subtitle = $index->getBestSubtitle();
+                if ( $subtitle->getRating() <= $task->getRating() ) {
+                    continue;
+                }
+
                 if (isset( $this->eventDispatcher )) {
                     $this->eventDispatcher->dispatch(
                         'subber.save_subtitle',
@@ -53,6 +57,7 @@ class DoctrineQueueProcessor implements QueueProcessor
                 }
                 $this->saver->save( $subtitle, $task->getFile() );
 
+                $task->setRating( $subtitle->getRating() );
                 $this->tasksRepository->setTaskComplete( $task );
             }
         }

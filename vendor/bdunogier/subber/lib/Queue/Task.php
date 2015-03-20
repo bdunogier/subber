@@ -9,6 +9,10 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Task
 {
+    const STATUS_NEW = 0;
+    const STATUS_DONE = 1;
+    const STATUS_FINISHED = 2;
+
     public function __construct( array $properties = [] )
     {
         foreach ( $properties as $property => $value )
@@ -45,6 +49,11 @@ class Task
      * @ORM\Column(name="status", type="integer", nullable=true)
      */
     protected $status = 0;
+
+    /**
+     * @ORM\Column(name="rating", type="integer", nullable=true)
+     */
+    protected $rating = 0;
 
     /**
      * Set file
@@ -138,5 +147,21 @@ class Task
     public function setCreatedAt( $createdAt )
     {
         $this->createdAt = $createdAt;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getRating()
+    {
+        return $this->rating;
+    }
+
+    /**
+     * @param mixed $rating
+     */
+    public function setRating( $rating )
+    {
+        $this->rating = $rating;
     }
 }
