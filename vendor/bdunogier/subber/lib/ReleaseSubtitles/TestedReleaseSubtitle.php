@@ -8,7 +8,7 @@ use BD\Subber\Release\Release;
 use BD\Subber\Subtitles\Subtitle;
 
 /**
- * A Subtitle tested for Compatibility against a Release
+ * A Rated Subtitle tested for Compatibility against a Release
  */
 class TestedReleaseSubtitle extends Subtitle
 {
@@ -17,6 +17,9 @@ class TestedReleaseSubtitle extends Subtitle
 
     /** @var string */
     protected $compatibility;
+
+    /** @var int */
+    protected $rating;
 
     /**
      * Compatiblity constants
@@ -78,5 +81,21 @@ class TestedReleaseSubtitle extends Subtitle
     public function isCompatible()
     {
         return $this->compatibility === self::COMPATIBLE || $this->compatibility === self::UNDETERMINED;
+    }
+
+    /**
+     * @return int
+     */
+    public function getRating()
+    {
+        return $this->rating;
+    }
+
+    /**
+     * @param int $rating
+     */
+    public function setRating( $rating )
+    {
+        $this->rating = $rating;
     }
 }
