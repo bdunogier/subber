@@ -7,15 +7,16 @@
  */
 namespace BD\Subber\Event;
 
+use BD\Subber\ReleaseSubtitles\TestedReleaseSubtitle;
 use Symfony\Component\EventDispatcher\Event;
 
 class SaveSubtitleEvent extends Event
 {
     /**
-     * Path/URI the subtitle is saved from
+     * Subtitle object that is being saved
      * @var string
      */
-    private $from;
+    private $subtitle;
 
     /**
      * Path/URI the subtitle is saved to
@@ -23,26 +24,26 @@ class SaveSubtitleEvent extends Event
      */
     private $to;
 
-    public function __construct( $from, $to )
+    public function __construct( TestedReleaseSubtitle $subtitle, $to )
     {
-        $this->from = $from;
+        $this->subtitle = $subtitle;
         $this->to = $to;
     }
 
     /**
-     * @return string
+     * @return TestedReleaseSubtitle
      */
-    public function getFrom()
+    public function getSubtitle()
     {
-        return $this->from;
+        return $this->subtitle;
     }
 
     /**
-     * @param string $from
+     * @param TestedReleaseSubtitle $subtitle
      */
-    public function setFrom( $from )
+    public function setFrom( TestedReleaseSubtitle $subtitle )
     {
-        $this->from = $from;
+        $this->subtitle = $subtitle;
     }
 
     /**
