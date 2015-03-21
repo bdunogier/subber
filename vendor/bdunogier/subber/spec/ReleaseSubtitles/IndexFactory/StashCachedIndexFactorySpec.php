@@ -12,10 +12,11 @@ class StashCachedIndexFactorySpec extends ObjectBehavior
     /**
      * @param \BD\Subber\ReleaseSubtitles\IndexFactory $cachedIndexFactory
      * @param \Stash\Interfaces\PoolInterface $cachePool
+     * @param \BD\Subber\Cache\CacheTtlProvider $cacheTtlProvider
      */
-    function let( $cachedIndexFactory, $cachePool )
+    function let( $cachedIndexFactory, $cachePool, $cacheTtlProvider )
     {
-        $this->beConstructedWith( $cachedIndexFactory, $cachePool );
+        $this->beConstructedWith( $cachedIndexFactory, $cachePool, $cacheTtlProvider );
     }
 
     function it_is_initializable(  )
@@ -33,7 +34,7 @@ class StashCachedIndexFactorySpec extends ObjectBehavior
         $subtitles = ['release_1' => [], 'release_2'];
 
         $cacheItem->isMiss()->willReturn( true );
-        $cacheItem->set( $subtitles )->shouldBeCalled();
+        $cacheItem->set( $subtitles, null )->shouldBeCalled();
         $cacheItem->get()->willReturn( $subtitles );
 
         $cachePool->getItem( 'release.name-group', Argument::type('string') )->willReturn( $cacheItem );
@@ -44,11 +45,10 @@ class StashCachedIndexFactorySpec extends ObjectBehavior
     }
 
     /**
-     * @param \BD\Subber\ReleaseSubtitles\IndexFactory $cachedIndexFactory
      * @param \Stash\Interfaces\PoolInterface $cachePool
      * @param  \Stash\Interfaces\ItemInterface $cacheItem
      */
-    function it_uses_valid_cache_if_it_exists( $cachedIndexFactory, $cachePool, $cacheItem )
+    function it_uses_valid_cache_if_it_exists( $cachePool, $cacheItem )
     {
         $subtitles = ['release_1' => [], 'release_2'];
 
