@@ -59,14 +59,17 @@ class ScrapperBasedIndexFactory implements IndexFactory
 
         $this->subtitleListConsolidator->consolidate( $subtitles );
         $subtitles = $this->compatiblityMatcher->match( $videoRelease, $subtitles );
+        array_map(
+            function( TestedReleaseSubtitle $subtitle ) {
+                $subtitle->setRating( $this->rater->rate( $subtitle ) );
+            },
+            $subtitles
+        );
 
-        $subtitleSortCallback = function( Subtitle $a, Subtitle $b ) {
-            $aRate = $this->rater->rate( $a );
-            $bRate = $this->rater->rate( $b );
-
-            if ( $aRate > $bRate )
+        $subtitleSortCallback = function( TestedReleaseSubtitle $a, TestedReleaseSubtitle $b ) {
+            if ( $a->getRating() > $b->getRating() )
                 return -1;
-            if ( $aRate < $bRate )
+            if ( $a->getRating() < $b->getRating() )
                 return 1;
             return 0;
         };

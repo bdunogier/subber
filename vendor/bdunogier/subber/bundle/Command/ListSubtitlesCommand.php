@@ -1,6 +1,7 @@
 <?php
 namespace BD\SubberBundle\Command;
 
+use BD\Subber\ReleaseSubtitles\TestedReleaseSubtitle;
 use BD\Subber\Subtitles\Subtitle;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputArgument;
@@ -22,11 +23,11 @@ class ListSubtitlesCommand extends ContainerAwareCommand
 
     public function execute( InputInterface $input, OutputInterface $output )
     {
-        $printSubtitleCallback = function ( Subtitle $subtitle ) use ( $output ) {
+        $printSubtitleCallback = function ( TestedReleaseSubtitle $subtitle ) use ( $output ) {
             $output->writeln(
                 sprintf(
-                    "%s (%s, %s)",
-                    $subtitle->name, strtoupper( $subtitle->language ), $subtitle->author
+                    "%s (note: %d, langue: %s, %s)",
+                    $subtitle->name, $subtitle->getRating(), $subtitle->language, $subtitle->author
                 )
             );
         };
