@@ -2,6 +2,7 @@
 namespace BD\Subber\Queue;
 
 use BD\Subber\Event\QueueTaskEvent;
+use DateTime;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
 
@@ -32,10 +33,20 @@ class DoctrineTaskRepository extends EntityRepository implements TaskRepository
         $this->eventDispatcher = $eventDispatcher;
     }
 
+    /**
+     * @deprecated
+     */
     public function setTaskComplete( Task $task )
     {
-        $task->setStatus( 1 );
+        $this->setTaskDone( $task, null );
+    }
+
+    public function setTaskDone( Task $task )
+    {
+        $task->setStatus( Task::STATUS_DONE );
+        $task->setUpdatedAt( new DateTime() );
         $this->_em->persist( $task );
+        $this->_em->flush();
     }
 
     /**
