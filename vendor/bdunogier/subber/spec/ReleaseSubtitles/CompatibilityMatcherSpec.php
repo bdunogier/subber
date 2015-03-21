@@ -32,18 +32,18 @@ class CompatibilityMatcherSpec extends ObjectBehavior
         $result->shouldContainIncompatibleSubtitles( ['c', 'd'] );
     }
 
-    function it_marks_as_incompatible_subtitles_with_a_known_group_different_from_the_release()
+    function it_marks_as_incompatible_subtitles_with_a_resolution_and_a_known_group_different_from_the_release()
     {
         $release = new Release( ['group' => 'killers'] );
         $subtitles = [
             new Subtitle( ['name' => 'a', 'group' => 'killers'] ),
             new Subtitle( ['name' => 'b', 'group' => 'lol'] ),
-            new Subtitle( ['name' => 'c', 'group' => 'dimension'] )
+            new Subtitle( ['name' => 'c', 'group' => 'dimension', 'resolution' => '720p'] )
         ];
 
         $result = $this->match( $release, $subtitles );
         $result->shouldBeAnArrayOfTestedReleaseSubtitles();
-        $result->shouldContainIncompatibleSubtitles( ['b', 'c'] );
+        $result->shouldContainIncompatibleSubtitles( ['c'] );
     }
 
     function it_marks_as_incompatible_non_repacked_subtitles_when_applicable()
@@ -61,6 +61,20 @@ class CompatibilityMatcherSpec extends ObjectBehavior
         $result->shouldContainIncompatibleSubtitles( ['a', 'b'] );
     }
 
+    function it_doesnt_mark_as_incompatible_hdtv_subtitles_from_a_different_group_if_no_resolution_is_set()
+    {
+        $release = new Release( ['source' => 'hdtv', 'group' => 'lol'] );
+        $subtitles = [
+            new Subtitle( ['name' => 'a', 'source' => 'hdtv', 'group' => 'dimension'] ),
+            new Subtitle( ['name' => 'b', 'source' => 'web-dl', 'group' => 'dimension'] ),
+        ];
+
+        $result = $this->match( $release, $subtitles );
+        $result->shouldBeAnArrayOfTestedReleaseSubtitles();
+        $result->shouldNotContainIncompatibleSubtitles( ['a'] );
+        $result->shouldContainIncompatibleSubtitles( ['b'] );
+    }
+
     function getMatchers()
     {
         return [
@@ -76,14 +90,14 @@ class CompatibilityMatcherSpec extends ObjectBehavior
                 }
                 return true;
             },
-            // tests that $result contains ONLY $wantedSubtitles as Compatible
+            // tests that $result contains $wantedSubtitles as Compatible
             'containCompatibleSubtitles' => function( array $subtitles, array $wantedSubtitlesNames ) {
                 return $this->containSubtitles( $subtitles, $wantedSubtitlesNames, TestedReleaseSubtitle::COMPATIBLE );
             },
-            // tests that $result contains ONLY $wantedSubtitles as Inompatible
+            // tests that $result contains $wantedSubtitles as Incompatible
             'containIncompatibleSubtitles' => function( array $subtitles, array $wantedSubtitlesNames ) {
                 return $this->containSubtitles( $subtitles, $wantedSubtitlesNames, TestedReleaseSubtitle::INCOMPATIBLE );
-            }
+            },
         ];
     }
 
