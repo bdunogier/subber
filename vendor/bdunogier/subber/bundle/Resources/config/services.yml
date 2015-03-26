@@ -99,8 +99,11 @@ services:
         tags:
             - { name: bd_subber.subtitle_release_parser, key: betaseries }
 
-    bd_subber_subber_doctrine_queue_processor:
-        class: BD\Subber\Queue\DoctrineQueueProcessor
+    bd_subber_subber.queue_processor:
+        alias: bd_subber_subber.repository_queue_processor
+
+    bd_subber_subber.repository_queue_processor:
+        class: BD\Subber\Queue\RepositoryQueueProcessor
         arguments:
             - @bd_subber.tasks_repository
             - @bd_subber.release_subtitles.index_factory

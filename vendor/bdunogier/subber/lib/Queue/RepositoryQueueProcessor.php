@@ -7,7 +7,7 @@ use BD\Subber\ReleaseSubtitles\IndexFactory;
 use BD\Subber\Subtitles\Saver;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
-class DoctrineQueueProcessor implements QueueProcessor
+class RepositoryQueueProcessor implements QueueProcessor
 {
     /** @var \BD\Subber\Queue\TaskRepository */
     private $tasksRepository;

@@ -17,7 +17,7 @@ class ProcessQueueCommand extends ContainerAwareCommand
 
     public function execute( InputInterface $input, OutputInterface $output )
     {
-        $queueProcessor = $this->getContainer()->get( 'bd_subber_subber_doctrine_queue_processor' );
+        $queueProcessor = $this->getContainer()->get( 'bd_subber_subber.queue_processor' );
         $queueProcessor->process();
     }
 }
