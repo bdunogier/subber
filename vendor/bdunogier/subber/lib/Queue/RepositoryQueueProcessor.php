@@ -45,7 +45,7 @@ class RepositoryQueueProcessor implements QueueProcessor
             if ( $index->hasBestSubtitle() )
             {
                 $subtitle = $index->getBestSubtitle();
-                if ( $subtitle->getRating() <= $task->getRating() ) {
+                if ( $task->getRating !== null && $subtitle->getRating() <= $task->getRating() ) {
                     continue;
                 }
 
