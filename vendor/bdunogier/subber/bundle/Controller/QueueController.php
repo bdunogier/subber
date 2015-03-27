@@ -1,8 +1,7 @@
 <?php
 namespace BD\SubberBundle\Controller;
 
-use BD\Subber\Queue\WatchListItem;
-use BD\Subber\Queue\TaskRepository;
+use BD\Subber\WatchList\WatchListItem;
 use BD\Subber\WatchList\WatchList;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;

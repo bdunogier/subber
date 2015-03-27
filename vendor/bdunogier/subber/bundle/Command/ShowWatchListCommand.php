@@ -26,7 +26,7 @@ class ShowWatchListCommand extends ContainerAwareCommand
     {
         $watchlist = $this->getContainer()->get( 'bd_subber.watchlist' );
 
-        $output->writeln( "Pending tasks" );
+        $output->writeln( "Incomplete watchlist items" );
         $output->writeln( "" );
 
         /** @var WatchListItem $item */

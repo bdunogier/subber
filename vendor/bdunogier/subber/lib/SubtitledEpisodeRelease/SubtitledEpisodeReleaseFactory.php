@@ -5,11 +5,10 @@
 namespace BD\Subber\SubtitledEpisodeRelease;
 
 use BD\Subber\Episode\EpisodeMetadataFileParser;
-use BD\Subber\Queue\TaskRepository;
-use BD\Subber\Release\Parser\ReleaseParser;
-use BD\Subber\Release\Release;
-use BD\Subber\ReleaseSubtitles\IndexFactory;
 use BD\Subber\WatchList\WatchList;
+use BD\Subber\Release\Release;
+use BD\Subber\Release\Parser\ReleaseParser;
+use BD\Subber\ReleaseSubtitles\IndexFactory;
 
 class SubtitledEpisodeReleaseFactory
 {

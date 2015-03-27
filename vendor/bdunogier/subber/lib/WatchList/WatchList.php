@@ -11,9 +11,9 @@ interface WatchList
      */
     public function findAllPendingItems();
 
-    public function addItem( WatchListItem $task );
+    public function addItem( WatchListItem $item );
 
-    public function setItemComplete( WatchListItem $task );
+    public function setItemComplete( WatchListItem $item );
 
     /**
      * @return WatchListitem

@@ -53,7 +53,7 @@ class NewBestSubtitleWatchListMonitorSpec extends ObjectBehavior
      * @param \BD\Subber\ReleaseSubtitles\IndexFactory $indexFactory
      * @param \BD\Subber\Subtitles\Saver $saver
      */
-    function it_ignores_subtitles_with_a_rating_lower_than_the_task_rating( $watchList, $indexFactory, $saver )
+    private function it_ignores_subtitles_with_a_rating_lower_than_the_task_rating( $watchList, $indexFactory, $saver )
     {
         $watchListItem = new WatchListItem();
         $watchList->findAllPendingItems()->willReturn( $watchListItem );
@@ -74,7 +74,7 @@ class NewBestSubtitleWatchListMonitorSpec extends ObjectBehavior
      * @param \BD\Subber\WatchList\WatchListItem $task
      * @param \BD\Subber\ReleaseSubtitles\TestedReleaseSubtitle $testedSubtitle
      */
-    function it_saves_a_subtitle_with_a_rating_higher_than_the_task_rating( $watchList, $indexFactory, $saver )
+    private function it_saves_a_subtitle_with_a_rating_higher_than_the_task_rating( $watchList, $indexFactory, $saver )
     {
         $watchListItem = new WatchListItem();
         $watchList->findAllPendingItems()->willReturn( [$watchListItem] );

@@ -35,8 +35,6 @@ class NewBestSubtitleWatchListMonitor implements WatchListMonitor
     {
         foreach( $this->watchList->findAllPendingItems() as $item )
         {
-            // $output->writeln( "Processing " . $task->getOriginalName() );
-
             // see if we need to check again ?
             $index = $this->indexFactory->build( $item->getOriginalName() );
 
@@ -56,7 +54,7 @@ class NewBestSubtitleWatchListMonitor implements WatchListMonitor
                 $this->saver->save( $subtitle, $item->getFile() );
 
                 $item->setRating( $subtitle->getRating() );
-                $this->watchList->setTaskComplete( $item );
+                $this->watchList->setItemComplete( $item );
             }
         }
     }

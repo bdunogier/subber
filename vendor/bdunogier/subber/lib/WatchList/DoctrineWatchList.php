@@ -1,7 +1,7 @@
 <?php
 namespace BD\Subber\WatchList;
 
-use BD\Subber\Event\QueueTaskEvent;
+use BD\Subber\Event\NewWatchListItemEvent;
 use DateTime;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
@@ -24,11 +24,11 @@ class DoctrineWatchList extends EntityRepository implements WatchList
 
     public function addItem( WatchListitem $item )
     {
-        $event = new QueueTaskEvent( $item );
-        $this->eventDispatcher->dispatch( 'subber.pre_queue_task', $event );
+        $event = new NewWatchListItemEvent( $item );
+        $this->eventDispatcher->dispatch( 'subber.watchlist.pre_new_item', $event );
         $this->_em->persist( $item );
         $this->_em->flush();
-        $this->eventDispatcher->dispatch( 'subber.post_queue_task', $event );
+        $this->eventDispatcher->dispatch( 'subber.watchlist.post_new_item', $event );
     }
 
     /**

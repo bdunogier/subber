@@ -40,19 +40,19 @@ class AddToWatchListCommand extends ContainerAwareCommand
     {
         $repository = $this->getContainer()->get( 'bd_subber.watchlist' );
 
-        $task = new WatchListItem();
+        $item = new WatchListItem();
 
-        $task->setFile( $filePathName = $input->getArgument( 'file' ) );
+        $item->setFile( $filePathName = $input->getArgument( 'file' ) );
 
-        $task->setOriginalName(
+        $item->setOriginalName(
             $input->hasOption( 'original-name' )
             ? $input->getOption( 'original-name' )
             : basename( $filePathName )
         );
 
-        $task->setCreatedAt( new DateTime() );
-        $task->setUpdatedAt( new DateTime() );
+        $item->setCreatedAt( new DateTime() );
+        $item->setUpdatedAt( new DateTime() );
 
-        $repository->addTask( $task );
+        $repository->addTask( $item );
     }
 }

@@ -26,7 +26,7 @@ class LoggerEventListener implements EventSubscriberInterface
         return [
             'subber.save_subtitle' => ['onSaveSubtitle'],
             'subber.post_scrap_release' => ['onScrapRelease'],
-            'subber.post_new_watch_list_item' => ['onNewWatchListItem'],
+            'subber.watch.post_new_item' => ['onNewWatchListItem'],
             'subber.scrap_error' => ['onScrapError']
         ];
     }

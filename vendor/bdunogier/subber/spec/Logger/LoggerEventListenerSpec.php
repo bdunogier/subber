@@ -26,6 +26,11 @@ class LoggerEventListenerSpec extends ObjectBehavior
         $this->shouldHaveType('BD\Subber\Logger\LoggerEventListener');
     }
 
+    function it_listens_to_save_subtitle_event()
+    {
+        $this->getSubscribedEvents()->shouldListenToEventWithMethod( 'subber.save_subtitle', 'onSaveSubtitle' );
+    }
+
     function it_logs_an_info_on_save_subtitle( Logger $logger )
     {
         $logger->info( Argument::any() )->shouldBeCalled();
@@ -60,5 +65,18 @@ class LoggerEventListenerSpec extends ObjectBehavior
         $this->onNewWatchListItem(
             new NewWatchListItemEvent( new WatchListItem() )
         );
+    }
+
+    function getMatchers()
+    {
+        return [
+            'listenToEventWithMethod' => function ( array $events, $expectedEvent, $methodName ) {
+                if (!isset( $events[$expectedEvent] )) {
+                    return false;
+                }
+
+                return $events[$expectedEvent][0] == $methodName;
+            }
+        ];
     }
 }
