@@ -1,5 +1,9 @@
 ## Things to do and ideas
 
+### Index
+Should the Index do more ? Could the Factory take care of scrapping, and send the "raw" data to the Index ?
+Maybe some kind of event could be added... a
+
 ### Release Parser
 - [ ] Release Parser: make sure that the subtitle's extension is given to the parser (should be ok on some)
 - [ ] What if a Subtitle's content was a callback, that downloads, and either extracts from the zip file, or
@@ -12,6 +16,9 @@ If we have a Repack Release or a Proper Release, does it affect the subtitles ?
 Are the 720p and 1080p hdtv releases compatible ?
 
 This Context can be built based on the Episode Release + Subtitle Releases list, and passed during to the Matcher.
+
+### Command Line
+- [ ] Add file/release filtering to subber:watchlist:show, and remove the dedicated commands
 
 ### SubtitleReleaseList Consolidator
 Consolidates a list of Subtitle Releases (before Indexing).
