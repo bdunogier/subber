@@ -1,16 +1,15 @@
 <?php
-namespace BD\Subber\Queue;
+namespace BD\Subber\WatchList;
 
-use BD\Subber\Queue\TaskRepository;
 use BD\Subber\Event\SaveSubtitleEvent;
 use BD\Subber\ReleaseSubtitles\IndexFactory;
 use BD\Subber\Subtitles\Saver;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
-class RepositoryQueueProcessor implements QueueProcessor
+class NewBestSubtitleWatchListMonitor implements WatchListMonitor
 {
-    /** @var \BD\Subber\Queue\TaskRepository */
-    private $tasksRepository;
+    /** @var \BD\Subber\WatchList\WatchList */
+    private $watchList;
 
     /** @var \BD\Subber\ReleaseSubtitles\IndexFactory */
     private $indexFactory;
@@ -22,43 +21,42 @@ class RepositoryQueueProcessor implements QueueProcessor
     private $saver;
 
     public function __construct(
-        TaskRepository $tasksRepository,
-        IndexFactory $collectionFactory,
+        WatchList $watchList,
+        IndexFactory $indexFactory,
         Saver $saver
     )
     {
-        $this->tasksRepository = $tasksRepository;
-        $this->indexFactory = $collectionFactory;
+        $this->watchList = $watchList;
+        $this->indexFactory = $indexFactory;
         $this->saver = $saver;
     }
 
-    public function process()
+    public function watchItems()
     {
-        /** @var \BD\Subber\Queue\Task $task */
-        foreach( $this->tasksRepository->findAllPendingTasks() as $task )
+        foreach( $this->watchList->findAllPendingItems() as $item )
         {
             // $output->writeln( "Processing " . $task->getOriginalName() );
 
             // see if we need to check again ?
-            $index = $this->indexFactory->build( $task->getOriginalName() );
+            $index = $this->indexFactory->build( $item->getOriginalName() );
 
             if ( $index->hasBestSubtitle() )
             {
                 $subtitle = $index->getBestSubtitle();
-                if ( $task->getRating !== null && $subtitle->getRating() <= $task->getRating() ) {
+                if ( $item->getRating !== null && $subtitle->getRating() <= $item->getRating() ) {
                     continue;
                 }
 
                 if (isset( $this->eventDispatcher )) {
                     $this->eventDispatcher->dispatch(
                         'subber.save_subtitle',
-                        new SaveSubtitleEvent( $subtitle->url, $task->getFile() )
+                        new SaveSubtitleEvent( $subtitle->url, $item->getFile() )
                     );
                 }
-                $this->saver->save( $subtitle, $task->getFile() );
+                $this->saver->save( $subtitle, $item->getFile() );
 
-                $task->setRating( $subtitle->getRating() );
-                $this->tasksRepository->setTaskComplete( $task );
+                $item->setRating( $subtitle->getRating() );
+                $this->watchList->setTaskComplete( $item );
             }
         }
     }

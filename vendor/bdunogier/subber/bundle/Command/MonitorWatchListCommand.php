@@ -7,17 +7,17 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class ProcessQueueCommand extends ContainerAwareCommand
+class MonitorWatchListCommand extends ContainerAwareCommand
 {
     public function configure()
     {
-        $this->setName( 'subber:process-queue' );
-        $this->setDescription( 'Processes the queue' );
+        $this->setName( 'subber:watchlist:monitor' );
+        $this->setDescription( 'Launches the watchlist monitor' );
     }
 
     public function execute( InputInterface $input, OutputInterface $output )
     {
-        $queueProcessor = $this->getContainer()->get( 'bd_subber_subber.queue_processor' );
-        $queueProcessor->process();
+        $watchListMonitor = $this->getContainer()->get( 'bd_subber.watchlist_monitor' );
+        $watchListMonitor->watchItems();
     }
 }

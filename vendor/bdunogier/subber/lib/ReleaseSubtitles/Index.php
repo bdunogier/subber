@@ -1,6 +1,7 @@
 <?php
 namespace BD\Subber\ReleaseSubtitles;
 
+use BD\Subber\Release\Release;
 use Exception;
 
 /**
@@ -8,6 +9,9 @@ use Exception;
  */
 class Index
 {
+    /** @var Release */
+    private $release;
+
     /** @var \BD\Subber\Subtitles\Subtitle[] */
     private $incompatible;
 
@@ -15,13 +19,15 @@ class Index
     private $compatible;
 
     /**
+     * @param \BD\Subber\Release\Release $release
      * @param \BD\Subber\Subtitles\Subtitle[] $acceptableSubtitles
      * @param \BD\Subber\Subtitles\Subtitle[] $unacceptableSubtitles
      */
-    public function __construct( array $compatible, array $incompatible )
+    public function __construct( Release $release, array $compatible, array $incompatible )
     {
         $this->compatible = $compatible;
         $this->incompatible = $incompatible;
+        $this->release = $release;
     }
 
     /**
@@ -60,5 +66,13 @@ class Index
     public function getIncompatibleSubtitles()
     {
         return $this->incompatible;
+    }
+
+    /**
+     * @return Release
+     */
+    public function getRelease()
+    {
+        return $this->release;
     }
 }

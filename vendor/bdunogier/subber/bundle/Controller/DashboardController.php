@@ -7,27 +7,25 @@
  */
 namespace BD\SubberBundle\Controller;
 
-use BD\Subber\Queue\TaskRepository;
+use BD\Subber\WatchList\WatchList;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 
 class DashboardController extends Controller implements ContainerAwareInterface
 {
-    /**
-     * @var \Doctrine\ORM\EntityRepository
-     */
-    private $repository;
+    /** @var \BD\Subber\WatchList\WatchList */
+    private $watchList;
 
-    public function __construct( TaskRepository $repository )
+    public function __construct( WatchList $watchList )
     {
-        $this->repository = $repository;
+        $this->watchList = $watchList;
     }
 
     public function listAction()
     {
         return $this->render(
-            'BDSubberBundle::tasks_list.html.twig',
-            ['tasks' => $this->repository->findAllPendingTasks()]
+            'BDSubberBundle::watchlist.html.twig',
+            ['items' => $this->watchList->findAllPendingItems()]
         );
     }
 }

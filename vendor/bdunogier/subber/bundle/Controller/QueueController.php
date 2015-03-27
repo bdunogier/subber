@@ -1,34 +1,35 @@
 <?php
 namespace BD\SubberBundle\Controller;
 
-use BD\Subber\Queue\Task;
+use BD\Subber\Queue\WatchListItem;
 use BD\Subber\Queue\TaskRepository;
+use BD\Subber\WatchList\WatchList;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class QueueController extends Controller
+class WatchListController extends Controller
 {
-    /** @var \BD\Subber\Queue\TaskRepository */
-    private $taskRepository;
+    /** @var \BD\WatchList\WatchList */
+    private $watchList;
 
-    public function __construct( TaskRepository $taskRepository )
+    public function __construct( WatchList $watchList )
     {
-        $this->taskRepository = $taskRepository;
+        $this->item = $watchList;
     }
 
-    public function addToQueueAction( Request $request )
+    public function addToWatchListAction( Request $request )
     {
-        $taskArray = json_decode( $request->getContent(), true );
+        $itemArray = json_decode( $request->getContent(), true );
 
-        $task = new Task();
-        $task->setFile( $taskArray['path'] );
-        $task->setOriginalName( $taskArray['original_name'] );
-        $task->setCreatedAt( new \DateTime() );
-        $task->setUpdatedAt( new \DateTime() );
+        $item = new WatchListItem();
+        $item->setFile( $itemArray['path'] );
+        $item->setOriginalName( $itemArray['original_name'] );
+        $item->setCreatedAt( new \DateTime() );
+        $item->setUpdatedAt( new \DateTime() );
 
-        $this->taskRepository->addTask( $task );
+        $this->item->addItem( $item );
 
         return new Response();
     }

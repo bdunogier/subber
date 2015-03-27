@@ -94,9 +94,6 @@ class ScrapperBasedIndexFactory implements IndexFactory
             )
         );
 
-        return new Index(
-            $compatibleSubtitles,
-            $incompatibleSubtitles
-        );
+        return new Index( $videoRelease, $compatibleSubtitles, $incompatibleSubtitles );
     }
 }

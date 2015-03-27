@@ -7,40 +7,40 @@
  */
 namespace BD\SubberBundle\Command;
 
-use BD\Subber\Queue\Task;
 use DateTime;
+use BD\Subber\WatchList\WatchListItem;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class QueueCommand extends ContainerAwareCommand
+class AddToWatchListCommand extends ContainerAwareCommand
 {
     public function configure()
     {
-        $this->setName( 'subber:queue' );
-        $this->setDescription( 'Queues a file + release for subbing' );
+        $this->setName( 'subber:watchlist:add-item' );
+        $this->setDescription( 'Adds a file + release to the Watchlist for subbing' );
 
         $this->addArgument(
             'file',
             InputArgument::REQUIRED,
-            'The path to the file to queue for subbing'
+            'The path to the file'
         );
 
         $this->addOption(
             'original-name',
             'o',
             InputOption::VALUE_OPTIONAL,
-            "The original name of the downloaded file, if different"
+            "The original name of the downloaded file"
         );
     }
 
     public function execute( InputInterface $input, OutputInterface $output )
     {
-        $repository = $this->getContainer()->get( 'bd_subber.tasks_repository' );
+        $repository = $this->getContainer()->get( 'bd_subber.watchlist' );
 
-        $task = new Task();
+        $task = new WatchListItem();
 
         $task->setFile( $filePathName = $input->getArgument( 'file' ) );
 

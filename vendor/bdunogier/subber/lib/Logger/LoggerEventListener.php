@@ -1,7 +1,7 @@
 <?php
-namespace BD\Subber\Subber;
+namespace BD\Subber\Logger;
 
-use BD\Subber\Event\QueueTaskEvent;
+use BD\Subber\Event\NewWatchListitemEvent;
 use BD\Subber\Event\SaveSubtitleEvent;
 use BD\Subber\Event\ScrapErrorEvent;
 use BD\Subber\Event\ScrapReleaseEvent;
@@ -26,7 +26,7 @@ class LoggerEventListener implements EventSubscriberInterface
         return [
             'subber.save_subtitle' => ['onSaveSubtitle'],
             'subber.post_scrap_release' => ['onScrapRelease'],
-            'subber.post_queue_task' => ['onQueueTask'],
+            'subber.post_new_watch_list_item' => ['onNewWatchListItem'],
             'subber.scrap_error' => ['onScrapError']
         ];
     }
@@ -52,23 +52,23 @@ class LoggerEventListener implements EventSubscriberInterface
         );
     }
 
-    public function onQueueTask( QueueTaskEvent $event )
-    {
-        $this->logger->info(
-            sprintf(
-                "Queued release '%s' (%s)",
-                $event->getTask()->getOriginalName(),
-                $event->getTask()->getFile()
-            )
-        );
-    }
-
     public function onScrapError( ScrapErrorEvent $event )
     {
         $this->logger->error(
             sprintf(
                 "A scrapping error occured on %s: %s",
                 $event->getReleaseName(), $event->getMessage()
+            )
+        );
+    }
+
+    public function onNewWatchListItem( NewWatchListItemEvent $event )
+    {
+        $this->logger->info(
+            sprintf(
+                "Added release '%s' with file '%s' to the Watch List",
+                $event->getItem()->getOriginalName(),
+                $event->getItem()->getFile()
             )
         );
     }

@@ -1,11 +1,11 @@
 services:
-    bd_subber.queue_controller:
-        class: BD\SubberBundle\Controller\QueueController
-        arguments: [@bd_subber.tasks_repository]
+    bd_subber.watchlist_controller:
+        class: BD\SubberBundle\Controller\WatchListController
+        arguments: [@bd_subber.watchlist]
 
     bd_subber.dashboard_controller:
         class: BD\SubberBundle\Controller\DashboardController
-        arguments: [@bd_subber.tasks_repository]
+        arguments: [@bd_subber.watchlist]
         calls:
             - [setContainer, [@service_container]]
 
@@ -15,12 +15,15 @@ services:
         calls:
             - [setContainer, [@service_container]]
 
-    bd_subber.tasks_repository:
-        class: BD\Subber\Queue\DoctrineTaskRepository
+    bd_subber.watchlist:
+        alias: bd_subber.watchlist.doctrine
+
+    bd_subber.watchlist.doctrine:
+        class: BD\Subber\WatchList\DoctrineWatchList
         factory_service: doctrine.orm.entity_manager
         factory_method: getRepository
         arguments:
-            - BD\Subber\Queue\Task
+            - BD\Subber\WatchList\WatchListItem
         calls:
             - [setEventDispatcher, [@event_dispatcher]]
 
@@ -99,20 +102,20 @@ services:
         tags:
             - { name: bd_subber.subtitle_release_parser, key: betaseries }
 
-    bd_subber_subber.queue_processor:
-        alias: bd_subber_subber.repository_queue_processor
+    bd_subber.watchlist_monitor:
+        alias: bd_subber.watchlist_monitor.rating
 
-    bd_subber_subber.repository_queue_processor:
-        class: BD\Subber\Queue\RepositoryQueueProcessor
+    bd_subber.watchlist_monitor.rating:
+        class: BD\Subber\WatchList\WatchListMonitor
         arguments:
-            - @bd_subber.tasks_repository
+            - @bd_subber.watchlist
             - @bd_subber.release_subtitles.index_factory
             - @bd_subber.subtitle_saver
         calls:
             - [setEventDispatcher, [@event_dispatcher]]
 
     bd_subber.logger_event_listener:
-        class: BD\Subber\Subber\LoggerEventListener
+        class: BD\Subber\Logger\LoggerEventListener
         arguments: [@logger]
         tags:
             - { name: kernel.event_subscriber }
@@ -134,7 +137,7 @@ services:
             - @bd_subber.release_subtitles.index_factory
             - @bd_subber.release.episode_metadata_file_parser
             - @bd_subber.release_parser.video
-            - @bd_subber.tasks_repository
+            - @bd_subber.watchlist
 
     bd_subber.subtitle_list_consolidator:
         class: BD\Subber\Subtitles\ListConsolidator

@@ -4,11 +4,12 @@ namespace spec\BD\Subber\SubtitledEpisodeRelease;
 
 use BD\Subber\Episode\Episode;
 use BD\Subber\Episode\EpisodeMetadataFileParser;
-use BD\Subber\Queue\Task;
+use BD\Subber\WatchList\WatchListItem;
 use BD\Subber\Release\Release;
 use BD\Subber\ReleaseSubtitles\Index as SubtitlesIndex;
 use BD\Subber\ReleaseSubtitles\IndexFactory;
 use BD\Subber\SubtitledEpisodeRelease\SubtitledEpisodeRelease;
+use BD\Subber\WatchList\WatchList;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
@@ -18,12 +19,12 @@ class SubtitledEpisodeReleaseFactorySpec extends ObjectBehavior
      * @param \BD\Subber\ReleaseSubtitles\IndexFactory $subtitlesIndexFactory
      * @param \BD\Subber\Episode\EpisodeMetadataFileParser $episodeParser
      * @param \BD\Subber\Release\Parser\ReleaseParser $releaseParser
-     * @param \BD\Subber\Queue\TaskRepository $taskRepository
+     * @param \BD\Subber\WatchList\WatchList $watchList
      */
-    function let( $subtitlesIndexFactory, $episodeParser, $releaseParser, $taskRepository )
+    function let( $subtitlesIndexFactory, $episodeParser, $releaseParser, $watchList )
     {
         $releaseParser->parseReleaseName( Argument::type( 'string' ) )->willReturn( new Release() );
-        $this->beConstructedWith( $subtitlesIndexFactory, $episodeParser, $releaseParser, $taskRepository );
+        $this->beConstructedWith( $subtitlesIndexFactory, $episodeParser, $releaseParser, $watchList );
     }
 
     function it_is_initializable()
@@ -32,22 +33,22 @@ class SubtitledEpisodeReleaseFactorySpec extends ObjectBehavior
     }
 
     /**
-     * @param \BD\Subber\Queue\TaskRepository $taskRepository
+     * @param \BD\Subber\WatchList\WatchList $watchList
      * @param \BD\Subber\Release\Parser\ReleaseParser $releaseParser
      */
-    function it_builds_from_a_release_name( $taskRepository, $releaseParser )
+    function it_builds_from_a_release_name( $watchList, $releaseParser )
     {
-        $taskRepository->loadByReleaseName( 'release name' )->willReturn( new Task() );
+        $watchList->loadByReleaseName( 'release name' )->willReturn( new WatchListItem() );
         $this->buildFromReleaseName( 'release name' )->shouldBeASubtitledEpisodeRelease();
     }
 
     /**
-     * @param \BD\Subber\Queue\TaskRepository $taskRepository
+     * @param \BD\Subber\WatchList\WatchList $watchList
      * @param \BD\Subber\Release\Parser\ReleaseParser $releaseParser
      */
-    function it_builds_from_a_local_release_path( $taskRepository, $releaseParser )
+    function it_builds_from_a_local_release_path( $watchList, $releaseParser )
     {
-        $taskRepository->loadByLocalReleasePath( '/release/path' )->willReturn( new Task(['originalName' => 'release name']) );
+        $watchList->loadByLocalReleasePath( '/release/path' )->willReturn( new WatchListItem(['originalName' => 'release name']) );
         $this->buildFromLocalReleasePath( '/release/path' )->shouldBeASubtitledEpisodeRelease();
     }
 
@@ -64,7 +65,7 @@ class SubtitledEpisodeReleaseFactorySpec extends ObjectBehavior
      */
     function it_gets_the_subtitles_index_when_building( $subtitlesIndexFactory )
     {
-        $subtitlesIndex = new SubtitlesIndex([], []);
+        $subtitlesIndex = new SubtitlesIndex(new Release(), [], []);
 
         $subtitlesIndexFactory->build( 'release name' )->willReturn( $subtitlesIndex );
         $result = $this->build( 'release name', '/release/path' );
