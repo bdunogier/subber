@@ -2,9 +2,12 @@
 namespace spec\BD\Subber\ReleaseSubtitles;
 
 use BD\Subber\Release\Release;
+use BD\Subber\Release\ReleaseObject;
 use BD\Subber\ReleaseSubtitles\Index as SubtitlesIndex;
-use BD\Subber\ReleaseSubtitles\TestedReleaseSubtitle;
+use BD\Subber\ReleaseSubtitles\TestedSubtitle;
+use BD\Subber\ReleaseSubtitles\TestedSubtitleObject;
 use BD\Subber\Subtitles\Subtitle;
+use BD\Subber\Subtitles\SubtitleObject;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
@@ -17,60 +20,56 @@ class CompatibilityMatcherSpec extends ObjectBehavior
 
     function it_marks_as_incompatible_subtitles_with_a_known_source_different_from_the_release()
     {
-        $release = new Release( ['source' => 'web-dl'] );
+        $release = new ReleaseObject( ['source' => 'web-dl'] );
         $compatibleSubtitles = [
-            new Subtitle( ['name' => 'b', 'source' => 'web-dl'] ),
-            new Subtitle( ['name' => 'a', 'source' => 'web-dl'] )
+            new TestedSubtitleObject( ['name' => 'b', 'source' => 'web-dl'] ),
+            new TestedSubtitleObject( ['name' => 'a', 'source' => 'web-dl'] )
         ];
         $incompatibleSubtitles = [
-            new Subtitle( ['name' => 'c', 'source' => 'hdtv'] ),
-            new Subtitle( ['name' => 'd', 'source' => 'hdtv'] )
+            new TestedSubtitleObject( ['name' => 'c', 'source' => 'hdtv'] ),
+            new TestedSubtitleObject( ['name' => 'd', 'source' => 'hdtv'] )
         ];
 
         $result = $this->match( $release, array_merge( $compatibleSubtitles, $incompatibleSubtitles ) );
-        $result->shouldBeAnArrayOfTestedReleaseSubtitles();
         $result->shouldContainIncompatibleSubtitles( ['c', 'd'] );
     }
 
     function it_marks_as_incompatible_subtitles_with_a_resolution_and_a_known_group_different_from_the_release()
     {
-        $release = new Release( ['group' => 'killers'] );
+        $release = new ReleaseObject( ['group' => 'killers'] );
         $subtitles = [
-            new Subtitle( ['name' => 'a', 'group' => 'killers'] ),
-            new Subtitle( ['name' => 'b', 'group' => 'lol'] ),
-            new Subtitle( ['name' => 'c', 'group' => 'dimension', 'resolution' => '720p'] )
+            new TestedSubtitleObject( ['name' => 'a', 'group' => 'killers'] ),
+            new TestedSubtitleObject( ['name' => 'b', 'group' => 'lol'] ),
+            new TestedSubtitleObject( ['name' => 'c', 'group' => 'dimension', 'resolution' => '720p'] )
         ];
 
         $result = $this->match( $release, $subtitles );
-        $result->shouldBeAnArrayOfTestedReleaseSubtitles();
         $result->shouldContainIncompatibleSubtitles( ['c'] );
     }
 
     function it_marks_as_incompatible_non_repacked_subtitles_when_applicable()
     {
-        $release = new Release( ['isRepack' => true] );
+        $release = new ReleaseObject( ['isRepack' => true] );
         $subtitles = [
-            new Subtitle( ['name' => 'a', 'isRepack' => false] ),
-            new Subtitle( ['name' => 'b', 'isRepack' => false] ),
-            new Subtitle( ['name' => 'c', 'isRepack' => true] ),
-            new Subtitle( ['name' => 'd', 'isRepack' => true] ),
+            new TestedSubtitleObject( ['name' => 'a', 'isRepack' => false] ),
+            new TestedSubtitleObject( ['name' => 'b', 'isRepack' => false] ),
+            new TestedSubtitleObject( ['name' => 'c', 'isRepack' => true] ),
+            new TestedSubtitleObject( ['name' => 'd', 'isRepack' => true] ),
         ];
 
         $result = $this->match( $release, $subtitles );
-        $result->shouldBeAnArrayOfTestedReleaseSubtitles();
         $result->shouldContainIncompatibleSubtitles( ['a', 'b'] );
     }
 
     function it_doesnt_mark_as_incompatible_hdtv_subtitles_from_a_different_group_if_no_resolution_is_set()
     {
-        $release = new Release( ['source' => 'hdtv', 'group' => 'lol'] );
+        $release = new ReleaseObject( ['source' => 'hdtv', 'group' => 'lol'] );
         $subtitles = [
-            new Subtitle( ['name' => 'a', 'source' => 'hdtv', 'group' => 'dimension'] ),
-            new Subtitle( ['name' => 'b', 'source' => 'web-dl', 'group' => 'dimension'] ),
+            new TestedSubtitleObject( ['name' => 'a', 'source' => 'hdtv', 'group' => 'dimension'] ),
+            new TestedSubtitleObject( ['name' => 'b', 'source' => 'web-dl', 'group' => 'dimension'] ),
         ];
 
         $result = $this->match( $release, $subtitles );
-        $result->shouldBeAnArrayOfTestedReleaseSubtitles();
         $result->shouldNotContainIncompatibleSubtitles( ['a'] );
         $result->shouldContainIncompatibleSubtitles( ['b'] );
     }
@@ -78,25 +77,13 @@ class CompatibilityMatcherSpec extends ObjectBehavior
     function getMatchers()
     {
         return [
-            'beAnArrayOfTestedReleaseSubtitles' => function ( $result ) {
-                if ( !is_array( $result ) ) {
-                    return false;
-                }
-
-                foreach ( $result as $item ) {
-                    if ( !$item instanceof TestedReleaseSubtitle ) {
-                        return false;
-                    }
-                }
-                return true;
-            },
             // tests that $result contains $wantedSubtitles as Compatible
             'containCompatibleSubtitles' => function( array $subtitles, array $wantedSubtitlesNames ) {
-                return $this->containSubtitles( $subtitles, $wantedSubtitlesNames, TestedReleaseSubtitle::COMPATIBLE );
+                return $this->containSubtitles( $subtitles, $wantedSubtitlesNames, TestedSubtitle::COMPATIBLE );
             },
             // tests that $result contains $wantedSubtitles as Incompatible
             'containIncompatibleSubtitles' => function( array $subtitles, array $wantedSubtitlesNames ) {
-                return $this->containSubtitles( $subtitles, $wantedSubtitlesNames, TestedReleaseSubtitle::INCOMPATIBLE );
+                return $this->containSubtitles( $subtitles, $wantedSubtitlesNames, TestedSubtitle::INCOMPATIBLE );
             },
         ];
     }
@@ -106,7 +93,7 @@ class CompatibilityMatcherSpec extends ObjectBehavior
         foreach ($wantedSubtitles as $wantedSubtitleName) {
             $found = false;
             foreach ($testedSubtitles as $testedSubtitle) {
-                if ( $testedSubtitle->name == $wantedSubtitleName && $testedSubtitle->getCompatibility() == $wantedCompatibility ) {
+                if ( $testedSubtitle->getName() == $wantedSubtitleName && $testedSubtitle->getCompatibility() == $wantedCompatibility ) {
                     $found = true;
                 }
             }

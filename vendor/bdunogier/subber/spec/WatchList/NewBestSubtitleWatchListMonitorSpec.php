@@ -4,6 +4,9 @@
  */
 namespace spec\BD\Subber\WatchList;
 
+use BD\Subber\Release\ReleaseObject;
+use BD\Subber\ReleaseSubtitles\TestedSubtitleObject;
+use BD\Subber\Subtitles\SubtitleObject;
 use BD\Subber\WatchList\WatchListItem;
 use BD\Subber\Release\Release;
 use BD\Subber\ReleaseSubtitles\Index;
@@ -42,8 +45,8 @@ class NewBestSubtitleWatchListMonitorSpec extends ObjectBehavior
             ]
         );
 
-        $indexFactory->build('a')->willReturn( new Index(new Release(), [], []) );
-        $indexFactory->build('b')->willReturn( new Index(new Release(), [], []) );
+        $indexFactory->build('a')->willReturn( new Index( new ReleaseObject(), []) );
+        $indexFactory->build('b')->willReturn( new Index( new ReleaseObject(), []) );
 
         $this->watchItems();
     }
@@ -53,14 +56,14 @@ class NewBestSubtitleWatchListMonitorSpec extends ObjectBehavior
      * @param \BD\Subber\ReleaseSubtitles\IndexFactory $indexFactory
      * @param \BD\Subber\Subtitles\Saver $saver
      */
-    private function it_ignores_subtitles_with_a_rating_lower_than_the_task_rating( $watchList, $indexFactory, $saver )
+    public function it_ignores_subtitles_with_a_rating_lower_than_the_task_rating( $watchList, $indexFactory, $saver )
     {
         $watchListItem = new WatchListItem();
         $watchList->findAllPendingItems()->willReturn( $watchListItem );
 
         $watchListItem->setRating(0);
-        $subtitle = new Subtitle();
-        $indexFactory->build('a')->willReturn( new Index( new Release(), [$subtitle], [] ) );
+        $subtitle = new TestedSubtitleObject();
+        $indexFactory->build('a')->willReturn( new Index( new ReleaseObject(), [$subtitle], [] ) );
 
         $saver->save( $subtitle, Argument::any() )->shouldNotBeCalled();
 
@@ -71,23 +74,21 @@ class NewBestSubtitleWatchListMonitorSpec extends ObjectBehavior
      * @param \BD\Subber\WatchList\WatchList $watchList
      * @param \BD\Subber\ReleaseSubtitles\IndexFactory $indexFactory
      * @param \BD\Subber\Subtitles\Saver $saver
-     * @param \BD\Subber\WatchList\WatchListItem $task
-     * @param \BD\Subber\ReleaseSubtitles\TestedReleaseSubtitle $testedSubtitle
+     * @param \BD\Subber\ReleaseSubtitles\Index $index
      */
-    private function it_saves_a_subtitle_with_a_rating_higher_than_the_task_rating( $watchList, $indexFactory, $saver )
+    public function it_saves_a_subtitle_with_a_rating_higher_than_the_task_rating( $watchList, $indexFactory, $saver, Index $index )
     {
-        $watchListItem = new WatchListItem();
+        $watchListItem = new WatchListItem( ['originalName' => 'a', 'rating' => 0]);
         $watchList->findAllPendingItems()->willReturn( [$watchListItem] );
 
-        $watchListItem->setRating( 0 );
-        $subtitle = new Subtitle();
-        $subtitle->setRating( 1 );
-        $indexFactory->build('a')->willReturn( new Index( new Release(), [subtitle], [] ) );
+        $newerSubtitle = new TestedSubtitleObject(['rating' => 3]);
+        $indexFactory->build('a')->willReturn( $index );
+        $index->hasBestSubtitle()->willReturn( true );
+        $index->getBestSubtitle()->willReturn( $newerSubtitle );
 
-        $saver->save( $subtitle, Argument::any() )->shouldBeCalled();
-        $watchListItem->setRating(1)->shouldBeCalled();
+        $saver->save( $newerSubtitle, Argument::any() )->shouldBeCalled();
         $watchList->setItemComplete($watchListItem)->shouldBeCalled();
 
-        $this->process();
+        $this->watchItems();
     }
 }

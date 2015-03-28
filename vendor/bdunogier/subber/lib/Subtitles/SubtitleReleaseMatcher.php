@@ -17,19 +17,22 @@ use BD\Subber\Release\Release;
 class SubtitleReleaseMatcher
 {
     /**
+     * @param \BD\Subber\Subtitles\Subtitle $subtitle
+     * @param \BD\Subber\Release\Release $release
+     *
      * @return bool
      */
     public function matches( Subtitle $subtitle, Release $release )
     {
-        if ( $subtitle->group != $release->group ) {
+        if ( $subtitle->getGroup() != $release->getGroup() ) {
             return false;
         }
 
-        if ($subtitle->format != $release->format) {
+        if ( $subtitle->getFormat() != $release->getFormat() ) {
             return false;
         }
 
-        if ($subtitle->source != $release->source) {
+        if ( $subtitle->getSource() != $release->getSource() ) {
             return false;
         }
         return true;

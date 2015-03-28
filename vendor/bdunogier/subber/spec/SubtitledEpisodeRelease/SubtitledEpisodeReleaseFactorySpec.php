@@ -4,6 +4,7 @@ namespace spec\BD\Subber\SubtitledEpisodeRelease;
 
 use BD\Subber\Episode\Episode;
 use BD\Subber\Episode\EpisodeMetadataFileParser;
+use BD\Subber\Release\ReleaseObject;
 use BD\Subber\WatchList\WatchListItem;
 use BD\Subber\Release\Release;
 use BD\Subber\ReleaseSubtitles\Index as SubtitlesIndex;
@@ -23,7 +24,7 @@ class SubtitledEpisodeReleaseFactorySpec extends ObjectBehavior
      */
     function let( $subtitlesIndexFactory, $episodeParser, $releaseParser, $watchList )
     {
-        $releaseParser->parseReleaseName( Argument::type( 'string' ) )->willReturn( new Release() );
+        $releaseParser->parseReleaseName( Argument::type( 'string' ) )->willReturn( new ReleaseObject() );
         $this->beConstructedWith( $subtitlesIndexFactory, $episodeParser, $releaseParser, $watchList );
     }
 
@@ -65,7 +66,7 @@ class SubtitledEpisodeReleaseFactorySpec extends ObjectBehavior
      */
     function it_gets_the_subtitles_index_when_building( $subtitlesIndexFactory )
     {
-        $subtitlesIndex = new SubtitlesIndex(new Release(), [], []);
+        $subtitlesIndex = new SubtitlesIndex(new ReleaseObject(), [], []);
 
         $subtitlesIndexFactory->build( 'release name' )->willReturn( $subtitlesIndex );
         $result = $this->build( 'release name', '/release/path' );

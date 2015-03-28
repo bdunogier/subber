@@ -19,28 +19,28 @@ class BetaseriesParser implements ReleaseParser
         $release = new Subtitle( ['name' => $releaseName, 'author' => 'betaseries', 'language' => 'fr'] );
         $releaseParts = explode( '.', strtolower( $releaseName ) );
 
-        $release->resolution = array_pop( $releaseParts );
+        $release->setResolution( array_pop( $releaseParts ) );
 
         $next = array_pop( $releaseParts );
         if ( in_array( $next, ['720p', '1080p'] ) )
         {
-            $release->resolution = $next;
+            $release->setResolution( $next );
             $next = array_pop( $releaseParts );
         }
 
         if ( $next === 'web-dl' ) {
-            $release->source = 'web-dl';
+            $release->setSource( 'web-dl' );
             $next = array_pop( $releaseParts );
         } else {
-            $release->group = 'lol';
+            $release->setGroup( 'lol' );
         }
 
         if ( $next === 'lol' ) {
-            $release->source = 'hdtv';
+            $release->setSource( 'hdtv' );
         }
 
-        if ( $release->group === 'lol' ) {
-            $release->source = 'hdtv';
+        if ( $release->getGroup() === 'lol' ) {
+            $release->setSource( 'hdtv' );
         }
 
         return $release;

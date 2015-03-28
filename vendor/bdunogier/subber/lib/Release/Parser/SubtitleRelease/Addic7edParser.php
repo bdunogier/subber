@@ -4,6 +4,7 @@ namespace BD\Subber\Release\Parser\SubtitleRelease;
 use BD\Subber\Release\Parser\ReleaseParser;
 use BD\Subber\Release\Parser\ReleaseParserException;
 use BD\Subber\Subtitles\Subtitle;
+use BD\Subber\Subtitles\SubtitleObject;
 
 /**
  * Parses subtitles names from Addic7ed
@@ -20,11 +21,11 @@ class Addic7edParser implements ReleaseParser
      */
     public function parseReleaseName( $releaseName )
     {
-        $release = new Subtitle( ['name' => $releaseName, 'author' => 'addic7ed'] );
+        $subtitle = new SubtitleObject( ['name' => $releaseName, 'author' => 'addic7ed'] );
         $releaseParts = explode( '.', strtolower( $releaseName ) );
 
         if ( in_array( $releaseParts[count($releaseParts) - 1], ['srt', 'ass'] ) ) {
-            $release->subtitleFormat = array_pop( $releaseParts );
+            $subtitle->setSubtitleFormat( array_pop( $releaseParts ) );
         }
 
         // addic7ed.com
@@ -47,19 +48,19 @@ class Addic7edParser implements ReleaseParser
         // can be hearing impaired, or language
         if ( $next == 'hi' )
         {
-            $release->isHearingImpaired = true;
+            $subtitle->setIsHearingImpaired( true );
             $next = array_pop( $releaseParts );
         }
 
         // language
         if ( in_array( $next, ['english', 'french'] ) ) {
-            $release->language = $this->getLanguageCode( $next );
+            $subtitle->setLanguage( $this->getLanguageCode( $next ) );
             $next = array_pop( $releaseParts );
         }
 
         // language
         if ( $next == 'colored' ) {
-            $release->hasTags = true;
+            $subtitle->setHasTags( true );
             $next = array_pop( $releaseParts );
         }
 
@@ -68,23 +69,23 @@ class Addic7edParser implements ReleaseParser
         $parts = explode( '-', $next );
         foreach ($parts as $part) {
             if ( $part == 'webdl' ) {
-                $release->source = 'web-dl';
+                $subtitle->setSource( 'web-dl' );
             } else if ( $part == 'repack' ) {
-                $release->isRepack = true;
+                $subtitle->setIsRepack( true );
             } else if ($part == 'proper') {
-                $release->isProper = true;
+                $subtitle->setIsProper( true );
             } else if ($part == 'translate') {
                 // we don't care
             } else {
-                if ( isset( $release->group ) ) {
-                    $release->group = [$release->group, $part];
+                if ( $subtitle->getGroup() !== null ) {
+                    $subtitle->setGroup( [$subtitle->getGroup(), $part] );
                 } else {
-                    $release->group = $part;
+                    $subtitle->setGroup( $part );
                 }
             }
         }
 
-        return $release;
+        return $subtitle;
     }
 
     private function getLanguageCode( $languageString )

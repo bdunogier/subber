@@ -38,7 +38,7 @@ class AddToWatchListCommand extends ContainerAwareCommand
 
     public function execute( InputInterface $input, OutputInterface $output )
     {
-        $repository = $this->getContainer()->get( 'bd_subber.watchlist' );
+        $watchList = $this->getContainer()->get( 'bd_subber.watchlist' );
 
         $item = new WatchListItem();
 
@@ -53,6 +53,6 @@ class AddToWatchListCommand extends ContainerAwareCommand
         $item->setCreatedAt( new DateTime() );
         $item->setUpdatedAt( new DateTime() );
 
-        $repository->addTask( $item );
+        $watchList->addItem( $item );
     }
 }

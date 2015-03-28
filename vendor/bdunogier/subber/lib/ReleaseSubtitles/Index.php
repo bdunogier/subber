@@ -9,24 +9,27 @@ use Exception;
  */
 class Index
 {
-    /** @var Release */
+    /** @var \BD\Subber\Release\Release */
     private $release;
 
-    /** @var \BD\Subber\Subtitles\Subtitle[] */
+    /** @var \BD\Subber\ReleaseSubtitles\TestedSubtitle[] */
     private $incompatible;
 
-    /** @var \BD\Subber\Subtitles\Subtitle[] */
+    /** @var \BD\Subber\ReleaseSubtitles\TestedSubtitle[] */
     private $compatible;
 
     /**
      * @param \BD\Subber\Release\Release $release
-     * @param \BD\Subber\Subtitles\Subtitle[] $acceptableSubtitles
-     * @param \BD\Subber\Subtitles\Subtitle[] $unacceptableSubtitles
+     * @param \BD\Subber\Subtitles\Subtitle[] $subtitles
      */
-    public function __construct( Release $release, array $compatible, array $incompatible )
+    public function __construct( Release $release, array $subtitles = null )
     {
-        $this->compatible = $compatible;
-        $this->incompatible = $incompatible;
+        if ( is_array( $subtitles ) ) {
+            foreach ( $subtitles as $subtitle ) {
+                $this->addSubtitle( $subtitle );
+            }
+        }
+
         $this->release = $release;
     }
 
@@ -39,7 +42,7 @@ class Index
     }
 
     /**
-     * @return \BD\Subber\ReleaseSubtitles\TestedReleaseSubtitle
+     * @return \BD\Subber\ReleaseSubtitles\TestedSubtitle
      * @throws \Exception if there is no Best Subtitle
      */
     public function getBestSubtitle()
@@ -74,5 +77,30 @@ class Index
     public function getRelease()
     {
         return $this->release;
+    }
+
+    public function addSubtitle( TestedSubtitle $subtitle )
+    {
+        if ( $subtitle->isCompatible() ) {
+            $this->compatible[] = $subtitle;
+            $this->sort( $this->compatible );
+        } else {
+            $this->incompatible[] = $subtitle;
+            $this->sort( $this->incompatible);
+        }
+    }
+
+    private function sortSubtitlesCallback( TestedSubtitle $a, TestedSubtitle $b )
+    {
+        if ( $a->getRating() > $b->getRating() )
+            return -1;
+        if ( $a->getRating() < $b->getRating() )
+            return 1;
+        return 0;
+    }
+
+    private function sort( &$array )
+    {
+        @usort( $array, [$this, 'sortSubtitlesCallback'] );
     }
 }

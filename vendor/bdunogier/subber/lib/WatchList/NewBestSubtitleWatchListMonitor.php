@@ -41,7 +41,7 @@ class NewBestSubtitleWatchListMonitor implements WatchListMonitor
             if ( $index->hasBestSubtitle() )
             {
                 $subtitle = $index->getBestSubtitle();
-                if ( $item->getRating !== null && $subtitle->getRating() <= $item->getRating() ) {
+                if ( $item->getRating() !== null && $subtitle->getRating() <= $item->getRating() ) {
                     continue;
                 }
 
