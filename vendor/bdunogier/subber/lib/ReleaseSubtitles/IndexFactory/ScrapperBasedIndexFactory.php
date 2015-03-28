@@ -79,8 +79,8 @@ class ScrapperBasedIndexFactory implements IndexFactory
      */
     private function makeSubtitlesTestable( array &$subtitles )
     {
-        return array_map(
-            function ( $subtitle, $release ) {
+        $subtitles = array_map(
+            function ( $subtitle ) {
                 return new TestedSubtitleObject( $subtitle->toArray() );
             },
             $subtitles

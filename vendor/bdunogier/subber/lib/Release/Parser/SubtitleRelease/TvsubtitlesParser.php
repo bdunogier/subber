@@ -42,7 +42,7 @@ class TvsubtitlesParser implements ReleaseParser
                         $groups[] = $next;
                         $release->setGroup( $groups );
                     } else {
-                        $release->setGroup( [$release->group, $next] );
+                        $release->setGroup( [$release->getGroup(), $next] );
                     }
                 } else {
                     $release->setGroup( $next );
