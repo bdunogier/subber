@@ -2,10 +2,12 @@
 
 namespace spec\BD\Subber\Logger;
 
+use BD\Subber\Event\NewBestSubtitleEvent;
 use BD\Subber\Event\NewWatchListItemEvent;
 use BD\Subber\Event\SaveSubtitleEvent;
 use BD\Subber\Event\ScrapErrorEvent;
 use BD\Subber\Event\ScrapReleaseEvent;
+use BD\Subber\ReleaseSubtitles\TestedSubtitleObject;
 use BD\Subber\WatchList\WatchListItem;
 use Monolog\Logger;
 use PhpSpec\ObjectBehavior;
@@ -64,6 +66,15 @@ class LoggerEventListenerSpec extends ObjectBehavior
 
         $this->onNewWatchListItem(
             new NewWatchListItemEvent( new WatchListItem() )
+        );
+    }
+
+    function it_logs_an_info_on_new_best_subtitle( Logger $logger )
+    {
+        $logger->info( Argument::any() )->shouldBeCalled();
+
+        $this->onNewBestSubtitle(
+            new NewBestSubtitleEvent( new WatchListItem(), new TestedSubtitleObject() )
         );
     }
 

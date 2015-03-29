@@ -1,6 +1,7 @@
 <?php
 namespace BD\Subber\Logger;
 
+use BD\Subber\Event\NewBestSubtitleEvent;
 use BD\Subber\Event\NewWatchListitemEvent;
 use BD\Subber\Event\SaveSubtitleEvent;
 use BD\Subber\Event\ScrapErrorEvent;
@@ -27,7 +28,8 @@ class LoggerEventListener implements EventSubscriberInterface
             'subber.save_subtitle' => ['onSaveSubtitle'],
             'subber.post_scrap_release' => ['onScrapRelease'],
             'subber.watch.post_new_item' => ['onNewWatchListItem'],
-            'subber.scrap_error' => ['onScrapError']
+            'subber.scrap_error' => ['onScrapError'],
+            'subber.new_best_subtitle' => ['onNewBestSubtitle'],
         ];
     }
 
@@ -69,6 +71,16 @@ class LoggerEventListener implements EventSubscriberInterface
                 "Added release '%s' with file '%s' to the Watch List",
                 $event->getItem()->getOriginalName(),
                 $event->getItem()->getFile()
+            )
+        );
+    }
+
+    public function onNewBestSubtitle( NewBestSubtitleEvent $event )
+    {
+        $this->logger->info(
+            sprintf(
+                "New best subtitle '%s' for release '%s'",
+                $event->getSubtitle()->getName(), $event->getWatchListItem()->getOriginalName()
             )
         );
     }
