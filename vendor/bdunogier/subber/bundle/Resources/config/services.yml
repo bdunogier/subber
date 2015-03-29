@@ -121,6 +121,12 @@ services:
             - { name: kernel.event_subscriber }
             - { name: monolog.logger, channel: subber }
 
+    bd_subber.new_best_subtitle_saver:
+        class: BD\Subber\Saver\NewBestSubtitleSaver
+        arguments: [@bd_subber.watchlist, @bd_subber.subtitle_saver]
+        tags:
+            - { name: kernel.event_subscriber }
+
     bd_subber.subtitle_saver:
         class: BD\Subber\Subtitles\Saver\BasicSaver
 

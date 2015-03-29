@@ -1,6 +1,7 @@
 <?php
 namespace BD\Subber\WatchList;
 
+use BD\Subber\Event\NewBestSubtitleEvent;
 use BD\Subber\Event\SaveSubtitleEvent;
 use BD\Subber\ReleaseSubtitles\IndexFactory;
 use BD\Subber\Subtitles\Saver;
@@ -51,10 +52,14 @@ class NewBestSubtitleWatchListMonitor implements WatchListMonitor
                         new SaveSubtitleEvent( $subtitle->url, $item->getFile() )
                     );
                 }
-                $this->saver->save( $subtitle, $item->getFile() );
 
-                $item->setRating( $subtitle->getRating() );
-                $this->watchList->setItemComplete( $item );
+                if ( isset( $this->eventDispatcher ) )
+                {
+                    $this->eventDispatcher->dispatch(
+                        'subber.new_best_subtitle',
+                        new NewBestSubtitleEvent( $item, $subtitle )
+                    );
+                }
             }
         }
     }

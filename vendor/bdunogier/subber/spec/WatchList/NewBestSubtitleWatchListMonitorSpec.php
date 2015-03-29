@@ -91,4 +91,9 @@ class NewBestSubtitleWatchListMonitorSpec extends ObjectBehavior
 
         $this->watchItems();
     }
+
+    function it_dispatches_a_new_best_subtitle_event_when_a_better_subtitle_is_found()
+    {
+
+    }
 }
