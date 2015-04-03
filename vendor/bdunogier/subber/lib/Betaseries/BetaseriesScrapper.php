@@ -2,6 +2,7 @@
 namespace BD\Subber\Betaseries;
 
 use BD\Subber\Event\ScrapErrorEvent;
+use BD\Subber\Exceptions\UnknownSubtitleSourceException;
 use BD\Subber\Release\Parser\ReleaseParserException;
 use BD\Subber\Subtitles\Scrapper;
 use InvalidArgumentException;
@@ -48,7 +49,7 @@ class BetaseriesScrapper implements Scrapper
         } catch ( PatbzhBetaseriesException $e ) {
             $this->eventDispatcher->dispatch(
                 'subber.scrap_error',
-                new ScrapErrorEvent( $filename, $e->getMessage() )
+                new ScrapErrorEvent( $filename, $e->getMessage(), $e )
             );
 
             return array();
@@ -64,13 +65,17 @@ class BetaseriesScrapper implements Scrapper
                 } catch ( ReleaseParserException $e ) {
                     $this->eventDispatcher->dispatch(
                         'subber.scrap_error',
-                        new ScrapErrorEvent( $filename, "Parsing error: " . $e->getMessage() )
+                        new ScrapErrorEvent( $filename, "Parsing error: " . $e->getMessage(), $e )
                     );
                     continue;
                 } catch ( InvalidArgumentException $e ) {
                     $this->eventDispatcher->dispatch(
                         'subber.scrap_error',
-                        new ScrapErrorEvent( $filename, "Unknown source " . $subtitleArray['source'] )
+                        new ScrapErrorEvent(
+                            $filename,
+                            "Unknown source " . $subtitleArray['source'],
+                            new UnknownSubtitleSourceException( $filename, $subtitleArray['source'] )
+                        )
                     );
                     continue;
                 }

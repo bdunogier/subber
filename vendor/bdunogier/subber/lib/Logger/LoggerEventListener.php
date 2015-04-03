@@ -6,6 +6,7 @@ use BD\Subber\Event\NewWatchListitemEvent;
 use BD\Subber\Event\SaveSubtitleEvent;
 use BD\Subber\Event\ScrapErrorEvent;
 use BD\Subber\Event\ScrapReleaseEvent;
+use BD\Subber\Exceptions\UnknownSubtitleSourceException;
 use Monolog\Logger;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
@@ -56,6 +57,19 @@ class LoggerEventListener implements EventSubscriberInterface
 
     public function onScrapError( ScrapErrorEvent $event )
     {
+        $exception = $event->getException();
+
+        if ($exception instanceof UnknownSubtitleSourceException) {
+            $this->logger->info(
+                sprintf(
+                    "Unhandled subtitle source '%s' for release '%s'",
+                    $exception->getSourceName(),
+                    $exception->getReleaseName()
+                )
+            );
+            return;
+        }
+
         $this->logger->error(
             sprintf(
                 "A scrapping error occured on %s: %s",

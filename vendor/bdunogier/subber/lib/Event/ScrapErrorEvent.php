@@ -1,21 +1,25 @@
 <?php
 namespace BD\Subber\Event;
 
-use BD\Subber\Subtitles\Subtitle;
 use Symfony\Component\EventDispatcher\Event;
+use Exception;
 
 class ScrapErrorEvent extends Event
 {
     /** @var string */
     private $releaseName;
 
-    /** @var \BD\Subber\Subtitles\Subtitle[] */
+    /** @var string */
     private $message;
 
-    public function __construct( $releaseName, $message )
+    /** @var \Exception */
+    private $exception;
+
+    public function __construct( $releaseName, $message, Exception $e = null )
     {
         $this->releaseName = $releaseName;
         $this->message = $message;
+        $this->exception = $e;
     }
 
     /**
@@ -27,14 +31,6 @@ class ScrapErrorEvent extends Event
     }
 
     /**
-     * @param string $releaseName
-     */
-    public function setReleaseName( $releaseName )
-    {
-        $this->releaseName = $releaseName;
-    }
-
-    /**
      * @return \BD\Subber\Subtitles\Subtitle[]
      */
     public function getMessage()
@@ -43,10 +39,10 @@ class ScrapErrorEvent extends Event
     }
 
     /**
-     * @param \BD\Subber\Subtitles\Subtitle[] $message
+     * @return Exception
      */
-    public function setMessage( $message )
+    public function getException()
     {
-        $this->message = $message;
+        return $this->exception;
     }
 }
