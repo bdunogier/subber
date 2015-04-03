@@ -9,6 +9,9 @@
 - [ ] What if a Subtitle's content was a callback, that downloads, and either extracts from the zip file, or
       returns the contents directly ?
 
+### Specs
+- [ ] Index specs
+
 ### Subtitle Matching Context
 Each episode release has its own Context, that is hard to determine based on a subtitle release or episode release alone.
 
