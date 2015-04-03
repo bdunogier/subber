@@ -31,7 +31,7 @@ class ParseSubtitleReleaseCommand extends ContainerAwareCommand
 
         $subtitleRelease = $parser->parseReleaseName( $release );
         $output->writeln( "Parsed properties" );
-        foreach( $subtitleRelease as $field => $value )
+        foreach( $subtitleRelease->toArray() as $field => $value )
         {
             if ( is_array( $value ) ) {
                 $output->writeln( "- $field: [" . implode( ', ', $value ) . "]" );
