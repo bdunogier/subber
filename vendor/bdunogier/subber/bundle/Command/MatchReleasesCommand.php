@@ -1,6 +1,8 @@
 <?php
 namespace BD\SubberBundle\Command;
 
+use BD\Subber\Release\Release;
+use BD\Subber\ReleaseSubtitles\TestedSubtitleObject;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -8,34 +10,49 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
- * Parses a subtitle release
+ * Matches a Subtitle and an Episode Release for compatibility
  */
-class ParseSubtitleReleaseCommand extends ContainerAwareCommand
+class MatchReleasesCommand extends ContainerAwareCommand
 {
     public function configure()
     {
-        $this->setName( 'subber:parse-subtitle-release' );
-        $this->addArgument( 'release', InputArgument::REQUIRED, "The name of a video-release" );
-        $this->addOption( 'source', null, InputOption::VALUE_REQUIRED, "The subtitle's source site (betaseries, addic7ed, seriessub, soustitres)" );
+        $this->setName( 'subber:match-releases' );
+        $this->addArgument( 'episode', InputArgument::REQUIRED, "Name of the episode release" );
+        $this->addArgument( 'subtitle-source', InputArgument::REQUIRED, "Name of the subtitle release source" );
+        $this->addArgument( 'subtitle', InputArgument::REQUIRED, "Name of the subtitle release" );
     }
 
     public function execute( InputInterface $input, OutputInterface $output )
     {
-        $release = $input->getArgument( 'release' );
-        $source = $input->getOption( 'source' );
+        $releaseName = $input->getArgument( 'episode' );
+        $subtitleName = $input->getArgument( 'subtitle' );
+        $subtitleSourceName = $input->getArgument( 'subtitle-source' );
 
-        $parser = $this->getContainer()->get( 'bd_subber.release_parser.subtitles_registry' )->getParser( $source );
+        $episodeParser = $this->getContainer()->get( 'bd_subber.release_parser.video' );
+        $episode = $episodeParser->parseReleaseName( $releaseName );
+        $output->writeln( "Subtitle:" );
+        $this->printValueObject( $episode, $output );
+        $output->writeln('');
 
-        $output->writeln( "Release: $release" );
-        $output->writeln( "" );
+        $subtitleParser = $this->getContainer()->get( 'bd_subber.release_parser.subtitles_registry' )->getParser( $subtitleSourceName );
+        $subtitle = $subtitleParser->parseReleaseName( $subtitleName );
+        $output->writeln( "Subtitle:" );
+        $this->printValueObject( $subtitle, $output );
+        $output->writeln('');
 
-        $subtitleRelease = $parser->parseReleaseName( $release );
-        $output->writeln( "Parsed properties" );
-        foreach( $subtitleRelease->toArray() as $field => $value )
+        $compatibilityMatcher = $this->getContainer()->get( 'bd_subber.subtitle_release.compatiblity_matcher' );
+        $subtitle = new TestedSubtitleObject( $subtitle->toArray() );
+        $subtitles = $compatibilityMatcher->match( $episode, [$subtitle] );
+        $output->writeln(  $subtitles[0]->isCompatible() ? "COMPATIBLE" : "INCOMPATIBLE" );
+    }
+
+    private function printValueObject( Release $valueObject, OutputInterface $output )
+    {
+        foreach( $valueObject->toArray() as $field => $value )
         {
             if ( is_array( $value ) ) {
                 $output->writeln( "- $field: [" . implode( ', ', $value ) . "]" );
-            } else {
+            } elseif ( $value !== null ) {
                 $output->writeln( "- $field: $value" );
             }
         }

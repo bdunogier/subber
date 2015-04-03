@@ -15,7 +15,7 @@ use InvalidArgumentException;
 class TestedSubtitleObject extends SubtitleObject implements TestedSubtitle
 {
     /** @var string */
-    protected $compatibility;
+    protected $compatibility = self::UNDETERMINED;
 
     /** @var int */
     protected $rating;
@@ -47,7 +47,7 @@ class TestedSubtitleObject extends SubtitleObject implements TestedSubtitle
 
     public function isCompatible()
     {
-        return $this->compatibility === TestedSubtitle::COMPATIBLE || $this->compatibility === TestedSubtitle::UNDETERMINED;
+        return $this->compatibility !== self::INCOMPATIBLE;
     }
 
     public function getRating()
