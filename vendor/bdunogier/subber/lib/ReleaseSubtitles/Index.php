@@ -81,7 +81,7 @@ class Index
 
     public function addSubtitle( TestedSubtitle $subtitle )
     {
-        if ( $subtitle->isCompatible() ) {
+        if ( !$subtitle->isCompatible() ) {
             $this->compatible[] = $subtitle;
             $this->sort( $this->compatible );
         } else {
