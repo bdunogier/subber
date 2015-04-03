@@ -4,6 +4,7 @@ namespace BD\Subber\Release\Parser\SubtitleRelease;
 use BD\Subber\Release\Parser\ReleaseParser;
 use BD\Subber\Release\Parser\ReleaseParserException;
 use BD\Subber\Subtitles\Subtitle;
+use BD\Subber\Subtitles\SubtitleObject;
 
 /**
  * Parses subtitles names from betaseries (as a subtitles source, not a scrapped site)
@@ -16,7 +17,7 @@ class BetaseriesParser implements ReleaseParser
      */
     public function parseReleaseName( $releaseName )
     {
-        $release = new Subtitle( ['name' => $releaseName, 'author' => 'betaseries', 'language' => 'fr'] );
+        $release = new SubtitleObject( ['name' => $releaseName, 'author' => 'betaseries', 'language' => 'fr'] );
         $releaseParts = explode( '.', strtolower( $releaseName ) );
 
         $release->setResolution( array_pop( $releaseParts ) );
