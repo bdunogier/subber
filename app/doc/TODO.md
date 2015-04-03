@@ -1,10 +1,10 @@
 ## Things to do and ideas
 
-### Index
-Should the Index do more ? Could the Factory take care of scrapping, and send the "raw" data to the Index ?
-Maybe some kind of event could be added... a
-
 ### Release Parser
+- [ ] Subtitle "Vikings - 03x06 - Born Again.KILLERS.French.C.updated.Addic7ed.com.srt" is not
+      compatible with "vikings.s03e06.720p.hdtv.x264-killers"
+- [ ] Subtitles for "greys.anatomy.s11e13.720p.hdtv.x264-dimension" are not found: mp4 subs are probably compatible...
+- [ ] "12 Monkeys - 1x11 - Shonin.HDTV.ASAP.en.srt" ends up with two groups (null + asap)
 - [ ] Release Parser: make sure that the subtitle's extension is given to the parser (should be ok on some)
 - [ ] What if a Subtitle's content was a callback, that downloads, and either extracts from the zip file, or
       returns the contents directly ?
@@ -81,3 +81,8 @@ The goal is to get Subtitles with properties we can rely upon during Matching.
 - [x] Handle addic7ed Subtitle "The Big Bang Theory - 08x18 - The Leftover Thermalization.DIMENSION.colored.English.HI.C.orig.Addic7ed.com.srt"
       (parses 'colored' as the group name)
 - [x] Handle tvsubtitles Subtitle "Person of Interest - 4x17 - Karma.HDTV.LOL+720p.DIMENSION+AFG+mSD.fr.srt"
+
+### Index
+Should the Index do more ? Could the Factory take care of scrapping, and send the "raw" data to the Index ?
+Maybe some kind of event could be added... a
+
