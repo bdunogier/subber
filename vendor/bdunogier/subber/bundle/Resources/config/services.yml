@@ -103,10 +103,10 @@ services:
             - { name: bd_subber.subtitle_release_parser, key: betaseries }
 
     bd_subber.watchlist_monitor:
-        alias: bd_subber.watchlist_monitor.rating
+        alias: bd_subber.watchlist_monitor.new_best_subtitle
 
-    bd_subber.watchlist_monitor.rating:
-        class: BD\Subber\WatchList\WatchListMonitor
+    bd_subber.watchlist_monitor.new_best_subtitle:
+        class: BD\Subber\WatchList\NewBestSubtitleWatchListMonitor
         arguments:
             - @bd_subber.watchlist
             - @bd_subber.release_subtitles.index_factory
