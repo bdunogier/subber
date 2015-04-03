@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class WatchListController extends Controller
 {
-    /** @var \BD\WatchList\WatchList */
+    /** @var \BD\Subber\WatchList\WatchList */
     private $watchList;
 
     public function __construct( WatchList $watchList )
