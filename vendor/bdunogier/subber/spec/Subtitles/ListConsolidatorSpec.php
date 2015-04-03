@@ -41,6 +41,13 @@ class ListConsolidatorSpec extends ObjectBehavior
         $result->shouldHaveOneSubtitleWithResolution( '720p' );
     }
 
+    function it_sets_source_to_hdtv_for_lol_releases()
+    {
+        $result = $this->consolidate( [ new SubtitleObject( ['group' => 'lol'] ) ] );
+        $result->shouldBeAnArrayOfSubtitles();
+        $result->shouldHaveOneSubtitleWithGroupAndSource( 'lol', 'hdtv' );
+    }
+
     function getMatchers()
     {
         return [
@@ -65,6 +72,14 @@ class ListConsolidatorSpec extends ObjectBehavior
             'haveOneSubtitleWithGroupAndResolution' => function( $subject, $expectedGroup, $expectedResolution ) {
                 foreach ( $subject as $subtitle ) {
                     if ( $subtitle->getResolution() == $expectedResolution && $subtitle->getGroup() == $expectedGroup ) {
+                        return true;
+                    }
+                }
+                return false;
+            },
+            'haveOneSubtitleWithGroupAndSource' => function( $subject, $expectedGroup, $expectedSource ) {
+                foreach ( $subject as $subtitle ) {
+                    if ( $subtitle->getSource() == $expectedSource && $subtitle->getGroup() == $expectedGroup ) {
                         return true;
                     }
                 }

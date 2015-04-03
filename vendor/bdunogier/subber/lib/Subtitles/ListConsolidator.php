@@ -19,6 +19,7 @@ class ListConsolidator implements ListConsolidatorInterface
         $subtitlesList = $this->flattenByProperty( $subtitlesList, 'group' );
         $subtitlesList = $this->flattenByProperty( $subtitlesList, 'resolution' );
         $subtitlesList = $this->forkInconsistentSubtitles( $subtitlesList );
+        $subtitlesList = $this->guessSource( $subtitlesList );
         return $subtitlesList;
     }
 
@@ -90,8 +91,25 @@ class ListConsolidator implements ListConsolidatorInterface
      */
     private function forkSubtitle( Subtitle $subtitle, array $overrideProperties )
     {
-
-
         return new TestedSubtitleObject( $overrideProperties + $subtitle->toArray() );
+    }
+
+    /**
+     * @param \BD\Subber\ReleaseSubtitles\TestedSubtitle[] $subtitles
+     */
+    private function guessSource( array $subtitles )
+    {
+        foreach ($subtitles as $subtitle) {
+            if ($subtitle->getSource() !== null) {
+                continue;
+            }
+
+            if ($subtitle->getGroup() === 'lol') {
+                $subtitle->setSource( 'hdtv' );
+                continue;
+            }
+        }
+
+        return $subtitles;
     }
 }
