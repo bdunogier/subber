@@ -49,7 +49,7 @@ class NewBestSubtitleWatchListMonitor implements WatchListMonitor
                 if (isset( $this->eventDispatcher )) {
                     $this->eventDispatcher->dispatch(
                         'subber.save_subtitle',
-                        new SaveSubtitleEvent( $subtitle->url, $item->getFile() )
+                        new SaveSubtitleEvent( $subtitle->getUrl(), $item->getFile() )
                     );
                 }
 
