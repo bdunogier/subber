@@ -27,6 +27,7 @@ class CompatibilityMatcher
             {
                 if ( $subtitle->isProper() !== $release->isProper() || $subtitle->isRepack() !== $release->isRepack() ) {
                     $subtitle->setIncompatible();
+                    continue;
                 }
             }
 
