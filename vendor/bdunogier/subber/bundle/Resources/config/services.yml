@@ -5,13 +5,21 @@ services:
 
     bd_subber.dashboard_controller:
         class: BD\SubberBundle\Controller\DashboardController
-        arguments: [@bd_subber.tasks_repository]
+        arguments:
+            - @bd_subber.tasks_repository
+            - %subber.enable_now_playing%
         calls:
             - [setContainer, [@service_container]]
 
     bd_subber.release_controller:
         class: BD\SubberBundle\Controller\ReleaseController
         arguments: [@bd_subber.subtitled_episode_release_factory]
+        calls:
+            - [setContainer, [@service_container]]
+
+    bd_subber.now_playing_controller:
+        class: BD\SubberBundle\Controller\NowPlayingController
+        arguments: [@bd_subber.tasks_repository, @?subber.now_playing_connector]
         calls:
             - [setContainer, [@service_container]]
 
@@ -142,3 +150,14 @@ services:
 
     bd_subber.subtitle_release.compatiblity_matcher:
         class: BD\Subber\ReleaseSubtitles\CompatibilityMatcher
+
+    bd_subber.now_playing.plex:
+        class: BD\Subber\NowPlaying\PlexNowPlaying
+        arguments: [%subber.now_playing.plex.uri%]
+        tags:
+            - {name: subber.now_playing_connector, alias: plex}
+
+    bd_subber.now_playing.fake:
+        class: BD\Subber\NowPlaying\FakeNowPlaying
+        tags:
+            - {name: subber.now_playing_connector, alias: fake}

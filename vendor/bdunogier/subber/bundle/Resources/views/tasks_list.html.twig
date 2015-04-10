@@ -3,11 +3,17 @@
 {% block title %}{{ parent() }} :: Dashboard{% endblock %}
 
 {% block body %}
-    <h1>Dashboard</h1>
+    {% if enableNowPlaying %}
+        {{ render(controller('bd_subber.now_playing_controller:showNowPlayingAction')) }}
+    {% endif %}
 
+    <h1>Tasks</h1>
     <div class="row-fluid">
         {% for task in tasks %}
-            {{ render(controller('bd_subber.release_controller:showReleaseByNameAction', {'releaseName': task.originalName})) }}
+            {{ render(controller(
+                'bd_subber.release_controller:showReleaseByNameAction',
+                {'releaseName': task.originalName})
+            ) }}
         {% endfor %}
     </div>
 {% endblock %}

@@ -17,17 +17,25 @@ class DashboardController extends Controller implements ContainerAwareInterface
      * @var \Doctrine\ORM\EntityRepository
      */
     private $repository;
+    /**
+     * @var
+     */
+    private $enableNowPlaying;
 
-    public function __construct( TaskRepository $repository )
+    public function __construct( TaskRepository $repository, $enableNowPlaying )
     {
         $this->repository = $repository;
+        $this->enableNowPlaying = $enableNowPlaying;
     }
 
     public function listAction()
     {
         return $this->render(
             'BDSubberBundle::tasks_list.html.twig',
-            ['tasks' => $this->repository->findAllPendingTasks()]
+            [
+                'tasks' => $this->repository->findAllPendingTasks(),
+                'enableNowPlaying' => $this->enableNowPlaying
+            ]
         );
     }
 }
