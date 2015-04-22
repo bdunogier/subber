@@ -59,24 +59,4 @@ class TestedSubtitleObject extends SubtitleObject implements TestedSubtitle
     {
         $this->rating = $rating;
     }
-
-    public function getSubtitle()
-    {
-        return $this->subtitle;
-    }
-
-    public function setSubtitle( $subtitle )
-    {
-        $this->subtitle = $subtitle;
-    }
-
-    public function __call( $methodName, $arguments )
-    {
-        if ( method_exists( $this->subtitle, $methodName ) ) {
-            return $this->subtitle->$methodName();
-        }
-        throw new InvalidArgumentException(
-            "No such method $methodName on class " . __CLASS__ . ' or ' . get_class( $this->subtitle )
-        );
-    }
 }

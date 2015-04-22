@@ -45,14 +45,4 @@ interface TestedSubtitle extends Subtitle
      * @param int $rating
      */
     public function setRating( $rating );
-
-    /**
-     * @return Subtitle
-     */
-    public function getSubtitle();
-
-    /**
-     * @param Subtitle $subtitle
-     */
-    public function setSubtitle( $subtitle );
 }
