@@ -41,7 +41,7 @@ class NewBestSubtitleSaverSpec extends ObjectBehavior
         $event->getWatchListItem()->willReturn( $watchListItem );
         $event->getSubtitle()->willReturn( new TestedSubtitleObject(['rating' => 3]) );
 
-        $watchListItem->setRating( 3 )->shouldBeCalled();
+        $watchListItem->setRating(3)->shouldBeCalled();
         $watchListItem->getFile()->shouldBeCalled();
         $this->onNewBestSubtitle( $event );
     }
