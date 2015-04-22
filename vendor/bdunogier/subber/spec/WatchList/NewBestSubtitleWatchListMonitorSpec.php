@@ -6,14 +6,12 @@ namespace spec\BD\Subber\WatchList;
 
 use BD\Subber\Release\ReleaseObject;
 use BD\Subber\ReleaseSubtitles\TestedSubtitleObject;
-use BD\Subber\Subtitles\SubtitleObject;
 use BD\Subber\WatchList\WatchListItem;
-use BD\Subber\Release\Release;
 use BD\Subber\ReleaseSubtitles\Index;
 use BD\Subber\ReleaseSubtitles\TestedReleaseSubtitle;
-use BD\Subber\Subtitles\Subtitle;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class NewBestSubtitleWatchListMonitorSpec extends ObjectBehavior
 {
@@ -21,10 +19,11 @@ class NewBestSubtitleWatchListMonitorSpec extends ObjectBehavior
      * @param \BD\Subber\WatchList\WatchList $watchList
      * @param \BD\Subber\ReleaseSubtitles\IndexFactory $indexFactory
      * @param \BD\Subber\Subtitles\Saver $saver
+     * @param \Symfony\Component\EventDispatcher\EventDispatcherInterface $eventDispatcher
      */
-    function let( $watchList, $indexFactory, $saver )
+    function let( $watchList, $indexFactory, $saver, $eventDispatcher )
     {
-        $this->beConstructedWith( $watchList, $indexFactory, $saver );
+        $this->beConstructedWith( $watchList, $indexFactory, $saver, $eventDispatcher );
     }
 
     function it_is_initializable()
@@ -73,10 +72,15 @@ class NewBestSubtitleWatchListMonitorSpec extends ObjectBehavior
     /**
      * @param \BD\Subber\WatchList\WatchList $watchList
      * @param \BD\Subber\ReleaseSubtitles\IndexFactory $indexFactory
-     * @param \BD\Subber\Subtitles\Saver $saver
      * @param \BD\Subber\ReleaseSubtitles\Index $index
+     * @param \Symfony\Component\EventDispatcher\EventDispatcherInterface $eventDispatcher
      */
-    public function it_saves_a_subtitle_with_a_rating_higher_than_the_task_rating( $watchList, $indexFactory, $saver, Index $index )
+    function it_dispatches_a_new_best_subtitle_event_when_a_better_subtitle_is_found(
+        $watchList,
+        $indexFactory,
+        Index $index,
+        EventDispatcherInterface $eventDispatcher
+    )
     {
         $watchListItem = new WatchListItem( ['originalName' => 'a', 'rating' => 0]);
         $watchList->findAllPendingItems()->willReturn( [$watchListItem] );
@@ -86,14 +90,10 @@ class NewBestSubtitleWatchListMonitorSpec extends ObjectBehavior
         $index->hasBestSubtitle()->willReturn( true );
         $index->getBestSubtitle()->willReturn( $newerSubtitle );
 
-        $saver->save( $newerSubtitle, Argument::any() )->shouldBeCalled();
-        $watchList->setItemComplete($watchListItem)->shouldBeCalled();
-
+        $eventDispatcher->dispatch(
+            'subber.new_best_subtitle',
+            Argument::type( 'BD\Subber\Event\NewBestSubtitleEvent')
+        )->shouldBeCalled();
         $this->watchItems();
-    }
-
-    function it_dispatches_a_new_best_subtitle_event_when_a_better_subtitle_is_found()
-    {
-
     }
 }

@@ -24,12 +24,14 @@ class NewBestSubtitleWatchListMonitor implements WatchListMonitor
     public function __construct(
         WatchList $watchList,
         IndexFactory $indexFactory,
-        Saver $saver
+        Saver $saver,
+        EventDispatcherInterface $eventDispatcher
     )
     {
         $this->watchList = $watchList;
         $this->indexFactory = $indexFactory;
         $this->saver = $saver;
+        $this->eventDispatcher = $eventDispatcher;
     }
 
     public function watchItems()
@@ -44,13 +46,6 @@ class NewBestSubtitleWatchListMonitor implements WatchListMonitor
                 $subtitle = $index->getBestSubtitle();
                 if ( $item->getRating() !== null && $subtitle->getRating() <= $item->getRating() ) {
                     continue;
-                }
-
-                if (isset( $this->eventDispatcher )) {
-                    $this->eventDispatcher->dispatch(
-                        'subber.save_subtitle',
-                        new SaveSubtitleEvent( $subtitle->getUrl(), $item->getFile() )
-                    );
                 }
 
                 if ( isset( $this->eventDispatcher ) )
