@@ -62,6 +62,10 @@ services:
         arguments:
             - @bd_subber.release_subtitles.index_factory.scrapper_based
             - @stash.default_cache
+            - @bd_subber.release_subtitles.index_factory.cache_ttl_provider
+
+    bd_subber.release_subtitles.index_factory.cache_ttl_provider:
+        class: BD\Subber\ReleaseSubtitles\IndexFactory\IndexCacheTtlProvider
 
     bd_subber.release_subtitles.index_factory:
         class: BD\Subber\ReleaseSubtitles\IndexFactory
