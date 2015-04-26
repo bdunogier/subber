@@ -1,5 +1,8 @@
 ## Things to do and ideas
 
+## Bugs
+- [ ] Fix empty URL In subtitle object, in BasicSaver
+
 ## Releases parsing
 
 ### Subtitles parsing use-cases
