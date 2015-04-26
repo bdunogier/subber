@@ -1,7 +1,7 @@
-bd_subber_queuer:
-    path: /subber/queue
+bd_subber_watchlist:
+    path: /subber/watchlist
     methods: [POST]
-    defaults: { _controller: bd_subber.queue_controller:addToQueueAction }
+    defaults: { _controller: bd_subber.watchlist_controller:addToWatchListAction }
 
 bd_subber_dashboard:
     path: /

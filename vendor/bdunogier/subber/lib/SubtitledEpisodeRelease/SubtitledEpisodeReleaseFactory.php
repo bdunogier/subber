@@ -5,9 +5,9 @@
 namespace BD\Subber\SubtitledEpisodeRelease;
 
 use BD\Subber\Episode\EpisodeMetadataFileParser;
-use BD\Subber\Queue\TaskRepository;
-use BD\Subber\Release\Parser\ReleaseParser;
+use BD\Subber\WatchList\WatchList;
 use BD\Subber\Release\Release;
+use BD\Subber\Release\Parser\ReleaseParser;
 use BD\Subber\ReleaseSubtitles\IndexFactory;
 
 class SubtitledEpisodeReleaseFactory
@@ -21,20 +21,20 @@ class SubtitledEpisodeReleaseFactory
     /** @var \BD\Subber\Release\Parser\ReleaseParser */
     private $releaseParser;
 
-    /** @var \BD\Subber\Queue\TaskRepository */
-    private $taskRepository;
+    /** @var \BD\Subber\WatchList\WatchList */
+    private $watchList;
 
     public function __construct(
         IndexFactory $subtitlesIndexFactory,
         EpisodeMetadataFileParser $episodeParser,
         ReleaseParser $releaseParser,
-        TaskRepository $taskRepository
+        WatchList $watchList
     ) {
 
         $this->subtitlesIndexFactory = $subtitlesIndexFactory;
         $this->episodeParser = $episodeParser;
         $this->releaseParser = $releaseParser;
-        $this->taskRepository = $taskRepository;
+        $this->watchList = $watchList;
     }
 
     /**
@@ -44,14 +44,14 @@ class SubtitledEpisodeReleaseFactory
     {
         return $this->build(
             $releaseName,
-            $this->taskRepository->loadByReleaseName( $releaseName )->getFile()
+            $this->watchList->loadByReleaseName( $releaseName )->getFile()
         );
     }
 
     public function buildFromLocalReleasePath( $localReleasePath )
     {
         return $this->build(
-            $this->taskRepository->loadByLocalReleasePath( $localReleasePath )->getOriginalName(),
+            $this->watchList->loadByLocalReleasePath( $localReleasePath )->getOriginalName(),
             $localReleasePath
         );
     }

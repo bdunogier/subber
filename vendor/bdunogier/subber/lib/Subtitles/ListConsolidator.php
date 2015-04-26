@@ -4,6 +4,9 @@
  */
 namespace BD\Subber\Subtitles;
 
+use BD\Subber\ReleaseSubtitles\TestedSubtitle;
+use BD\Subber\ReleaseSubtitles\TestedSubtitleObject;
+
 class ListConsolidator implements ListConsolidatorInterface
 {
     /**
@@ -16,6 +19,7 @@ class ListConsolidator implements ListConsolidatorInterface
         $subtitlesList = $this->flattenByProperty( $subtitlesList, 'group' );
         $subtitlesList = $this->flattenByProperty( $subtitlesList, 'resolution' );
         $subtitlesList = $this->forkInconsistentSubtitles( $subtitlesList );
+        $subtitlesList = $this->guessSource( $subtitlesList );
         return $subtitlesList;
     }
 
@@ -45,7 +49,7 @@ class ListConsolidator implements ListConsolidatorInterface
      */
     private function extractConsistentAttributes( Subtitle $subtitle )
     {
-        if ( $subtitle->resolution == '720p' && $subtitle->group == 'lol' ) {
+        if ( $subtitle->getResolution() == '720p' && $subtitle->getGroup() == 'lol' ) {
             return [
                 ['group' => 'lol', 'resolution' => '480p'],
                 ['group' => null, 'resolution' => '720p']
@@ -55,15 +59,22 @@ class ListConsolidator implements ListConsolidatorInterface
 
     private function isInconsistent( Subtitle $subtitle )
     {
-        return ( $subtitle->resolution == '720p' && $subtitle->group == 'lol' );
+        return ( $subtitle->getResolution() == '720p' && $subtitle->getGroup() == 'lol' );
     }
 
+    /**
+     * @param \BD\Subber\ReleaseSubtitles\TestedSubtitle[] $subtitlesList
+     * @param $propertyName
+     *
+     * @return \BD\Subber\ReleaseSubtitles\TestedSubtitle[]
+     */
     private function flattenByProperty( array $subtitlesList, $propertyName )
     {
         $newList = [];
         while ( $subtitle = array_shift($subtitlesList) ) {
-            if ( is_array( $subtitle->$propertyName ) ) {
-                foreach ($subtitle->$propertyName as $propertyValue) {
+            $properties = $subtitle->toArray();
+            if ( is_array( $properties[$propertyName] ) ) {
+                foreach ($properties[$propertyName] as $propertyValue) {
                     $newList[] = $this->forkSubtitle( $subtitle, [$propertyName => $propertyValue] );
                 }
             }
@@ -78,12 +89,27 @@ class ListConsolidator implements ListConsolidatorInterface
     /**
      * @return Subtitle
      */
-    private function forkSubtitle( Subtitle $subtitle, array $properties )
+    private function forkSubtitle( Subtitle $subtitle, array $overrideProperties )
     {
-        $fork = clone $subtitle;
-        foreach ($properties as $propertyName => $propertyValue) {
-            $fork->$propertyName = $propertyValue;
+        return new TestedSubtitleObject( $overrideProperties + $subtitle->toArray() );
+    }
+
+    /**
+     * @param \BD\Subber\ReleaseSubtitles\TestedSubtitle[] $subtitles
+     */
+    private function guessSource( array $subtitles )
+    {
+        foreach ($subtitles as $subtitle) {
+            if ($subtitle->getSource() !== null) {
+                continue;
+            }
+
+            if ($subtitle->getGroup() === 'lol') {
+                $subtitle->setSource( 'hdtv' );
+                continue;
+            }
         }
-        return $fork;
+
+        return $subtitles;
     }
 }

@@ -2,6 +2,7 @@
 namespace BD\Subber\Release\Parser;
 
 use BD\Subber\Release\Release;
+use BD\Subber\Release\ReleaseObject;
 
 /**
  * Parses a downloaded file's name into a DownloadedEpisode object
@@ -14,20 +15,23 @@ class VideoReleaseParser implements ReleaseParser
      */
     public function parseReleaseName( $releaseName )
     {
-        $release = new Release();
+        $properties = [];
+
         $releaseName = strtolower( $releaseName );
-        $release->name = $releaseName;
+        $properties['name'] = $releaseName;
 
         $releaseParts = explode( '-', $releaseName );
-        $release->group = array_pop( $releaseParts );
+        $properties['group'] = array_pop( $releaseParts );
 
-        $release->format = $this->parseFormat( $releaseName );
-        $release->source = $this->parseSource( $releaseName );
-        $release->resolution = $this->parseResolution( $releaseName );
-        $release->isProper = $this->parseProper( $releaseName );
-        $release->isRepack = $this->parseRepack( $releaseName );
+        $properties += [
+            'format' => $this->parseFormat( $releaseName ),
+            'source' => $this->parseSource( $releaseName ),
+            'resolution' => $this->parseResolution( $releaseName ),
+            'isProper' => $this->parseProper( $releaseName ),
+            'isRepack' => $this->parseRepack( $releaseName )
+        ];
 
-        return $release;
+        return new ReleaseObject( $properties);
     }
 
     public function parseFormat( $releaseName )

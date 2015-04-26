@@ -1,36 +1,70 @@
 <?php
+/**
+ * @license For full copyright and license information view LICENSE file distributed with this source code.
+ */
 namespace BD\Subber\Subtitles;
 
 use BD\Subber\Release\Release;
 
-class Subtitle extends Release
+interface Subtitle extends Release
 {
     /**
-     * The language (en, fr...)
+     * @return mixed
      */
-    public $language;
+    public function getLanguage();
 
     /**
-     * Who created the subtitle (addic7ed, seriessub...)
-     * @var string
+     * @param mixed $language
      */
-    public $author;
+    public function setLanguage( $language );
 
     /**
-     * The URL where the subtitle can be downloaded
-     * @var string
+     * @return string
      */
-    public $url;
+    public function getAuthor();
 
     /**
-     * Wether or not this subtitle is a hearing impaired one
-     * @var bool
+     * @param string $author
      */
-    public $isHearingImpaired = false;
+    public function setAuthor( $author );
 
-    /** @var string */
-    public $subtitleFormat = 'srt';
+    /**
+     * @return string
+     */
+    public function getUrl();
 
-    /** @var bool */
-    public $hasTags = false;
+    /**
+     * @param string $url
+     */
+    public function setUrl( $url );
+
+    /**
+     * @return boolean
+     */
+    public function isHearingImpaired();
+
+    /**
+     * @param boolean $isHearingImpaired
+     */
+    public function setIsHearingImpaired( $isHearingImpaired );
+
+    /**
+     * @return string
+     */
+    public function getSubtitleFormat();
+
+    /**
+     * @param string $subtitleFormat
+     */
+    public function setSubtitleFormat( $subtitleFormat );
+
+    /**
+     * @return boolean
+     */
+    public function hasTags();
+
+    /**
+     * @param boolean $hasTags
+     */
+    public function setHasTags( $hasTags );
 }

@@ -5,7 +5,10 @@ interface Scrapper
 {
     /**
      * Scraps a filename, and returns subtitles for it if any.
-     * @return Subtitle[]
+     *
+     * @param $filename
+     *
+     * @return \BD\Subber\Subtitles\Subtitle[]
      */
     public function scrap( $filename );
 }

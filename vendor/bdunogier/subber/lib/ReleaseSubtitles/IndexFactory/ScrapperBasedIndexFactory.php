@@ -6,10 +6,10 @@ use BD\Subber\EventDispatcher\EventDispatcherAware;
 use BD\Subber\Release\Parser\VideoReleaseParser;
 use BD\Subber\ReleaseSubtitles\Index;
 use BD\Subber\ReleaseSubtitles\IndexFactory;
-use BD\Subber\ReleaseSubtitles\TestedReleaseSubtitle;
+use BD\Subber\ReleaseSubtitles\TestedSubtitle;
+use BD\Subber\ReleaseSubtitles\TestedSubtitleObject;
 use BD\Subber\Subtitles\ListConsolidator;
 use BD\Subber\Subtitles\Scrapper;
-use BD\Subber\Subtitles\Subtitle;
 use BD\Subber\Subtitles\Rater;
 use BD\Subber\ReleaseSubtitles\CompatibilityMatcher;
 
@@ -58,45 +58,32 @@ class ScrapperBasedIndexFactory implements IndexFactory
         $videoRelease = $this->videoReleaseParser->parseReleaseName( $releaseName);
 
         $this->subtitleListConsolidator->consolidate( $subtitles );
+
+        $this->makeSubtitlesTestable( $subtitles );
         $subtitles = $this->compatiblityMatcher->match( $videoRelease, $subtitles );
         array_map(
-            function( TestedReleaseSubtitle $subtitle ) {
+            function( TestedSubtitle $subtitle ) {
                 $subtitle->setRating( $this->rater->rate( $subtitle ) );
             },
             $subtitles
         );
 
-        $subtitleSortCallback = function( TestedReleaseSubtitle $a, TestedReleaseSubtitle $b ) {
-            if ( $a->getRating() > $b->getRating() )
-                return -1;
-            if ( $a->getRating() < $b->getRating() )
-                return 1;
-            return 0;
-        };
+        return new Index( $videoRelease, $subtitles );
+    }
 
-        usort( $subtitles, $subtitleSortCallback );
-
-        $compatibleSubtitles = array_values(
-            array_filter(
-                $subtitles,
-                function ( TestedReleaseSubtitle $subtitle ) {
-                    return $subtitle->isCompatible();
-                }
-            )
-        );
-
-        $incompatibleSubtitles = array_values(
-                array_filter(
-                $subtitles,
-                function ( TestedReleaseSubtitle $subtitle ) {
-                    return !$subtitle->isCompatible();
-                }
-            )
-        );
-
-        return new Index(
-            $compatibleSubtitles,
-            $incompatibleSubtitles
+    /**
+     * Makes $subtitles an array of TestedSubtitle
+     * @param \BD\Subber\Subtitles\Subtitle[] $subtitles
+     *
+     * @return \BD\Subber\ReleaseSubtitles\TestedSubtitle[]
+     */
+    private function makeSubtitlesTestable( array &$subtitles )
+    {
+        $subtitles = array_map(
+            function ( $subtitle ) {
+                return new TestedSubtitleObject( $subtitle->toArray() );
+            },
+            $subtitles
         );
     }
 }

@@ -5,6 +5,7 @@ use BD\Subber\Release\Parser\ReleaseParser;
 use BD\Subber\Release\Parser\ReleaseParserException;
 use BD\Subber\Release\Parser\VideoReleaseParser;
 use BD\Subber\Subtitles\Subtitle;
+use BD\Subber\Subtitles\SubtitleObject;
 
 /**
  * Parses subtitle releases from sous-titres.eu
@@ -25,23 +26,23 @@ class SoustitresParser implements ReleaseParser
      */
     public function parseReleaseName( $releaseName )
     {
-        $release = new Subtitle( ['name' => $releaseName, 'author' => 'soustitres'] );
+        $release = new SubtitleObject( ['name' => $releaseName, 'author' => 'soustitres'] );
         $releaseName = strtolower( $releaseName );
 
         // ass/srt
         $extension = pathinfo( $releaseName, PATHINFO_EXTENSION );
         if ( in_array( $extension, ['srt', 'ass'] ) ) {
-            $release->subtitleFormat = $extension;
+            $release->setSubtitleFormat( $extension );
             $releaseName = pathinfo( $releaseName, PATHINFO_FILENAME );
         }
 
         // episode release format (dvdrip group)
         if ( preg_match( '/^(.*)\-([a-z0-9]+)$/', $releaseName, $m ) ) {
             $episodeRelease = $this->episodeReleaseParser->parseReleaseName( $releaseName );
-            $release->group = $episodeRelease->group;
-            $release->source = $episodeRelease->source;
-            $release->resolution = $episodeRelease->resolution;
-            $release->format = $episodeRelease->format;
+            $release->setGroup( $episodeRelease->getGroup() );
+            $release->setSource( $episodeRelease->getSource() );
+            $release->setResolution( $episodeRelease->getResolution() );
+            $release->setFormat( $episodeRelease->getFormat() );
             return $release;
         }
 
@@ -51,17 +52,17 @@ class SoustitresParser implements ReleaseParser
         $next = array_pop( $releaseParts );
         if ( in_array( $next, ['tag', 'notag' ] ) ) {
             if ( $next === 'tag' ) {
-                $release->hasTags = true;
+                $release->setHasTags( true );
             }
             $next = array_pop( $releaseParts );
         }
-        $release->language = $this->fixupLanguage( $next );
+        $release->setLanguage( $this->fixupLanguage( $next ) );
 
         $next = array_pop( $releaseParts );
         if ( $next == 'web-dl' ) {
-            $release->source = 'web-dl';
+            $release->setSource( 'web-dl' );
         } else {
-            $release->group = $next;
+            $release->setGroup( $next );
         }
 
         do
@@ -70,18 +71,20 @@ class SoustitresParser implements ReleaseParser
             if ( !in_array( $next, ['720p', '1080p'] ) ) {
                 break;
             }
-            if ( $release->resolution === null ) {
-                $release->resolution = $next;
-            } elseif ( is_string( $release->resolution ) ) {
-                $release->resolution = [$release->resolution, $next];
+            if ( $release->getResolution() === null ) {
+                $release->setResolution( $next );
+            } elseif ( is_string( $release->getResolution() ) ) {
+                $release->setResolution( [$release->getResolution(), $next] );
             } else {
-                $release->resolution[] = $next;
+                $resolutions = $release->getResolution();
+                $resolutions[] = $next;
+                $release->setResolution( $next );
             }
         } while ( true );
 
         // resolve source if not given
-        if ( $release->source === null ) {
-            $release->source = 'hdtv';
+        if ( $release->getSource() === null ) {
+            $release->setSource( 'hdtv' );
         }
 
         return $release;

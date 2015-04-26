@@ -27,7 +27,7 @@ class ParseVideoReleaseCommand extends ContainerAwareCommand
 
         $episode = $parser->parseReleaseName( $release );
         $output->writeln( "Parsed properties" );
-        foreach( $episode as $field => $value )
+        foreach( $episode->toArray() as $field => $value )
         {
             $output->writeln( "- $field: $value" );
         }

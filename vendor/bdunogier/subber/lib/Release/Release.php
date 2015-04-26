@@ -1,55 +1,80 @@
 <?php
+/**
+ * @license For full copyright and license information view LICENSE file distributed with this source code.
+ */
 namespace BD\Subber\Release;
 
-class Release
+interface Release
 {
-    public function __construct( array $properties = [] )
-    {
-        foreach ( $properties as $property => $value )
-        {
-            if ( !property_exists( $this, $property ) )
-                throw new \InvalidArgumentException( "Unknown property $property in class " . __CLASS__ );
-            $this->$property = $value;
-        }
-    }
+    /**
+     * @return string
+     */
+    public function getName();
 
     /**
-     * The release's name, complete
-     * @var string
+     * @param string $name
      */
-    public $name;
+    public function setName( $name );
 
     /**
-     * dimension, killers, ...
-     * @var string
+     * @return boolean
      */
-    public $group;
+    public function isRepack();
 
     /**
-     * hdtv, web-dl, bluray
-     * @var string
+     * @param boolean $isRepack
      */
-    public $source;
+    public function setIsRepack( $isRepack );
 
     /**
-     * 720p, 1080p
-     * @var string
+     * @return boolean
      */
-    public $resolution;
+    public function isProper();
 
     /**
-     * x264
-     * @var string
+     * @param boolean $isProper
      */
-    public $format;
+    public function setIsProper( $isProper );
 
     /**
-     * @var bool
+     * @return string
      */
-    public $isProper;
+    public function getGroup();
 
     /**
-     * @var bool
+     * @return string
      */
-    public $isRepack;
+    public function getSource();
+
+    /**
+     * @param string $source
+     */
+    public function setSource( $source );
+
+    /**
+     * @return string
+     */
+    public function getResolution();
+
+    /**
+     * @param string $resolution
+     */
+    public function setResolution( $resolution );
+
+    /**
+     * @return string
+     */
+    public function getFormat();
+
+    /**
+     * @param string $format
+     */
+    public function setFormat( $format );
+
+    /**
+     * @param string $group
+     */
+    public function setGroup( $group );
+
+    public function toArray();
 }

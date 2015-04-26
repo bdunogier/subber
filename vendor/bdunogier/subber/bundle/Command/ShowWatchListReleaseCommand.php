@@ -7,19 +7,19 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class ShowQueuedFileCommand extends ContainerAwareCommand
+class ShowWatchListReleaseCommand extends ContainerAwareCommand
 {
     public function configure()
     {
-        $this->setName( 'subber:show-queued-file' );
-        $this->setDescription( 'Shows a queued file information' );
-        $this->addArgument( 'release-file', InputArgument::REQUIRED, "The local release file path" );
+        $this->setName( 'subber:watchlist:show-release' );
+        $this->setDescription( 'Shows a queued release information' );
+        $this->addArgument( 'release-name', InputArgument::REQUIRED, "The release name" );
     }
 
     public function execute( InputInterface $input, OutputInterface $output )
     {
         $factory = $this->getContainer()->get( 'bd_subber.subtitled_episode_release_factory' );
-        $release = $factory->buildFromlocalReleasePath( $input->getArgument( 'release-file' ) );
+        $release = $factory->buildFromReleaseName( $input->getArgument( 'release-name' ) );
         print_r( $release );
     }
 }

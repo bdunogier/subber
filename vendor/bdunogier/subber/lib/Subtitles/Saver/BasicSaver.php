@@ -16,12 +16,12 @@ class BasicSaver implements Saver
     {
         $subtitleSavePath = $this->computeSubtitleFileName( $forFile, $subtitle );
         if ( !$this->isZipFile( $subtitle ) ) {
-            copy( $subtitle->url, $subtitleSavePath );
+            copy( $subtitle->getUrl(), $subtitleSavePath );
             return;
         }
 
         $wantedSubName = false;
-        foreach (explode( '&', parse_url( $subtitle->url, PHP_URL_QUERY ) ) as $queryPart) {
+        foreach (explode( '&', parse_url( $subtitle->getUrl(), PHP_URL_QUERY ) ) as $queryPart) {
             list( $name, $value ) = explode( '=', $queryPart );
             if ($name == 'subber_zipfile') {
                 $wantedSubName = urldecode( $value );
@@ -30,7 +30,7 @@ class BasicSaver implements Saver
 
         // extract requested zip file
         $zipPath = tempnam( sys_get_temp_dir(), 'subberzip_' );
-        copy( $subtitle->url, $zipPath );
+        copy( $subtitle->getUrl(), $zipPath );
         $zip = new ZipArchive;
         $zip->open( $zipPath );
         for ($i = 0; $i < $zip->numFiles; $i++) {
@@ -52,13 +52,13 @@ class BasicSaver implements Saver
 
     private function isZipFile( Subtitle $subtitle)
     {
-        return strstr( $subtitle->url, 'subber_zipfile' ) !== false;
+        return strstr( $subtitle->getUrl(), 'subber_zipfile' ) !== false;
     }
 
     private function computeSubtitleFileName( $videoFile, Subtitle $subtitle )
     {
         $videoExtension = pathinfo( $videoFile, PATHINFO_EXTENSION );
-        $subtitleExtension = pathinfo( $subtitle->name, PATHINFO_EXTENSION );
+        $subtitleExtension = pathinfo( $subtitle->getName(), PATHINFO_EXTENSION );
 
         return preg_replace( "/\.$videoExtension$/", ".$subtitleExtension", $videoFile );
     }
