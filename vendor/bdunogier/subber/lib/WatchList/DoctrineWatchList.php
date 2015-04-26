@@ -44,7 +44,7 @@ class DoctrineWatchList extends EntityRepository implements WatchList
      */
     public function setItemComplete( WatchListItem $item )
     {
-        $this->setItemDone( $item, null );
+        $this->setItemDone( $item );
     }
 
     public function setItemDone( WatchListItem $item )
@@ -69,5 +69,11 @@ class DoctrineWatchList extends EntityRepository implements WatchList
     public function loadByLocalReleasePath( $localReleasePath )
     {
         return $this->findOneByFile( $localReleasePath );
+    }
+
+    public function remove( WatchListItem $item )
+    {
+        $this->_em->remove( $item );
+        $this->_em->flush();
     }
 }

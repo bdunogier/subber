@@ -1,0 +1,8 @@
+default:
+    extensions:
+        Behat\Symfony2Extension: ~
+    suites:
+        default:
+            contexts:
+                - FeatureContext:
+                  watchList: '@bd_subber.watchlist'

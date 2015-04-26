@@ -24,4 +24,6 @@ interface WatchList
      * @return WatchListitem
      */
     public function loadByLocalReleasePath( $localReleasePath );
+
+    public function remove( WatchListItem $item );
 }
