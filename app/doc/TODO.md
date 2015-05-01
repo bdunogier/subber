@@ -8,6 +8,8 @@
 ### Subtitles parsing use-cases
 - [ ] tvsubtitles "12 Monkeys - 1x11 - Shonin.HDTV.ASAP.en.srt" ends up with two groups (null + asap)
 - [ ] seriessub "The.Walking.Dead.513.KILLERS.VF.srt.ass" isn't parsed correctly (group is set to vf)
+- [ ] "A scrapping error occured on Once.Upon.a.Time.S04E14.720p.HDTV.x264-KILLERS.mkv: Aucun épisode trouvé"
+- [ ] Addic7ed: "A scrapping error occured on 12.Monkeys.S01E07.The.Keys.720p.WEB-DL.DD5.1.H.264-BS.mkv: Parsing error: Unable to parse '12 Monkeys - 01x07 - The Keys.srt': addic7ed.com string not found"
 
 ### Releases matching use-cases
 - [ ] Subtitle addic7ed "Vikings - 03x06 - Born Again.KILLERS.French.C.updated.Addic7ed.com.srt" is not
