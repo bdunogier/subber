@@ -81,7 +81,7 @@ class ScrapperBasedIndexFactory implements IndexFactory
     {
         $subtitles = array_map(
             function ( $subtitle ) {
-                return new TestedSubtitleObject( $subtitle->toArray() );
+                return new TestedSubtitleObject( ['compatibility' => TestedSubtitle::UNDETERMINED] + $subtitle->toArray() );
             },
             $subtitles
         );
