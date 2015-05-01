@@ -14,22 +14,22 @@ class StaticRater implements Rater
         $rate = 0;
 
         // language
-        if ( $subtitle->language == 'en' )
+        if ( $subtitle->getLanguage() == 'en' )
             $rate -= 5;
 
         // hearing impaired
-        if ( $subtitle->isHearingImpaired )
+        if ( $subtitle->isHearingImpaired() )
             $rate -= 3;
 
         // type
-        if ( $subtitle->subtitleFormat == 'ass' )
+        if ( $subtitle->getSubtitleFormat() == 'ass' )
             $rate += 2;
 
         // tag/notag
-        if ( $subtitle->hasTags )
+        if ( $subtitle->hasTags() )
             $rate += 1;
 
-        switch ( $subtitle->source )
+        switch ( $subtitle->getSource() )
         {
             case 'soustitres':  $rate += 2; break;
             case 'addic7ed':    $rate += 1; break;

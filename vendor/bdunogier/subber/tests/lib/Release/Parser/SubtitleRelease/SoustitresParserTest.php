@@ -3,6 +3,7 @@ namespace tests\BD\Subber\Release\Parser\SubtitleRelease;
 
 use BD\Subber\Release\Parser\SubtitleRelease\SoustitresParser;
 use BD\Subber\Release\Release;
+use BD\Subber\Release\ReleaseObject;
 
 class SoustitresParserTest extends \PHPUnit_Framework_TestCase
 {
@@ -35,7 +36,7 @@ class SoustitresParserTest extends \PHPUnit_Framework_TestCase
             ->method( 'parseReleaseName' )
             ->with( '12.monkeys.s01e02.mentally.divergent.720p.web-dl.dd5.1.h.264-bs' )
             ->willReturn(
-                new Release(
+                new ReleaseObject(
                     [
                         'name' => '12.monkeys.s01e02.mentally.divergent.720p.web-dl.dd5.1.h.264-bs',
                         'group' => 'bs',

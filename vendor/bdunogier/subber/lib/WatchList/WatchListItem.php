@@ -1,13 +1,13 @@
 <?php
-namespace BD\Subber\Queue;
+namespace BD\Subber\WatchList;
 
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="BD\Subber\Queue\DoctrineTaskRepository")
+ * @ORM\Entity(repositoryClass="BD\Subber\WatchList\DoctrineWatchList")
  * @ORM\Table(name="tasks")
  */
-class Task
+class WatchListItem
 {
     const STATUS_NEW = 0;
     const STATUS_DONE = 1;
@@ -38,12 +38,12 @@ class Task
     /**
      * @ORM\Column(name="created", type="datetime", nullable=true)
      */
-    protected $createdAt = 0;
+    protected $createdAt = null;
 
     /**
      * @ORM\Column(name="updated", type="datetime", nullable=true)
      */
-    protected $updatedAt = 0;
+    protected $updatedAt = null;
 
     /**
      * @ORM\Column(name="status", type="integer", nullable=true)
@@ -57,9 +57,11 @@ class Task
 
     /**
      * Set file
+
      *
-     * @param string $file
-     * @return Task
+*@param string $file
+     *
+*@return WatchListItem
      */
     public function setFile($file)
     {
@@ -80,9 +82,11 @@ class Task
 
     /**
      * Set originalName
+
      *
-     * @param string $originalName
-     * @return Task
+*@param string $originalName
+     *
+*@return WatchListItem
      */
     public function setOriginalName($originalName)
     {

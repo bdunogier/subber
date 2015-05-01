@@ -7,7 +7,7 @@
  */
 namespace BD\SubberBundle\Command;
 
-use BD\Subber\Queue\Task;
+use BD\Subber\WatchList\WatchListItem;
 use DateTime;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputArgument;
@@ -15,24 +15,24 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class ShowQueueCommand extends ContainerAwareCommand
+class ShowWatchListCommand extends ContainerAwareCommand
 {
     public function configure()
     {
-        $this->setName( 'subber:show-queue' );
+        $this->setName( 'subber:watchlist:show' );
     }
 
     public function execute( InputInterface $input, OutputInterface $output )
     {
-        $repository = $this->getContainer()->get( 'bd_subber.tasks_repository' );
+        $watchlist = $this->getContainer()->get( 'bd_subber.watchlist' );
 
-        $output->writeln( "Pending tasks" );
+        $output->writeln( "Incomplete watchlist items" );
         $output->writeln( "" );
 
-        /** @var Task $task */
-        foreach ($repository->findAllPendingTasks() as $task) {
+        /** @var WatchListItem $item */
+        foreach ($watchlist->findAllPendingItems() as $item) {
             $output->writeln(
-                sprintf( "- %s (%s)", $task->getOriginalName(), $task->getFile() )
+                sprintf( "- %s (%s)", $item->getOriginalName(), $item->getFile() )
             );
         }
     }

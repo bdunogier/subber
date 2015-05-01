@@ -4,9 +4,9 @@
  */
 namespace BD\Subber\SubtitledEpisodeRelease;
 
-use BD\Subber\Release\Release;
+use BD\Subber\Release\ReleaseObject;
 
-class SubtitledEpisodeRelease extends Release
+class SubtitledEpisodeRelease extends ReleaseObject
 {
     /** @var \BD\Subber\Episode\Episode */
     private $episode;

@@ -78,9 +78,9 @@ doctrine:
                 mappings:
                     subber_queue:
                         type: annotation
-                        dir: %kernel.root_dir%/../vendor/bdunogier/subber/lib/Queue
-                        prefix: BD\Subber\Queue
-                        alias: SubberQueue
+                        dir: %kernel.root_dir%/../vendor/bdunogier/subber/lib/WatchList
+                        prefix: BD\Subber\WatchList
+                        alias: SubberWatchList
                         is_bundle: false
 
 stash:

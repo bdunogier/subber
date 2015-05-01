@@ -4,6 +4,7 @@ namespace BD\Subber\Release\Parser\SubtitleRelease;
 use BD\Subber\Release\Parser\ReleaseParser;
 use BD\Subber\Release\Parser\ReleaseParserException;
 use BD\Subber\Subtitles\Subtitle;
+use BD\Subber\Subtitles\SubtitleObject;
 
 /**
  * Parses subtitles names from betaseries (as a subtitles source, not a scrapped site)
@@ -16,31 +17,31 @@ class BetaseriesParser implements ReleaseParser
      */
     public function parseReleaseName( $releaseName )
     {
-        $release = new Subtitle( ['name' => $releaseName, 'author' => 'betaseries', 'language' => 'fr'] );
+        $release = new SubtitleObject( ['name' => $releaseName, 'author' => 'betaseries', 'language' => 'fr'] );
         $releaseParts = explode( '.', strtolower( $releaseName ) );
 
-        $release->resolution = array_pop( $releaseParts );
+        $release->setResolution( array_pop( $releaseParts ) );
 
         $next = array_pop( $releaseParts );
         if ( in_array( $next, ['720p', '1080p'] ) )
         {
-            $release->resolution = $next;
+            $release->setResolution( $next );
             $next = array_pop( $releaseParts );
         }
 
         if ( $next === 'web-dl' ) {
-            $release->source = 'web-dl';
+            $release->setSource( 'web-dl' );
             $next = array_pop( $releaseParts );
         } else {
-            $release->group = 'lol';
+            $release->setGroup( 'lol' );
         }
 
         if ( $next === 'lol' ) {
-            $release->source = 'hdtv';
+            $release->setSource( 'hdtv' );
         }
 
-        if ( $release->group === 'lol' ) {
-            $release->source = 'hdtv';
+        if ( $release->getGroup() === 'lol' ) {
+            $release->setSource( 'hdtv' );
         }
 
         return $release;

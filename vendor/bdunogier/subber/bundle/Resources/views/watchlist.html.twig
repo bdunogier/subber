@@ -6,8 +6,8 @@
     <h1>Dashboard</h1>
 
     <div class="row-fluid">
-        {% for task in tasks %}
-            {{ render(controller('bd_subber.release_controller:showReleaseByNameAction', {'releaseName': task.originalName})) }}
+        {% for item in items %}
+            {{ render(controller('bd_subber.release_controller:showReleaseByNameAction', {'releaseName': item.originalName})) }}
         {% endfor %}
     </div>
 {% endblock %}

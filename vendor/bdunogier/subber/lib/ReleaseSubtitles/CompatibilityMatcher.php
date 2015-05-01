@@ -3,7 +3,6 @@
 namespace BD\Subber\ReleaseSubtitles;
 
 use BD\Subber\Release\Release;
-use BD\Subber\ReleaseSubtitles\TestedReleaseSubtitle;
 
 class CompatibilityMatcher
 {
@@ -11,35 +10,36 @@ class CompatibilityMatcher
      * Matches $subtitles against Episode Release $release
      *
      * @param \BD\Subber\Release\Release $release
-     * @param \BD\Subber\Subtitles\Subtitle[] $testedSubtitles
+     * @param \BD\Subber\ReleaseSubtitles\TestedSubtitle[] $testedSubtitles
      *
-     * @return \BD\Subber\ReleaseSubtitles\TestedReleaseSubtitle[]
+     * @return \BD\Subber\ReleaseSubtitles\TestedSubtitle[]
      */
     public function match( Release $release, array $testedSubtitles )
     {
         if ( !count( $testedSubtitles ) ) {
             return array();
         }
-        $testedSubtitles = $this->makeSubtitlesTestable( $release, $testedSubtitles );
 
         $releaseRequiresRepackedSubtitles = $this->releaseRequiresRepackedSubtitles( $release, $testedSubtitles );
 
         foreach ( $testedSubtitles as $subtitle ) {
             if ( $releaseRequiresRepackedSubtitles )
             {
-                if ( $subtitle->isProper !== $release->isProper || $subtitle->isRepack !== $release->isRepack ) {
+                if ( $subtitle->isProper() !== $release->isProper() || $subtitle->isRepack() !== $release->isRepack() ) {
                     $subtitle->setIncompatible();
+                    continue;
                 }
             }
 
-            if ( isset( $subtitle->source ) && $subtitle->source != $release->source ) {
+            if ( $subtitle->getSource() !== null && $subtitle->getSource() != $release->getSource() ) {
                 $subtitle->setIncompatible();
                 continue;
             }
-            if ( isset( $subtitle->group ) && $subtitle->group != $release->group ) {
+
+            if ( $subtitle->getGroup() !== null && $subtitle->getGroup() != $release->getGroup() ) {
                 // At this point, the source is different, but the source is the same.
                 // we may test if the resolution is set on sub & release. If it ain't, they're probably compatible
-                if ( isset( $subtitle->resolution ) || isset( $release->resolution ) ) {
+                if ( $subtitle->getResolution() !== null || $release->getResolution() !== null ) {
                     $subtitle->setIncompatible();
                     continue;
                 }
@@ -59,12 +59,12 @@ class CompatibilityMatcher
      */
     private function releaseRequiresRepackedSubtitles( Release $release, array $subtitles )
     {
-        if (!$release->isRepack && !$release->isProper) {
+        if ( !$release->isRepack() && !$release->isProper() ) {
             return false;
         }
 
         foreach ( $subtitles as $subtitle ) {
-            if ( $subtitle->isRepack || $subtitle->isProper ) {
+            if ( $subtitle->isRepack() || $subtitle->isProper() ) {
                 return true;
             }
         }
@@ -72,21 +72,4 @@ class CompatibilityMatcher
         return false;
     }
 
-    /**
-     * Converts all Subtitles into TestedReleaseSubtitle
-     * @param \BD\Subber\Release\Release $release
-     * @param \BD\Subber\Subtitles\Subtitle[] $subtitles
-     *
-     * @return \BD\Subber\ReleaseSubtitles\TestedReleaseSubtitle[]
-     */
-    private function makeSubtitlesTestable( Release $release, array $subtitles )
-    {
-        return array_map(
-            function ( $subtitle, $release ) {
-                return new TestedReleaseSubtitle( $release, $subtitle );
-            },
-            $subtitles,
-            array_fill( 0, count( $subtitles ), $release )
-        );
-    }
 }

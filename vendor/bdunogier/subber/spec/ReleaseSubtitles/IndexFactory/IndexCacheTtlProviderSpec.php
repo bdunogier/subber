@@ -25,7 +25,7 @@ class IndexCacheTtlProviderSpec extends ObjectBehavior
 
     /**
      * @param \BD\Subber\ReleaseSubtitles\Index $index
-     * @param \BD\Subber\ReleaseSubtitles\TestedReleaseSubtitle $subtitle
+     * @param \BD\Subber\ReleaseSubtitles\TestedSubtitle $subtitle
      */
     function it_sets_ttl_to_two_hours_when_best_subtitles_with_zero_or_negative_rating( $index, $subtitle )
     {
@@ -39,7 +39,7 @@ class IndexCacheTtlProviderSpec extends ObjectBehavior
 
     /**
      * @param \BD\Subber\ReleaseSubtitles\Index $index
-     * @param \BD\Subber\ReleaseSubtitles\TestedReleaseSubtitle $subtitle
+     * @param \BD\Subber\ReleaseSubtitles\TestedSubtitle $subtitle
      */
     function it_sets_ttl_to_one_half_day_when_best_subtitle_with_positive_rating( $index, $subtitle )
     {
