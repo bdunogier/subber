@@ -38,12 +38,12 @@ class WatchListItem
     /**
      * @ORM\Column(name="created", type="datetime", nullable=true)
      */
-    protected $createdAt = 0;
+    protected $createdAt = null;
 
     /**
      * @ORM\Column(name="updated", type="datetime", nullable=true)
      */
-    protected $updatedAt = 0;
+    protected $updatedAt = null;
 
     /**
      * @ORM\Column(name="status", type="integer", nullable=true)

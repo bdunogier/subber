@@ -25,7 +25,7 @@ class NewBestSubtitleWatchListMonitor implements WatchListMonitor
         WatchList $watchList,
         IndexFactory $indexFactory,
         Saver $saver,
-        EventDispatcherInterface $eventDispatcher
+        EventDispatcherInterface $eventDispatcher = null
     )
     {
         $this->watchList = $watchList;

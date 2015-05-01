@@ -10,4 +10,13 @@ Feature: Watch List
       And I set "path" to "/path/to/api-test-release.mkv"
       And I POST the payload to "/subber/watchlist"
      Then I get a 200 HTTP response
-      And there is a WatchList item for Release "API test release"
+      And a WatchList item was created for Release "API test release"
+
+  Scenario: The dashboard shows WatchList items
+
+  Scenario: The dashboard shows the currently playing WatchList item
+
+  Scenario: The monitor checks a new WatchList item for subtitles
+    Given there is a WatchList item for Release "API test release"
+     When I execute the WatchList Monitor
+     Then I see subtitles checked for "API test release"

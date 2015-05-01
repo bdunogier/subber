@@ -79,7 +79,7 @@ class BetaseriesScrapper implements Scrapper
                     );
                     continue;
                 }
-                $subtitle->setUrl = $subtitleArray['url'];
+                $subtitle->setUrl( $subtitleArray['url'] );
                 $subtitles[] = $subtitle;
             }
         }

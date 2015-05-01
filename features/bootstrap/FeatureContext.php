@@ -1,5 +1,6 @@
 <?php
 use BD\Subber\WatchList\WatchList;
+use BD\Subber\WatchList\WatchListItem;
 use Behat\Behat\Context\Context;
 use Behat\Behat\Context\SnippetAcceptingContext;
 use Behat\Behat\Tester\Exception\PendingException;
@@ -8,6 +9,7 @@ use Behat\Gherkin\Node\TableNode;
 use Behat\Symfony2Extension\Context\KernelDictionary;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
+use Symfony\Component\Process\Process;
 
 /**
  * Defines application features from the specific context.
@@ -53,9 +55,8 @@ class FeatureContext implements Context, SnippetAcceptingContext
      */
     public function thereIsNoWatchListForRelease($releaseName)
     {
-        $this->watchList = $this->getContainer()->get('bd_subber.watchlist');
-        if (($item = $this->watchList->loadByReleaseName($releaseName)) !== null) {
-            $this->watchList->remove($item);
+        if (($item = $this->getWatchList()->loadByReleaseName($releaseName)) !== null) {
+            $this->getWatchList()->remove($item);
         }
     }
 
@@ -114,18 +115,59 @@ class FeatureContext implements Context, SnippetAcceptingContext
         }
 
         if ( $responseCode != $httpCode ) {
-            throw new Exception("Expected $httpCode" . isset($message) ? ": $message" : "");
+            throw new Exception("Expected $httpCode".(isset($message) ? ": $message" : ""));
         }
     }
 
     /**
-     * @Then there is a WatchList item for Release :releaseName
+     * @Then a WatchList item was created for Release :releaseName
      */
-    public function thereIsAWatchListItemForRelease($releaseName)
+    public function aWatchListItemWasCreatedForRelease($releaseName)
     {
         $this->watchList = $this->getContainer()->get('bd_subber.watchlist');
         if (($episode = $this->watchList->loadByReleaseName($releaseName)) === null) {
             throw new Exception("No watch list item named $releaseName");
         }
+    }
+
+    /**
+     * @Given there is a WatchList item for Release :releaseName
+     **/
+    public function thereIsAWatchlistItemForRelease($releaseName)
+    {
+        $this->getWatchList()->addItem(
+            new WatchListItem(
+                [ 'originalName' => $releaseName, 'file' => '/tmp/' . uniqid('subber') . '.mkv' ]
+            )
+        );
+    }
+
+    /**
+     * @When I execute the WatchList Monitor
+     */
+    public function iExecuteTheWatchlistMonitor()
+    {
+        $process = new Process("php app/console subber:watchlist:monitor -v");
+        $process->run();
+
+        if (!$process->isSuccessful()) {
+            throw new Exception("subber:watchlist:monitor failed with error:\n" . $process->getErrorOutput() );
+        }
+    }
+
+    /**
+     * @Then I see subtitles checked for :arg1
+     */
+    public function iSeeSubtitlesCheckedFor($arg1)
+    {
+        throw new PendingException();
+    }
+
+    /**
+     * @return WatchList
+     */
+    private function getWatchList()
+    {
+        return $this->getContainer()->get( 'bd_subber.watchlist' );
     }
 }
