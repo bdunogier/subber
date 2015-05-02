@@ -96,7 +96,7 @@ function subber_queue( array $fields )
         ]
     ];
     $context  = stream_context_create( $options );
-    file_get_contents( get_config('subber_host') . '/subber/queue', false, $context);
+    file_get_contents( get_config('subber_host') . '/subber/watchlist', false, $context);
 }
 
 function get_config( $key )
