@@ -1,8 +1,10 @@
 <?php
 namespace BD\Subber\Subtitles\Saver;
 
+use BD\Subber\Event\SaveSubtitleEvent;
 use BD\Subber\Subtitles\Saver;
 use BD\Subber\Subtitles\Subtitle;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use ZipArchive;
 
 /**
@@ -12,11 +14,23 @@ use ZipArchive;
  */
 class BasicSaver implements Saver
 {
+    /** @var EventDispatcherInterface */
+    private $eventDispatcher;
+
+    /**
+     * @param EventDispatcherInterface $eventDispatcher
+     */
+    public function setEventDispatcher( $eventDispatcher )
+    {
+        $this->eventDispatcher = $eventDispatcher;
+    }
+
     public function save( Subtitle $subtitle, $forFile )
     {
         $subtitleSavePath = $this->computeSubtitleFileName( $forFile, $subtitle );
         if ( !$this->isZipFile( $subtitle ) ) {
             copy( $subtitle->getUrl(), $subtitleSavePath );
+            $this->dispatch( $subtitle, $subtitleSavePath );
             return;
         }
 
@@ -37,6 +51,7 @@ class BasicSaver implements Saver
             $filename = (string)$zip->getNameIndex( $i );
             if ($filename === $wantedSubName) {
                 file_put_contents( $subtitleSavePath, $zip->getFromName( $filename ) );
+                $this->dispatch( $subtitle, $subtitleSavePath );
                 $saved = true;
                 break;
             }
@@ -60,6 +75,15 @@ class BasicSaver implements Saver
         $videoExtension = pathinfo( $videoFile, PATHINFO_EXTENSION );
         $subtitleExtension = pathinfo( $subtitle->getName(), PATHINFO_EXTENSION );
 
-        return preg_replace( "/\.$videoExtension$/", ".$subtitleExtension", $videoFile );
+        return preg_replace( "/\.$videoExtension$/", ".fr.$subtitleExtension", $videoFile );
+    }
+
+    private function dispatch( Subtitle $subtitle, $toFilePath )
+    {
+        if ( isset( $this->eventDispatcher ) ) {
+            $this->eventDispatcher->dispatch(
+                'subber.save_subtitle', new SaveSubtitleEvent( $subtitle, $toFilePath )
+            );
+        }
     }
 }

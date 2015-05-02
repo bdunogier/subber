@@ -1,35 +1,53 @@
 <?php
+/**
+ * @license For full copyright and license information view LICENSE file distributed with this source code.
+ */
 namespace BD\SubberBundle\Controller;
 
-use BD\Subber\WatchList\WatchListItem;
 use BD\Subber\WatchList\WatchList;
-use Doctrine\ORM\EntityManagerInterface;
+use BD\Subber\WatchList\WatchListItem;
+use BD\SubberBundle\Form\WatchListItemType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 
-class WatchListController extends Controller
+class WatchListController extends Controller implements ContainerAwareInterface
 {
     /** @var \BD\Subber\WatchList\WatchList */
     private $watchList;
 
     public function __construct( WatchList $watchList )
     {
-        $this->item = $watchList;
+        $this->watchList = $watchList;
     }
 
-    public function addToWatchListAction( Request $request )
+    public function showFormAction(Request $request)
     {
-        $itemArray = json_decode( $request->getContent(), true );
+        $form = $this->createForm( new WatchListItemType(), new WatchListItem(), [] );
 
-        $item = new WatchListItem();
-        $item->setFile( $itemArray['path'] );
-        $item->setOriginalName( $itemArray['original_name'] );
-        $item->setCreatedAt( new \DateTime() );
-        $item->setUpdatedAt( new \DateTime() );
+        return $this->render(
+            'BDSubberBundle::add_watchlist_item_form.html.twig',
+            array('form' => $form->createView())
+        );
+    }
 
-        $this->item->addItem( $item );
+    public function createAction(Request $request)
+    {
+        $form = $this->createForm( new WatchListItemType(), new WatchListItem(), [] );
 
-        return new Response();
+        $form->handleRequest($request);
+
+        if ($form->isValid()) {
+            $item = $form->getData();
+
+            $this->watchList->addItem( $item );
+
+            return $this->redirectToRoute(...);
+        }
+
+        return $this->render(
+            'AcmeAccountBundle:Account:register.html.twig',
+            array('form' => $form->createView())
+        );
     }
 }
