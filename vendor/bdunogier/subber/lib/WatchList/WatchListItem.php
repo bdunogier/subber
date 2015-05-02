@@ -57,11 +57,8 @@ class WatchListItem
 
     /**
      * Set file
-
-     *
-*@param string $file
-     *
-*@return WatchListItem
+     * @param string $file
+     * @return WatchListItem
      */
     public function setFile($file)
     {
@@ -82,11 +79,8 @@ class WatchListItem
 
     /**
      * Set originalName
-
-     *
-*@param string $originalName
-     *
-*@return WatchListItem
+     * @param string $originalName
+     * @return WatchListItem
      */
     public function setOriginalName($originalName)
     {
