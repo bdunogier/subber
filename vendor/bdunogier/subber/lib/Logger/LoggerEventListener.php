@@ -39,7 +39,7 @@ class LoggerEventListener implements EventSubscriberInterface
         $this->logger->info(
             sprintf(
                 "Saving subtitle '%s' for file '%s'",
-                $event->getSubtitle()->url, $event->getTo()
+                $event->getSubtitle()->getUrl(), $event->getTo()
             )
         );
     }
