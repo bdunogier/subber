@@ -2,17 +2,15 @@
     .release { font-family: monospace; }
 </style>
 
-<h3><span class="release">{{ release.name }}</span></h3>
-
-{% if release.episode is not null %}
-    <p>{{ release.showTitle }}, season {{ release.episode.seasonNumber }}, episode {{ release.episode.episodeNumber }}: {{ release.episode.episodeTitle }}</p>
-{% endif %}
-
-{% if release.subtitlesIndex.hasBestSubtitle %}
-    <p>Best subtitle: <span class="release">{{ release.subtitlesIndex.bestSubtitle.name }}</span></p>
-{% endif %}
-
 {% if release.subtitlesIndex.compatibleSubtitles|length %}
+    {% if release.episode is not null %}
+        <h3>{{ release.episode.showTitle }} {{ release.episode.seasonNumber }}x{{ release.episode.episodeNumber }}: {{ release.episode.episodeTitle }}</h3>
+    {% endif %}
+
+    {% if release.subtitlesIndex.hasBestSubtitle %}
+        <p>Best subtitle: <span class="release">{{ release.subtitlesIndex.bestSubtitle.name }}</span></p>
+    {% endif %}
+
     <h4>Compatible subtitles ({{ release.subtitlesIndex.compatibleSubtitles|length }})</h4>
     <ul>
         {% for subtitle in release.subtitlesIndex.compatibleSubtitles %}
