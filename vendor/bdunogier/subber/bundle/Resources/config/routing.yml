@@ -1,8 +1,16 @@
 bd_subber_watchlist:
     path: /subber/watchlist
     methods: [POST]
-    defaults: { _controller: bd_subber.watchlist_controller:addToWatchListAction }
+    defaults: { _controller: bd_subber.rest_controller:addToWatchListAction }
 
 bd_subber_dashboard:
     path: /
     defaults: { _controller: bd_subber.dashboard_controller:listAction}
+
+bd_subber_item_form:
+    path: /watchlist/new
+    defaults: { _controller: bd_subber.watchlist_controller:showFormAction}
+
+bd_subber_item_view:
+    path: /watchlist/item/{releaseName}
+    defaults: { _controller: bd_subber.watchlist_controller:viewAction}

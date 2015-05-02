@@ -1,19 +1,28 @@
 services:
+    bd_subber.controller:
+        class: Symfony\Bundle\FrameworkBundle\Controller\Controller
+        calls:
+            - [setContainer, [@service_container]]
+
+    bd_subber.rest_controller:
+        class: BD\SubberBundle\Controller\RestController
+        arguments: [@bd_subber.watchlist]
+        parent: bd_subber.controller
+
     bd_subber.watchlist_controller:
         class: BD\SubberBundle\Controller\WatchListController
         arguments: [@bd_subber.watchlist]
+        parent: bd_subber.controller
 
     bd_subber.dashboard_controller:
         class: BD\SubberBundle\Controller\DashboardController
         arguments: [@bd_subber.watchlist]
-        calls:
-            - [setContainer, [@service_container]]
+        parent: bd_subber.controller
 
     bd_subber.release_controller:
         class: BD\SubberBundle\Controller\ReleaseController
         arguments: [@bd_subber.subtitled_episode_release_factory]
-        calls:
-            - [setContainer, [@service_container]]
+        parent: bd_subber.controller
 
     bd_subber.watchlist:
         alias: bd_subber.watchlist.doctrine
@@ -133,6 +142,8 @@ services:
 
     bd_subber.subtitle_saver:
         class: BD\Subber\Subtitles\Saver\BasicSaver
+        calls:
+            - [setEventDispatcher, [@event_dispatcher]]
 
     bd_subber.release.episode_metadata_file_parser:
         class: BD\Subber\Episode\EpisodeMetadataFileParser

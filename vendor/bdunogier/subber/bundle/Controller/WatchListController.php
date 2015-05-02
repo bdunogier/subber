@@ -23,7 +23,11 @@ class WatchListController extends Controller implements ContainerAwareInterface
 
     public function showFormAction(Request $request)
     {
-        $form = $this->createForm( new WatchListItemType(), new WatchListItem(), [] );
+        $form = $this->createForm(
+            new WatchListItemType(),
+            new WatchListItem(),
+            ['action' => $this->generateUrl('bd_subber_item_form')]
+        );
 
         return $this->render(
             'BDSubberBundle::add_watchlist_item_form.html.twig',
@@ -42,12 +46,20 @@ class WatchListController extends Controller implements ContainerAwareInterface
 
             $this->watchList->addItem( $item );
 
-            return $this->redirectToRoute(...);
+            return $this->redirectToRoute( 'bd_subber_item_view', ['releaseName' => $item->getName()]);
         }
 
         return $this->render(
             'AcmeAccountBundle:Account:register.html.twig',
             array('form' => $form->createView())
+        );
+    }
+
+    public function viewAction( $releaseName )
+    {
+        $this->render(
+            'BDSubberBundle::release.html.twig',
+            ['release' => $this->watchList->loadByReleaseName( $releaseName )]
         );
     }
 }

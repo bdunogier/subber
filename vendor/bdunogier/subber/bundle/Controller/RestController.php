@@ -32,9 +32,4 @@ class WatchListController extends Controller
 
         return new Response();
     }
-
-    public function watchListFormAction()
-    {
-
-    }
 }
