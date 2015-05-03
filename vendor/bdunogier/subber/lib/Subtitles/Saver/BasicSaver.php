@@ -1,6 +1,7 @@
 <?php
 namespace BD\Subber\Subtitles\Saver;
 
+use BD\Subber\Event\SaveSubtitleErrorEvent;
 use BD\Subber\Event\SaveSubtitleEvent;
 use BD\Subber\Subtitles\Saver;
 use BD\Subber\Subtitles\Subtitle;
@@ -28,6 +29,22 @@ class BasicSaver implements Saver
     public function save( Subtitle $subtitle, $forFile )
     {
         $subtitleSavePath = $this->computeSubtitleFileName( $forFile, $subtitle );
+
+        if ( !is_writable( $subtitleSavePath ) || !is_writable( dirname( $subtitleSavePath ) ) ) {
+            if ( isset( $this->eventDispatcher ) ) {
+                $this->eventDispatcher->dispatch(
+                    "subber.save_subtitle_error",
+                    new SaveSubtitleErrorEvent(
+                        $subtitle,
+                        $forFile,
+                        $subtitleSavePath,
+                        "Destination is not writable"
+                    )
+                );
+            }
+            return;
+        }
+
         if ( !$this->isZipFile( $subtitle ) ) {
             copy( $subtitle->getUrl(), $subtitleSavePath );
             $this->dispatch( $subtitle, $subtitleSavePath );

@@ -3,6 +3,7 @@ namespace BD\Subber\Logger;
 
 use BD\Subber\Event\NewBestSubtitleEvent;
 use BD\Subber\Event\NewWatchListitemEvent;
+use BD\Subber\Event\SaveSubtitleErrorEvent;
 use BD\Subber\Event\SaveSubtitleEvent;
 use BD\Subber\Event\ScrapErrorEvent;
 use BD\Subber\Event\ScrapReleaseEvent;
@@ -31,6 +32,7 @@ class LoggerEventListener implements EventSubscriberInterface
             'subber.watch.post_new_item' => ['onNewWatchListItem'],
             'subber.scrap_error' => ['onScrapError'],
             'subber.new_best_subtitle' => ['onNewBestSubtitle'],
+            'subber.save_subtitle_error' => ['onSaveSubtitleError']
         ];
     }
 
@@ -40,6 +42,16 @@ class LoggerEventListener implements EventSubscriberInterface
             sprintf(
                 "Saving subtitle '%s' for file '%s'",
                 $event->getSubtitle()->getUrl(), $event->getTo()
+            )
+        );
+    }
+
+    public function onSaveSubtitleError( SaveSubtitleErrorEvent $event )
+    {
+        $this->logger->warning(
+            sprintf(
+                "Unable to save '%s' to '%s': %s",
+                $event->getSubtitle()->getUrl(), $event->getToFile(), $event->getError()
             )
         );
     }
@@ -60,7 +72,7 @@ class LoggerEventListener implements EventSubscriberInterface
         $exception = $event->getException();
 
         if ($exception instanceof UnknownSubtitleSourceException) {
-            $this->logger->info(
+            $this->logger->debug(
                 sprintf(
                     "Unhandled subtitle source '%s' for release '%s'",
                     $exception->getSourceName(),
