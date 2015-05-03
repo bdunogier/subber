@@ -28,15 +28,16 @@ class ShowWatchListCommand extends ContainerAwareCommand
         $watchlist = $this->getContainer()->get( 'bd_subber.watchlist' );
 
         $table = new Table($output);
-        $table->setHeaders(['Release', 'Status', 'Rating']);
+        $table->setHeaders(['Release', 'Status', 'Rating', 'Has subtitles']);
 
         /** @var WatchListItem $item */
-        foreach ($watchlist->findAll() as $item) {
+        foreach ($watchlist->findAllActiveItems() as $item) {
             $table->addRow(
                 [
                     $item->getOriginalName(),
                     $this->getTextStatus( $item->getStatus() ),
-                    $item->getRating()
+                    $item->getRating(),
+                    $item->hasSubtitle() ? 'Y' : 'N'
                 ]
             );
         }

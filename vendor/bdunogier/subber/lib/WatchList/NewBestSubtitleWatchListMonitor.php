@@ -36,7 +36,7 @@ class NewBestSubtitleWatchListMonitor implements WatchListMonitor
 
     public function watchItems()
     {
-        foreach( $this->watchList->findAllPendingItems() as $item )
+        foreach( $this->watchList->findAllActiveItems() as $item )
         {
             // see if we need to check again ?
             $index = $this->indexFactory->build( $item->getOriginalName() );

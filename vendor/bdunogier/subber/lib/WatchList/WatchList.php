@@ -7,9 +7,16 @@ namespace BD\Subber\WatchList;
 interface WatchList
 {
     /**
+     * @deprecated See findAllActiveItems()
      * @return WatchListItem[]
      */
     public function findAllPendingItems();
+
+    /**
+     * Finds all items that are actively watched for subtitles
+     * @return WatchListItem[]
+     */
+    public function findAllActiveItems();
 
     /**
      * @return WatchListItem[]

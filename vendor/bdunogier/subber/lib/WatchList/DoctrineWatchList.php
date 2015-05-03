@@ -19,7 +19,17 @@ class DoctrineWatchList extends EntityRepository implements WatchList
      */
     public function findAllPendingItems()
     {
-        return $this->findByStatus( WatchListItem::STATUS_NEW );
+        return $this->findAllActiveItems();
+    }
+
+    /**
+     * @return \BD\Subber\WatchList\WatchListItem[]
+     */
+    public function findAllActiveItems()
+    {
+        return $this->_em
+            ->createQuery('SELECT i FROM SubberWatchList:WatchListItem i WHERE i.rating <= 0 OR i.hasSubtitle = 0')
+            ->getResult();
     }
 
     public function addItem( WatchListitem $item )
