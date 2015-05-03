@@ -11,6 +11,11 @@ interface WatchList
      */
     public function findAllPendingItems();
 
+    /**
+     * @return WatchListItem[]
+     */
+    public function findAll();
+
     public function addItem( WatchListItem $item );
 
     public function setItemComplete( WatchListItem $item );

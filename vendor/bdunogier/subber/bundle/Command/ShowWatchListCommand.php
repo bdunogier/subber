@@ -10,6 +10,7 @@ namespace BD\SubberBundle\Command;
 use BD\Subber\WatchList\WatchListItem;
 use DateTime;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -26,14 +27,30 @@ class ShowWatchListCommand extends ContainerAwareCommand
     {
         $watchlist = $this->getContainer()->get( 'bd_subber.watchlist' );
 
-        $output->writeln( "Incomplete watchlist items" );
-        $output->writeln( "" );
+        $table = new Table($output);
+        $table->setHeaders(['Release', 'Status', 'Rating']);
 
         /** @var WatchListItem $item */
-        foreach ($watchlist->findAllPendingItems() as $item) {
-            $output->writeln(
-                sprintf( "- %s (%s)", $item->getOriginalName(), $item->getFile() )
+        foreach ($watchlist->findAll() as $item) {
+            $table->addRow(
+                [
+                    $item->getOriginalName(),
+                    $this->getTextStatus( $item->getStatus() ),
+                    $item->getRating()
+                ]
             );
         }
+
+        $table->render();
+    }
+
+    private function getTextStatus( $numericStatus )
+    {
+        $map = [
+            WatchListItem::STATUS_NEW => 'New',
+            WatchListItem::STATUS_DONE => 'Done',
+            WatchListItem::STATUS_FINISHED => 'Finished',
+        ];
+        return $map[$numericStatus];
     }
 }
