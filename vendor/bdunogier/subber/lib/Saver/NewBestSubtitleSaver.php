@@ -13,7 +13,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class NewBestSubtitleSaver implements EventSubscriberInterface
 {
-    /** @var WatchList */
+    /** @var \BD\Subber\WatchList\WatchList */
     private $watchList;
 
     /** @var \BD\Subber\Subtitles\Saver */
@@ -35,8 +35,11 @@ class NewBestSubtitleSaver implements EventSubscriberInterface
         $item = $event->getWatchListItem();
         $subtitle = $event->getSubtitle();
 
-        $item->setRating( $subtitle->getRating() );
-        $this->watchList->setItemComplete( $item );
+        $this->watchList->update(
+            $item
+                ->setRating( $subtitle->getRating() )
+                ->setHasSubtitle( true )
+        );
 
         $this->saver->save( $subtitle, $item->getFile() );
     }

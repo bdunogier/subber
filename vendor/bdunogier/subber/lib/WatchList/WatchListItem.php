@@ -56,6 +56,11 @@ class WatchListItem
     protected $rating = 0;
 
     /**
+     * @ORM\Column(name="has_subtitle", type="integer", nullable=false, options={"default":0})
+     */
+    protected $hasSubtitle = 0;
+
+    /**
      * Set file
      * @param string $file
      * @return WatchListItem
@@ -63,7 +68,6 @@ class WatchListItem
     public function setFile($file)
     {
         $this->file = $file;
-
         return $this;
     }
 
@@ -85,14 +89,12 @@ class WatchListItem
     public function setOriginalName($originalName)
     {
         $this->originalName = $originalName;
-
         return $this;
     }
 
     /**
      * Get originalName
-     *
-     * @return string 
+     * @return string
      */
     public function getOriginalName()
     {
@@ -109,10 +111,12 @@ class WatchListItem
 
     /**
      * @param mixed $status
+     * @return WatchListItem
      */
     public function setStatus( $status )
     {
         $this->status = $status;
+        return $this;
     }
 
     /**
@@ -125,10 +129,12 @@ class WatchListItem
 
     /**
      * @param mixed $updatedAt
+     * @return WatchListItem
      */
     public function setUpdatedAt( $updatedAt )
     {
         $this->updatedAt = $updatedAt;
+        return $this;
     }
 
     /**
@@ -141,10 +147,12 @@ class WatchListItem
 
     /**
      * @param mixed $createdAt
+     * @return WatchListItem
      */
     public function setCreatedAt( $createdAt )
     {
         $this->createdAt = $createdAt;
+        return $this;
     }
 
     /**
@@ -157,9 +165,22 @@ class WatchListItem
 
     /**
      * @param mixed $rating
+     * @return WatchListItem
      */
     public function setRating( $rating )
     {
         $this->rating = $rating;
+        return $this;
+    }
+
+    public function setHasSubtitle( $has = true )
+    {
+        $this->hasSubtitle = (int)$has;
+        return $this;
+    }
+
+    public function hasSubtitle()
+    {
+        return (bool)$this->hasSubtitle;
     }
 }

@@ -76,4 +76,10 @@ class DoctrineWatchList extends EntityRepository implements WatchList
         $this->_em->remove( $item );
         $this->_em->flush();
     }
+
+    public function update( WatchListItem $item )
+    {
+        $this->_em->persist( $item );
+        $this->_em->flush( $item );
+    }
 }
