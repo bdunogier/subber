@@ -1,5 +1,6 @@
 <?php
-namespace BD\SubberBundle\DependencyInjection;
+
+namespace BD\Subberbundle\DependencyInjection;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Config\FileLocator;
@@ -9,7 +10,7 @@ use Symfony\Component\DependencyInjection\Loader;
 use Symfony\Component\Yaml\Yaml;
 
 /**
- * This is the class that loads and manages your bundle configuration
+ * This is the class that loads and manages your bundle configuration.
  *
  * To learn more see {@link http://symfony.com/doc/current/cookbook/bundles/extension.html}
  */
@@ -32,12 +33,12 @@ class BDSubberExtension extends Extension implements PrependExtensionInterface
      *
      * @param ContainerBuilder $container
      */
-    public function prepend( ContainerBuilder $container )
+    public function prepend(ContainerBuilder $container)
     {
         $container->prependExtensionConfig(
             'patbzh_betaseries',
             Yaml::parse(
-                file_get_contents( __DIR__ . '/../Resources/config/pathbzh_betaseries.yml' )
+                file_get_contents(__DIR__.'/../Resources/config/pathbzh_betaseries.yml')
             )
         );
     }

@@ -1,8 +1,8 @@
 <?php
+
 namespace tests\BD\Subber\Release\Parser\SubtitleRelease;
 
 use BD\Subber\Release\Parser\SubtitleRelease\SoustitresParser;
-use BD\Subber\Release\Release;
 use BD\Subber\Release\ReleaseObject;
 
 class SoustitresParserTest extends \PHPUnit_Framework_TestCase
@@ -12,29 +12,28 @@ class SoustitresParserTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->episodeParserMock = $this->getMock( 'BD\Subber\Release\Parser\ReleaseParser' );
+        $this->episodeParserMock = $this->getMock('BD\Subber\Release\Parser\ReleaseParser');
     }
 
     /**
      * @dataProvider getValidReleases
      */
-    public function testParseValidRelease( $releaseName, $expectedProperties )
+    public function testParseValidRelease($releaseName, $expectedProperties)
     {
         $parser = $this->getParser();
-        $release = $parser->parseReleaseName( $releaseName );
+        $release = $parser->parseReleaseName($releaseName);
 
-        foreach ( ['author' => 'soustitres'] + $expectedProperties as $property => $value )
-        {
-            self::assertAttributeEquals( $value, $property, $release );
+        foreach (['author' => 'soustitres'] + $expectedProperties as $property => $value) {
+            self::assertAttributeEquals($value, $property, $release);
         }
     }
 
     public function testDelegationToEpisodeParser()
     {
         $this->episodeParserMock
-            ->expects( $this->once() )
-            ->method( 'parseReleaseName' )
-            ->with( '12.monkeys.s01e02.mentally.divergent.720p.web-dl.dd5.1.h.264-bs' )
+            ->expects($this->once())
+            ->method('parseReleaseName')
+            ->with('12.monkeys.s01e02.mentally.divergent.720p.web-dl.dd5.1.h.264-bs')
             ->willReturn(
                 new ReleaseObject(
                     [
@@ -42,12 +41,12 @@ class SoustitresParserTest extends \PHPUnit_Framework_TestCase
                         'group' => 'bs',
                         'source' => 'web-dl',
                         'resolution' => '720p',
-                        'format' => 'x264'
+                        'format' => 'x264',
                     ]
                 )
             );
         $parser = $this->getParser();
-        $release = $parser->parseReleaseName( '12.Monkeys.S01E02.Mentally.Divergent.720p.WEB-DL.DD5.1.H.264-BS.srt' );
+        $release = $parser->parseReleaseName('12.Monkeys.S01E02.Mentally.Divergent.720p.WEB-DL.DD5.1.H.264-BS.srt');
     }
 
     public function getValidReleases()
@@ -58,8 +57,8 @@ class SoustitresParserTest extends \PHPUnit_Framework_TestCase
                 [
                     'language' => 'fr',
                     'group' => 'lol',
-                    'hasTags' => true
-                ]
+                    'hasTags' => true,
+                ],
             ],
             [
                 'Modern.Family.615.720p.1080p.web-dl.FR.ass',
@@ -68,7 +67,7 @@ class SoustitresParserTest extends \PHPUnit_Framework_TestCase
                     'resolution' => ['1080p', '720p'],
                     'source' => 'web-dl',
                     'language' => 'fr',
-                    'subtitleFormat' => 'ass'
+                    'subtitleFormat' => 'ass',
                 ],
             ],
             [
@@ -78,8 +77,8 @@ class SoustitresParserTest extends \PHPUnit_Framework_TestCase
                     'source' => 'hdtv',
                     'group' => 'dimension',
                     'language' => 'fr',
-                    'subtitleFormat' => 'ass'
-                ]
+                    'subtitleFormat' => 'ass',
+                ],
             ],
             [
                 'Modern.Family.615.720p.1080p.web-dl.FR.TAG.srt',
@@ -87,8 +86,8 @@ class SoustitresParserTest extends \PHPUnit_Framework_TestCase
                     'resolution' => ['1080p', '720p'],
                     'source' => 'web-dl',
                     'language' => 'fr',
-                    'hasTags' => true
-                ]
+                    'hasTags' => true,
+                ],
             ],
             [
                 'The.Big.Bang.Theory.S08E16.LOL.720p.DIMENSION.VF.ass',
@@ -96,9 +95,9 @@ class SoustitresParserTest extends \PHPUnit_Framework_TestCase
                     'resolution' => '720p',
                     'source' => 'hdtv',
                     'language' => 'fr',
-                    'group' => 'dimension'
-                ]
-            ]
+                    'group' => 'dimension',
+                ],
+            ],
         ];
     }
 
@@ -107,6 +106,6 @@ class SoustitresParserTest extends \PHPUnit_Framework_TestCase
      */
     private function getParser()
     {
-        return new SoustitresParser( $this->episodeParserMock );
+        return new SoustitresParser($this->episodeParserMock);
     }
 }

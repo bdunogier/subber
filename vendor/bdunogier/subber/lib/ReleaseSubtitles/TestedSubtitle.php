@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  */
@@ -6,9 +7,8 @@ namespace BD\Subber\ReleaseSubtitles;
 
 use BD\Subber\Subtitles\Subtitle;
 
-
 /**
- * A Rated Subtitle tested for Compatibility against a Release
+ * A Rated Subtitle tested for Compatibility against a Release.
  */
 interface TestedSubtitle extends Subtitle
 {
@@ -25,7 +25,7 @@ interface TestedSubtitle extends Subtitle
     /**
      * @param string $compatibility
      */
-    public function setCompatibility( $compatibility );
+    public function setCompatibility($compatibility);
 
     public function setCompatible();
 
@@ -44,5 +44,5 @@ interface TestedSubtitle extends Subtitle
     /**
      * @param int $rating
      */
-    public function setRating( $rating );
+    public function setRating($rating);
 }

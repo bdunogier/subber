@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  */
@@ -30,7 +31,6 @@ class SubtitledEpisodeReleaseFactory
         ReleaseParser $releaseParser,
         WatchList $watchList
     ) {
-
         $this->subtitlesIndexFactory = $subtitlesIndexFactory;
         $this->episodeParser = $episodeParser;
         $this->releaseParser = $releaseParser;
@@ -40,49 +40,51 @@ class SubtitledEpisodeReleaseFactory
     /**
      * @return SubtitledEpisodeRelease
      */
-    public function buildFromReleaseName( $releaseName )
+    public function buildFromReleaseName($releaseName)
     {
         return $this->build(
             $releaseName,
-            $this->watchList->loadByReleaseName( $releaseName )->getFile()
+            $this->watchList->loadByReleaseName($releaseName)->getFile()
         );
     }
 
-    public function buildFromLocalReleasePath( $localReleasePath )
+    public function buildFromLocalReleasePath($localReleasePath)
     {
         return $this->build(
-            $this->watchList->loadByLocalReleasePath( $localReleasePath )->getOriginalName(),
+            $this->watchList->loadByLocalReleasePath($localReleasePath)->getOriginalName(),
             $localReleasePath
         );
     }
 
-
-    public function build( $releaseName, $localReleasePath )
+    public function build($releaseName, $localReleasePath)
     {
-        $release = $this->buildObjectFromRelease( $this->releaseParser->parseReleaseName( $releaseName ) );
+        $release = $this->buildObjectFromRelease($this->releaseParser->parseReleaseName($releaseName));
 
         try {
-            $release->setEpisode( $this->episodeParser->parseFromEpisodeFilePath( $localReleasePath ) );
-        } catch( \InvalidArgumentException $e ) {
+            $release->setEpisode($this->episodeParser->parseFromEpisodeFilePath($localReleasePath));
+        } catch (\InvalidArgumentException $e) {
             // doesn't matter, we return null. We might wanna log this, though.
         }
-        $release->setSubtitlesIndex( $this->subtitlesIndexFactory->build( $releaseName ) );
+        $release->setSubtitlesIndex($this->subtitlesIndexFactory->build($releaseName));
 
         return $release;
     }
 
     /**
-     * Builds the Subtitled Episode Release from the Release object's properties
+     * Builds the Subtitled Episode Release from the Release object's properties.
+     *
      * @param Release $release
+     *
      * @return SubtitledEpisodeRelease
      */
-    private function buildObjectFromRelease( Release $release )
+    private function buildObjectFromRelease(Release $release)
     {
         $subtitledEpisodeRelease = new SubtitledEpisodeRelease();
 
-        foreach ( $release as $propertyName => $propertyValue ) {
+        foreach ($release as $propertyName => $propertyValue) {
             $subtitledEpisodeRelease->$propertyName = $release->$propertyName;
         }
+
         return $subtitledEpisodeRelease;
     }
 }

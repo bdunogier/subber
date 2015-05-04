@@ -1,13 +1,13 @@
 <?php
+
 /**
- * This file is part of the eZ Publish Kernel package
+ * This file is part of the eZ Publish Kernel package.
  *
  * @copyright Copyright (C) eZ Systems AS. All rights reserved.
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  */
 namespace BD\Subber\Event;
 
-use BD\Subber\Subtitles\Subtitle;
 use Symfony\Component\EventDispatcher\Event;
 
 class ScrapReleaseEvent extends Event
@@ -18,7 +18,7 @@ class ScrapReleaseEvent extends Event
     /** @var \BD\Subber\Subtitles\Subtitle[] */
     private $subtitles;
 
-    public function __construct( $releaseName, $subtitles = null )
+    public function __construct($releaseName, $subtitles = null)
     {
         $this->releaseName = $releaseName;
         $this->subtitles = $subtitles;
@@ -35,7 +35,7 @@ class ScrapReleaseEvent extends Event
     /**
      * @param string $releaseName
      */
-    public function setReleaseName( $releaseName )
+    public function setReleaseName($releaseName)
     {
         $this->releaseName = $releaseName;
     }
@@ -51,7 +51,7 @@ class ScrapReleaseEvent extends Event
     /**
      * @param \BD\Subber\Subtitles\Subtitle[] $subtitles
      */
-    public function setSubtitles( $subtitles )
+    public function setSubtitles($subtitles)
     {
         $this->subtitles = $subtitles;
     }

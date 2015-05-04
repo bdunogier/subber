@@ -1,34 +1,40 @@
 <?php
+
 namespace BD\Subber\Release;
 
 class ReleaseObject implements Release
 {
     /**
-     * The release's name, complete
+     * The release's name, complete.
+     *
      * @var string
      */
     protected $name;
 
     /**
      * dimension, killers, ...
+     *
      * @var string
      */
     protected $group;
 
     /**
-     * hdtv, web-dl, bluray
+     * hdtv, web-dl, bluray.
+     *
      * @var string
      */
     protected $source;
 
     /**
-     * 720p, 1080p
+     * 720p, 1080p.
+     *
      * @var string
      */
     protected $resolution;
 
     /**
-     * x264
+     * x264.
+     *
      * @var string
      */
     protected $format;
@@ -51,10 +57,9 @@ class ReleaseObject implements Release
         return $this->name;
     }
 
-    public function __construct( array $properties = [] )
+    public function __construct(array $properties = [])
     {
-        foreach ( $properties as $property => $value )
-        {
+        foreach ($properties as $property => $value) {
             $this->$property = $value;
         }
     }
@@ -62,13 +67,13 @@ class ReleaseObject implements Release
     /**
      * @param string $name
      */
-    public function setName( $name )
+    public function setName($name)
     {
         $this->name = $name;
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function isRepack()
     {
@@ -76,15 +81,15 @@ class ReleaseObject implements Release
     }
 
     /**
-     * @param boolean $isRepack
+     * @param bool $isRepack
      */
-    public function setIsRepack( $isRepack )
+    public function setIsRepack($isRepack)
     {
         $this->isRepack = $isRepack;
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function isProper()
     {
@@ -92,9 +97,9 @@ class ReleaseObject implements Release
     }
 
     /**
-     * @param boolean $isProper
+     * @param bool $isProper
      */
-    public function setIsProper( $isProper )
+    public function setIsProper($isProper)
     {
         $this->isProper = $isProper;
     }
@@ -118,7 +123,7 @@ class ReleaseObject implements Release
     /**
      * @param string $source
      */
-    public function setSource( $source )
+    public function setSource($source)
     {
         $this->source = $source;
     }
@@ -134,7 +139,7 @@ class ReleaseObject implements Release
     /**
      * @param string $resolution
      */
-    public function setResolution( $resolution )
+    public function setResolution($resolution)
     {
         $this->resolution = $resolution;
     }
@@ -150,7 +155,7 @@ class ReleaseObject implements Release
     /**
      * @param string $format
      */
-    public function setFormat( $format )
+    public function setFormat($format)
     {
         $this->format = $format;
     }
@@ -158,13 +163,13 @@ class ReleaseObject implements Release
     /**
      * @param string $group
      */
-    public function setGroup( $group )
+    public function setGroup($group)
     {
         $this->group = $group;
     }
 
     public function toArray()
     {
-        return get_object_vars( $this );
+        return get_object_vars($this);
     }
 }

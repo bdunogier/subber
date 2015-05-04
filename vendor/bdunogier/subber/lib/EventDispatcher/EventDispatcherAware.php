@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  */
@@ -14,21 +15,21 @@ trait EventDispatcherAware
     /**
      * @param \Symfony\Component\EventDispatcher\EventDispatcherInterface $eventDispatcher
      */
-    public function setEventDispatcher( $eventDispatcher )
+    public function setEventDispatcher($eventDispatcher)
     {
         $this->eventDispatcher = $eventDispatcher;
     }
 
     /**
-     * Dispatches the event if the dispatcher is set
+     * Dispatches the event if the dispatcher is set.
      *
      * @param $eventName
      * @param \Symfony\Component\EventDispatcher\Event $event
      */
-    protected function dispatch( $eventName, Event $event )
+    protected function dispatch($eventName, Event $event)
     {
-        if ( isset( $this->eventDispatcher ) ) {
-            $this->eventDispatcher->dispatch( $eventName, $event );
+        if (isset($this->eventDispatcher)) {
+            $this->eventDispatcher->dispatch($eventName, $event);
         }
     }
 }

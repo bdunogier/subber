@@ -1,4 +1,5 @@
 <?php
+
 namespace BD\Subber\ReleaseSubtitles;
 
 use BD\Subber\Release\Release;
@@ -19,14 +20,14 @@ class Index
     private $compatible;
 
     /**
-     * @param \BD\Subber\Release\Release $release
+     * @param \BD\Subber\Release\Release      $release
      * @param \BD\Subber\Subtitles\Subtitle[] $subtitles
      */
-    public function __construct( Release $release, array $subtitles = null )
+    public function __construct(Release $release, array $subtitles = null)
     {
-        if ( is_array( $subtitles ) ) {
-            foreach ( $subtitles as $subtitle ) {
-                $this->addSubtitle( $subtitle );
+        if (is_array($subtitles)) {
+            foreach ($subtitles as $subtitle) {
+                $this->addSubtitle($subtitle);
             }
         }
 
@@ -38,18 +39,18 @@ class Index
      */
     public function hasBestSubtitle()
     {
-        return count( $this->compatible ) > 0;
+        return count($this->compatible) > 0;
     }
 
     /**
      * @return \BD\Subber\ReleaseSubtitles\TestedSubtitle
+     *
      * @throws \Exception if there is no Best Subtitle
      */
     public function getBestSubtitle()
     {
-        if ( !$this->hasBestSubtitle() )
-        {
-            throw new Exception( "No acceptable subtitles, no best subtitle" );
+        if (!$this->hasBestSubtitle()) {
+            throw new Exception('No acceptable subtitles, no best subtitle');
         }
 
         return $this->compatible[0];
@@ -79,28 +80,31 @@ class Index
         return $this->release;
     }
 
-    public function addSubtitle( TestedSubtitle $subtitle )
+    public function addSubtitle(TestedSubtitle $subtitle)
     {
-        if ( $subtitle->isCompatible() ) {
+        if ($subtitle->isCompatible()) {
             $this->compatible[] = $subtitle;
-            $this->sort( $this->compatible );
+            $this->sort($this->compatible);
         } else {
             $this->incompatible[] = $subtitle;
-            $this->sort( $this->incompatible);
+            $this->sort($this->incompatible);
         }
     }
 
-    private function sortSubtitlesCallback( TestedSubtitle $a, TestedSubtitle $b )
+    private function sortSubtitlesCallback(TestedSubtitle $a, TestedSubtitle $b)
     {
-        if ( $a->getRating() > $b->getRating() )
+        if ($a->getRating() > $b->getRating()) {
             return -1;
-        if ( $a->getRating() < $b->getRating() )
+        }
+        if ($a->getRating() < $b->getRating()) {
             return 1;
+        }
+
         return 0;
     }
 
-    private function sort( &$array )
+    private function sort(&$array)
     {
-        @usort( $array, [$this, 'sortSubtitlesCallback'] );
+        @usort($array, [$this, 'sortSubtitlesCallback']);
     }
 }

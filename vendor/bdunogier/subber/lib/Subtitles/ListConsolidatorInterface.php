@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  */
@@ -8,7 +9,8 @@ interface ListConsolidatorInterface
 {
     /**
      * @param Subtitle[] $subtitlesList
+     *
      * @return Subtitle[]
      */
-    public function consolidate( array $subtitlesList );
+    public function consolidate(array $subtitlesList);
 }

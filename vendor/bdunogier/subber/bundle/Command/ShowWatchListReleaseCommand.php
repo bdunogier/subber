@@ -1,25 +1,25 @@
 <?php
-namespace BD\SubberBundle\Command;
+
+namespace BD\Subberbundle\Command;
 
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class ShowWatchListReleaseCommand extends ContainerAwareCommand
 {
     public function configure()
     {
-        $this->setName( 'subber:watchlist:show-release' );
-        $this->setDescription( 'Shows a queued release information' );
-        $this->addArgument( 'release-name', InputArgument::REQUIRED, "The release name" );
+        $this->setName('subber:watchlist:show-release');
+        $this->setDescription('Shows a queued release information');
+        $this->addArgument('release-name', InputArgument::REQUIRED, 'The release name');
     }
 
-    public function execute( InputInterface $input, OutputInterface $output )
+    public function execute(InputInterface $input, OutputInterface $output)
     {
-        $factory = $this->getContainer()->get( 'bd_subber.subtitled_episode_release_factory' );
-        $release = $factory->buildFromReleaseName( $input->getArgument( 'release-name' ) );
-        print_r( $release );
+        $factory = $this->getContainer()->get('bd_subber.subtitled_episode_release_factory');
+        $release = $factory->buildFromReleaseName($input->getArgument('release-name'));
+        print_r($release);
     }
 }

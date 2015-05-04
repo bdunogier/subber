@@ -1,23 +1,22 @@
 <?php
-namespace BD\SubberBundle\Command;
+
+namespace BD\Subberbundle\Command;
 
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class MonitorWatchListCommand extends ContainerAwareCommand
 {
     public function configure()
     {
-        $this->setName( 'subber:watchlist:monitor' );
-        $this->setDescription( 'Launches the watchlist monitor' );
+        $this->setName('subber:watchlist:monitor');
+        $this->setDescription('Launches the watchlist monitor');
     }
 
-    public function execute( InputInterface $input, OutputInterface $output )
+    public function execute(InputInterface $input, OutputInterface $output)
     {
-        $watchListMonitor = $this->getContainer()->get( 'bd_subber.watchlist_monitor' );
+        $watchListMonitor = $this->getContainer()->get('bd_subber.watchlist_monitor');
         $watchListMonitor->watchItems();
     }
 }

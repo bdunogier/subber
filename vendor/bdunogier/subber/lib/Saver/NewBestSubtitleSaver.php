@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  */
@@ -7,8 +8,6 @@ namespace BD\Subber\Saver;
 use BD\Subber\Event\NewBestSubtitleEvent;
 use BD\Subber\WatchList\WatchList;
 use BD\Subber\Subtitles\Saver;
-use Symfony\Component\EventDispatcher\Event;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class NewBestSubtitleSaver implements EventSubscriberInterface
@@ -19,7 +18,7 @@ class NewBestSubtitleSaver implements EventSubscriberInterface
     /** @var \BD\Subber\Subtitles\Saver */
     private $saver;
 
-    public function __construct( WatchList $watchList, Saver $saver )
+    public function __construct(WatchList $watchList, Saver $saver)
     {
         $this->watchList = $watchList;
         $this->saver = $saver;
@@ -30,17 +29,17 @@ class NewBestSubtitleSaver implements EventSubscriberInterface
         return ['subber.new_best_subtitle' => 'onNewBestSubtitle'];
     }
 
-    public function onNewBestSubtitle( NewBestSubtitleEvent $event )
+    public function onNewBestSubtitle(NewBestSubtitleEvent $event)
     {
         $item = $event->getWatchListItem();
         $subtitle = $event->getSubtitle();
 
         $this->watchList->update(
             $item
-                ->setRating( $subtitle->getRating() )
-                ->setHasSubtitle( true )
+                ->setRating($subtitle->getRating())
+                ->setHasSubtitle(true)
         );
 
-        $this->saver->save( $subtitle, $item->getFile() );
+        $this->saver->save($subtitle, $item->getFile());
     }
 }

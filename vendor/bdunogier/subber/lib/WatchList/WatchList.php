@@ -1,4 +1,5 @@
 <?php
+
 namespace BD\Subber\WatchList;
 
 /**
@@ -8,12 +9,14 @@ interface WatchList
 {
     /**
      * @deprecated See findAllActiveItems()
+     *
      * @return WatchListItem[]
      */
     public function findAllPendingItems();
 
     /**
-     * Finds all items that are actively watched for subtitles
+     * Finds all items that are actively watched for subtitles.
+     *
      * @return WatchListItem[]
      */
     public function findAllActiveItems();
@@ -23,19 +26,19 @@ interface WatchList
      */
     public function findAll();
 
-    public function addItem( WatchListItem $item );
+    public function addItem(WatchListItem $item);
 
-    public function setItemComplete( WatchListItem $item );
-
-    /**
-     * @return WatchListitem
-     */
-    public function loadByReleaseName( $releaseName );
+    public function setItemComplete(WatchListItem $item);
 
     /**
      * @return WatchListitem
      */
-    public function loadByLocalReleasePath( $localReleasePath );
+    public function loadByReleaseName($releaseName);
 
-    public function remove( WatchListItem $item );
+    /**
+     * @return WatchListitem
+     */
+    public function loadByLocalReleasePath($localReleasePath);
+
+    public function remove(WatchListItem $item);
 }

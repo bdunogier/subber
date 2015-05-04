@@ -1,6 +1,7 @@
 <?php
+
 /**
- * This file is part of the eZ Publish Kernel package
+ * This file is part of the eZ Publish Kernel package.
  *
  * @copyright Copyright (C) eZ Systems AS. All rights reserved.
  * @license For full copyright and license information view LICENSE file distributed with this source code.
@@ -18,23 +19,24 @@ class SubtitleReleaseMatcher
 {
     /**
      * @param \BD\Subber\Subtitles\Subtitle $subtitle
-     * @param \BD\Subber\Release\Release $release
+     * @param \BD\Subber\Release\Release    $release
      *
      * @return bool
      */
-    public function matches( Subtitle $subtitle, Release $release )
+    public function matches(Subtitle $subtitle, Release $release)
     {
-        if ( $subtitle->getGroup() != $release->getGroup() ) {
+        if ($subtitle->getGroup() != $release->getGroup()) {
             return false;
         }
 
-        if ( $subtitle->getFormat() != $release->getFormat() ) {
+        if ($subtitle->getFormat() != $release->getFormat()) {
             return false;
         }
 
-        if ( $subtitle->getSource() != $release->getSource() ) {
+        if ($subtitle->getSource() != $release->getSource()) {
             return false;
         }
+
         return true;
     }
 }

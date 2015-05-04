@@ -1,4 +1,5 @@
 <?php
+
 namespace tests\BD\Subber\Release\Parser\SubtitleRelease;
 
 use BD\Subber\Release\Parser\SubtitleRelease\Addic7edParser;
@@ -11,14 +12,13 @@ class Addic7edParserTest extends \PHPUnit_Framework_TestCase
     /**
      * @dataProvider getValidReleases
      */
-    public function testParseValidRelease( $releaseName, $expectedProperties )
+    public function testParseValidRelease($releaseName, $expectedProperties)
     {
         $parser = new Addic7edParser();
-        $release = $parser->parseReleaseName( $releaseName );
+        $release = $parser->parseReleaseName($releaseName);
 
-        foreach ( $expectedProperties as $property => $value )
-        {
-            self::assertAttributeEquals( $value, $property, $release );
+        foreach ($expectedProperties as $property => $value) {
+            self::assertAttributeEquals($value, $property, $release);
         }
     }
 
@@ -32,8 +32,8 @@ class Addic7edParserTest extends \PHPUnit_Framework_TestCase
                     'isHearingImpaired' => true,
                     'hasTags' => true,
                     'author' => 'addic7ed',
-                    'language' => 'en'
-                ]
+                    'language' => 'en',
+                ],
             ],
             [
                 'Bitten - 02x04 - Dead Meat.KILLERS.English.C.orig.Addic7ed.com',
@@ -42,7 +42,7 @@ class Addic7edParserTest extends \PHPUnit_Framework_TestCase
                     'group' => 'killers',
                     'author' => 'addic7ed',
                     'language' => 'en',
-                ]
+                ],
             ],
             [
                 'Vikings - 03x02 - The Wanderer.WEB-DL-BS.English.C.orig.Addic7ed.com',
@@ -52,7 +52,7 @@ class Addic7edParserTest extends \PHPUnit_Framework_TestCase
                     'author' => 'addic7ed',
                     'language' => 'en',
                     'source' => 'web-dl',
-                ]
+                ],
             ],
             [
                 'Vikings - 03x01 - Mercenary.KILLERS-TRANSLATE.French.C.updated.Addic7ed.com',
@@ -60,8 +60,8 @@ class Addic7edParserTest extends \PHPUnit_Framework_TestCase
                     'name' => 'Vikings - 03x01 - Mercenary.KILLERS-TRANSLATE.French.C.updated.Addic7ed.com',
                     'group' => 'killers',
                     'author' => 'addic7ed',
-                    'language' => 'fr'
-                ]
+                    'language' => 'fr',
+                ],
             ],
             [
                 'Vikings - 03x01 - Mercenary.KILLERS.English.HI.C.orig.Addic7ed.com',
@@ -70,8 +70,8 @@ class Addic7edParserTest extends \PHPUnit_Framework_TestCase
                     'group' => 'killers',
                     'author' => 'addic7ed',
                     'language' => 'en',
-                    'isHearingImpaired' => true
-                ]
+                    'isHearingImpaired' => true,
+                ],
             ],
             [
                 'Gotham - 01x17 - Red Hood.LOL.French.C.updated.Addic7ed.com',
@@ -79,8 +79,8 @@ class Addic7edParserTest extends \PHPUnit_Framework_TestCase
                     'name' => 'Gotham - 01x17 - Red Hood.LOL.French.C.updated.Addic7ed.com',
                     'group' => 'lol',
                     'author' => 'addic7ed',
-                    'language' => 'fr'
-                ]
+                    'language' => 'fr',
+                ],
             ],
             [
                 'Modern Family - 06x16 - Connection Lost.LOL.French.orig.Addic7ed.com.srt',
@@ -88,8 +88,8 @@ class Addic7edParserTest extends \PHPUnit_Framework_TestCase
                     'name' => 'Modern Family - 06x16 - Connection Lost.LOL.French.orig.Addic7ed.com.srt',
                     'group' => 'lol',
                     'author' => 'addic7ed',
-                    'language' => 'fr'
-                ]
+                    'language' => 'fr',
+                ],
             ],
             [
                 '12 Monkeys - 01x02 - Mentally Divergent.WEB-DL.French.C.orig.Addic7ed.com.srt',
@@ -98,8 +98,8 @@ class Addic7edParserTest extends \PHPUnit_Framework_TestCase
                     'author' => 'addic7ed',
                     'source' => 'web-dl',
                     'language' => 'fr',
-                    'group' => null
-                ]
+                    'group' => null,
+                ],
             ],
             [
                 "Vikings - 03x03 - Warrior's Fate.REPACK-2HD.English.HI.C.orig.Addic7ed.com.srt",
@@ -108,9 +108,9 @@ class Addic7edParserTest extends \PHPUnit_Framework_TestCase
                     'isHearingImpaired' => true,
                     'group' => '2hd',
                     'isRepack' => true,
-                    'language' => 'en'
-                ]
-            ]
+                    'language' => 'en',
+                ],
+            ],
         ];
     }
 }

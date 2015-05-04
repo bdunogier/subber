@@ -1,4 +1,5 @@
 <?php
+
 namespace BD\Subber\WatchList;
 
 /**

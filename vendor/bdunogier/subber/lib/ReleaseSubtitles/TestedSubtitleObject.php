@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  */
@@ -7,10 +8,9 @@ namespace BD\Subber\ReleaseSubtitles;
 use BD\Subber\Release\Release;
 use BD\Subber\Subtitles\Subtitle;
 use BD\Subber\Subtitles\SubtitleObject;
-use InvalidArgumentException;
 
 /**
- * A Rated Subtitle tested for Compatibility against a Release
+ * A Rated Subtitle tested for Compatibility against a Release.
  */
 class TestedSubtitleObject extends SubtitleObject implements TestedSubtitle
 {
@@ -20,9 +20,9 @@ class TestedSubtitleObject extends SubtitleObject implements TestedSubtitle
     /** @var int */
     protected $rating;
 
-    public function __construct( array $properties = array() )
+    public function __construct(array $properties = array())
     {
-        parent::__construct( $properties );
+        parent::__construct($properties);
     }
 
     public function getCompatibility()
@@ -30,7 +30,7 @@ class TestedSubtitleObject extends SubtitleObject implements TestedSubtitle
         return $this->compatibility;
     }
 
-    public function setCompatibility( $compatibility )
+    public function setCompatibility($compatibility)
     {
         $this->compatibility = $compatibility;
     }
@@ -55,7 +55,7 @@ class TestedSubtitleObject extends SubtitleObject implements TestedSubtitle
         return $this->rating;
     }
 
-    public function setRating( $rating )
+    public function setRating($rating)
     {
         $this->rating = $rating;
     }

@@ -1,4 +1,5 @@
 <?php
+
 namespace tests\BD\Subber\Release\Parser\SubtitleRelease;
 
 use BD\Subber\Release\Parser\SubtitleRelease\BetaseriesParser;
@@ -11,14 +12,13 @@ class BetaseriesParserTest extends \PHPUnit_Framework_TestCase
     /**
      * @dataProvider getValidReleases
      */
-    public function testParseValidRelease( $releaseName, $expectedProperties )
+    public function testParseValidRelease($releaseName, $expectedProperties)
     {
         $parser = new BetaseriesParser();
-        $release = $parser->parseReleaseName( $releaseName );
+        $release = $parser->parseReleaseName($releaseName);
 
-        foreach ( $expectedProperties as $property => $value )
-        {
-            self::assertAttributeEquals( $value, $property, $release );
+        foreach ($expectedProperties as $property => $value) {
+            self::assertAttributeEquals($value, $property, $release);
         }
     }
 
@@ -31,8 +31,8 @@ class BetaseriesParserTest extends \PHPUnit_Framework_TestCase
                     'name' => 'The Simpsons.S24E17.What Animated Women Want.LOL.720p.srt',
                     'group' => 'lol',
                     'source' => 'hdtv',
-                    'language' => 'fr'
-                ]
+                    'language' => 'fr',
+                ],
             ],
             [
                 'The Simpsons.S24E17.What Animated Women Want.WEB-DL.1080p.srt',
@@ -43,7 +43,7 @@ class BetaseriesParserTest extends \PHPUnit_Framework_TestCase
                     'resolution' => '1080p',
                     'source' => 'web-dl',
                     'group' => null,
-                ]
+                ],
             ],
         ];
     }

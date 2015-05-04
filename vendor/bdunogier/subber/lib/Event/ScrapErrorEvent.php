@@ -1,4 +1,5 @@
 <?php
+
 namespace BD\Subber\Event;
 
 use Symfony\Component\EventDispatcher\Event;
@@ -15,7 +16,7 @@ class ScrapErrorEvent extends Event
     /** @var \Exception */
     private $exception;
 
-    public function __construct( $releaseName, $message, Exception $e = null )
+    public function __construct($releaseName, $message, Exception $e = null)
     {
         $this->releaseName = $releaseName;
         $this->message = $message;

@@ -1,4 +1,5 @@
 <?php
+
 namespace BD\Subber\Subtitles;
 
 interface Scrapper
@@ -10,5 +11,5 @@ interface Scrapper
      *
      * @return \BD\Subber\Subtitles\Subtitle[]
      */
-    public function scrap( $filename );
+    public function scrap($filename);
 }

@@ -1,14 +1,14 @@
 <?php
+
 namespace spec\BD\Subber\Episode\EpisodeMetadataFileParser;
 
 use BD\Subber\Episode\Episode;
 use org\bovigo\vfs\vfsStream;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 
 class XbmcNfoParserSpec extends ObjectBehavior
 {
-    function let()
+    public function let()
     {
         $this->setupVfs();
     }
@@ -29,69 +29,69 @@ XML;
                 'A Great TV Show.tbn' => 'show poster contents',
                 'A great episode.tbn' => 'episode thumbnail contents',
                 'invalid xml.nfo' => 'not xml',
-            ]
+            ],
         ];
-        vfsStream::setup( 'TV', null, $directoryStructure );
+        vfsStream::setup('TV', null, $directoryStructure);
     }
 
-    function it_is_initializable()
+    public function it_is_initializable()
     {
-        $this->shouldHaveType( 'BD\Subber\Episode\EpisodeMetadataFileParser\XbmcNfoParser' );
+        $this->shouldHaveType('BD\Subber\Episode\EpisodeMetadataFileParser\XbmcNfoParser');
     }
 
-    function it_throws_an_exception_if_the_episode_metadatafile_does_not_exist()
+    public function it_throws_an_exception_if_the_episode_metadatafile_does_not_exist()
     {
         $this
             ->shouldThrow('\InvalidArgumentException')
             ->during('parseFromEpisodeFilePath', [$this->invalidEpisodePath()]);
     }
 
-    function it_throws_an_exception_if_the_episode_metadatafile_is_not_valid()
+    public function it_throws_an_exception_if_the_episode_metadatafile_is_not_valid()
     {
         $this
             ->shouldThrow('\InvalidArgumentException')
             ->during('parseFromEpisodeFilePath', [$this->invalidXmlEpisodePath()]);
     }
 
-    function it_parses_an_xbmc_nfo_xml_into_a_release()
+    public function it_parses_an_xbmc_nfo_xml_into_a_release()
     {
-        $result = $this->parseFromEpisodeFilePath( $this->validEpisodePath() );
+        $result = $this->parseFromEpisodeFilePath($this->validEpisodePath());
 
         $result->shouldBeAnEpisode();
-        $result->shouldHaveProperty( 'showTitle', 'A Great TV Show' );
-        $result->shouldHaveProperty( 'episodeTitle', 'A great episode' );
-        $result->shouldHaveProperty( 'seasonNumber', 8 );
-        $result->shouldHaveProperty( 'episodeNumber', 17 );
+        $result->shouldHaveProperty('showTitle', 'A Great TV Show');
+        $result->shouldHaveProperty('episodeTitle', 'A great episode');
+        $result->shouldHaveProperty('seasonNumber', 8);
+        $result->shouldHaveProperty('episodeNumber', 17);
     }
 
-    function it_locates_image_files()
+    public function it_locates_image_files()
     {
-        $result = $this->parseFromEpisodeFilePath( $this->validEpisodePath() );
+        $result = $this->parseFromEpisodeFilePath($this->validEpisodePath());
 
         $result->shouldBeAnEpisode();
-        $result->shouldHaveEpisodeThumbWithContents( $this->episodeThumbPath(), 'episode thumbnail contents' );
-        $result->shouldHaveShowPosterWithContents( $this->showPosterPath(), 'show poster contents' );
+        $result->shouldHaveEpisodeThumbWithContents($this->episodeThumbPath(), 'episode thumbnail contents');
+        $result->shouldHaveShowPosterWithContents($this->showPosterPath(), 'show poster contents');
     }
 
     public function getMatchers()
     {
         return [
-            'haveProperty' => function(Episode $result, $propertyName, $propertyValue ) {
+            'haveProperty' => function (Episode $result, $propertyName, $propertyValue) {
                 return $result->$propertyName === $propertyValue;
             },
-            'haveShowPosterWithContents' => function(Episode $result, $expectedPath, $expectedContents ) {
+            'haveShowPosterWithContents' => function (Episode $result, $expectedPath, $expectedContents) {
                 return
                     $result->showPoster === $expectedPath &&
-                    file_get_contents( $result->showPoster ) === $expectedContents;
+                    file_get_contents($result->showPoster) === $expectedContents;
             },
-            'haveEpisodeThumbWithContents' => function(Episode $result, $expectedPath, $expectedContents ) {
+            'haveEpisodeThumbWithContents' => function (Episode $result, $expectedPath, $expectedContents) {
                 return
                     $result->episodeThumb === $expectedPath &&
-                    file_get_contents( $result->episodeThumb ) === $expectedContents;
+                    file_get_contents($result->episodeThumb) === $expectedContents;
             },
-            'beAnEpisode' => function(Episode $result) {
+            'beAnEpisode' => function (Episode $result) {
                 return $result instanceof Episode;
-            }
+            },
         ];
     }
 
@@ -112,12 +112,11 @@ XML;
 
     public function showPosterPath()
     {
-        return vfsStream::url( 'TV/A Great TV Show/A Great TV Show.tbn' );
+        return vfsStream::url('TV/A Great TV Show/A Great TV Show.tbn');
     }
 
     public function episodeThumbPath()
     {
-        return vfsStream::url( 'TV/A Great TV Show/A great episode.tbn' );
+        return vfsStream::url('TV/A Great TV Show/A great episode.tbn');
     }
 }
-

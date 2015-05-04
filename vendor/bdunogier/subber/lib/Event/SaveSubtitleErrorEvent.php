@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  */
@@ -29,9 +30,8 @@ class SaveSubtitleErrorEvent extends Event
      */
     private $toFile;
 
-    public function __construct( Subtitle $subtitle, $forFile, $toFile, $error = '' )
+    public function __construct(Subtitle $subtitle, $forFile, $toFile, $error = '')
     {
-
         $this->subtitle = $subtitle;
         $this->forFile = $forFile;
         $this->toFile = $toFile;
@@ -43,12 +43,12 @@ class SaveSubtitleErrorEvent extends Event
      *
      * @return SaveSubtitleErrorEvent
      */
-    public function setError( $error )
+    public function setError($error)
     {
         $this->error = $error;
 
         return $this;
-}
+    }
 
     /**
      * @return string
@@ -63,12 +63,12 @@ class SaveSubtitleErrorEvent extends Event
      *
      * @return SaveSubtitleErrorEvent
      */
-    public function setForFile( $forFile )
+    public function setForFile($forFile)
     {
         $this->forFile = $forFile;
 
         return $this;
-}
+    }
 
     /**
      * @return string
@@ -83,12 +83,12 @@ class SaveSubtitleErrorEvent extends Event
      *
      * @return SaveSubtitleErrorEvent
      */
-    public function setSubtitle( $subtitle )
+    public function setSubtitle($subtitle)
     {
         $this->subtitle = $subtitle;
 
         return $this;
-}
+    }
 
     /**
      * @return Subtitle
@@ -103,12 +103,12 @@ class SaveSubtitleErrorEvent extends Event
      *
      * @return SaveSubtitleErrorEvent
      */
-    public function setToFile( $toFile )
+    public function setToFile($toFile)
     {
         $this->toFile = $toFile;
 
         return $this;
-}
+    }
 
     /**
      * @return string

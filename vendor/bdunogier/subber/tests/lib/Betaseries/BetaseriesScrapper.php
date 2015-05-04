@@ -2,7 +2,7 @@
 namespace tests\BD\Subber\Betaseries;
 
 use BD\Subber\Betaseries\BetaseriesScrapper;
-use BD\Subber\Subtitles\Subtitle;
+use BD\Subber\Subtitles\SubtitleObject;
 use PHPUnit_Framework_TestCase;
 
 class BetaseriesScrapperTest extends PHPUnit_Framework_TestCase
@@ -30,14 +30,16 @@ class BetaseriesScrapperTest extends PHPUnit_Framework_TestCase
             ]
         ];
         $this->getBetaseriesClientMock()
-            ->method( 'scrapeEpisode' )
-            ->willReturn( $data );
+             ->method('scrapeEpisode')
+             ->willReturn($data);
 
-        $subtitles = $this->getScrapper()->scrap( 'test' );
+        $subtitles = $this->getScrapper()->scrap('test');
 
         self::assertEquals(
             [
-                new Subtitle( ['name' => 'Vikings_3x02_HDTV.KILLERS.fr.zip', 'url' => 'https://www.betaseries.com/srt/495244' ] )
+                new SubtitleObject(
+                    ['name' => 'Vikings_3x02_HDTV.KILLERS.fr.zip', 'url' => 'https://www.betaseries.com/srt/495244']
+                )
             ],
             $subtitles
         );
@@ -48,8 +50,8 @@ class BetaseriesScrapperTest extends PHPUnit_Framework_TestCase
      */
     private function getBetaseriesClientMock()
     {
-        if ( !isset( $this->betaseriesClientMock ) ) {
-            $this->betaseriesClientMock = $this->getMock( 'Patbzh\BetaseriesBundle\Model\Client' );
+        if (!isset($this->betaseriesClientMock)) {
+            $this->betaseriesClientMock = $this->getMock('Patbzh\BetaseriesBundle\Model\Client');
         }
         return $this->betaseriesClientMock;
     }
@@ -59,12 +61,12 @@ class BetaseriesScrapperTest extends PHPUnit_Framework_TestCase
      */
     private function getZipSubtitleFilter()
     {
-        if ( !isset( $this->zipSubtitleFilterMock ) ) {
-            $this->zipSubtitleFilterMock = $this->getMock( 'BD\Subber\Betaseries\ZipSubtitleFilter' );
+        if (!isset($this->zipSubtitleFilterMock)) {
+            $this->zipSubtitleFilterMock = $this->getMock('BD\Subber\Betaseries\ZipSubtitleFilter');
             $this->zipSubtitleFilterMock
-                ->expects( $this->any() )
-                ->method( 'filter' )
-                ->willReturnArgument( 0 );
+                ->expects($this->any())
+                ->method('filter')
+                ->willReturnArgument(0);
         }
         return $this->zipSubtitleFilterMock;
     }
@@ -74,24 +76,32 @@ class BetaseriesScrapperTest extends PHPUnit_Framework_TestCase
      */
     private function getParserRegistryMock()
     {
-        if ( !isset( $this->parserRegistryMock ) ) {
-            $this->parserRegistryMock = $this->getMockBuilder( 'BD\Subber\Betaseries\ParserRegistry' )->disableOriginalConstructor()->getMock();
+        if (!isset($this->parserRegistryMock)) {
+            $this->parserRegistryMock = $this->getMockBuilder(
+                'BD\Subber\Betaseries\ParserRegistry'
+            )->disableOriginalConstructor()->getMock();
             $this->parserRegistryMock
-                ->expects( $this->any() )
-                ->method( 'getParser' )
-                ->will( $this->returnValue( $this->getSubtitleReleaseParserMock() ) );
+                ->expects($this->any())
+                ->method('getParser')
+                ->will($this->returnValue($this->getSubtitleReleaseParserMock()));
         }
         return $this->parserRegistryMock;
     }
 
     private function getSubtitleReleaseParserMock()
     {
-        if ( !isset( $this->subtitleReleaseParserMock ) ) {
-            $this->subtitleReleaseParserMock = $this->getMock( '\BD\Subber\Release\Parser\ReleaseParser' );
+        if (!isset($this->subtitleReleaseParserMock)) {
+            $this->subtitleReleaseParserMock = $this->getMock('\BD\Subber\Release\Parser\ReleaseParser');
             $this->subtitleReleaseParserMock
-                ->expects( $this->any() )
-                ->method( 'parseReleaseName' )
-                ->will( $this->returnCallback( function( $releaseName ) { return new Subtitle( ['name' => $releaseName] ); }  ) );
+                ->expects($this->any())
+                ->method('parseReleaseName')
+                ->will(
+                    $this->returnCallback(
+                        function ($releaseName) {
+                            return new SubtitleObject(['name' => $releaseName]);
+                        }
+                    )
+                );
         }
         return $this->subtitleReleaseParserMock;
     }

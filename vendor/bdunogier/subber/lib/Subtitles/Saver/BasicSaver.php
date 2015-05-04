@@ -1,4 +1,5 @@
 <?php
+
 namespace BD\Subber\Subtitles\Saver;
 
 use BD\Subber\Event\SaveSubtitleErrorEvent;
@@ -21,85 +22,87 @@ class BasicSaver implements Saver
     /**
      * @param EventDispatcherInterface $eventDispatcher
      */
-    public function setEventDispatcher( $eventDispatcher )
+    public function setEventDispatcher($eventDispatcher)
     {
         $this->eventDispatcher = $eventDispatcher;
     }
 
-    public function save( Subtitle $subtitle, $forFile )
+    public function save(Subtitle $subtitle, $forFile)
     {
-        $subtitleSavePath = $this->computeSubtitleFileName( $forFile, $subtitle );
+        $subtitleSavePath = $this->computeSubtitleFileName($forFile, $subtitle);
 
-        if ( !is_writable( dirname( $subtitleSavePath ) ) || ( file_exists( $subtitleSavePath ) && !is_writable( $subtitleSavePath ) ) ) {
-            if ( isset( $this->eventDispatcher ) ) {
+        if (!is_writable(dirname($subtitleSavePath)) || (file_exists($subtitleSavePath) && !is_writable($subtitleSavePath))) {
+            if (isset($this->eventDispatcher)) {
                 $this->eventDispatcher->dispatch(
-                    "subber.save_subtitle_error",
+                    'subber.save_subtitle_error',
                     new SaveSubtitleErrorEvent(
                         $subtitle,
                         $forFile,
                         $subtitleSavePath,
-                        "Destination is not writable"
+                        'Destination is not writable'
                     )
                 );
             }
+
             return;
         }
 
-        if ( !$this->isZipFile( $subtitle ) ) {
-            copy( $subtitle->getUrl(), $subtitleSavePath );
-            $this->dispatch( $subtitle, $subtitleSavePath );
+        if (!$this->isZipFile($subtitle)) {
+            copy($subtitle->getUrl(), $subtitleSavePath);
+            $this->dispatch($subtitle, $subtitleSavePath);
+
             return;
         }
 
         $wantedSubName = false;
-        foreach (explode( '&', parse_url( $subtitle->getUrl(), PHP_URL_QUERY ) ) as $queryPart) {
-            list( $name, $value ) = explode( '=', $queryPart );
+        foreach (explode('&', parse_url($subtitle->getUrl(), PHP_URL_QUERY)) as $queryPart) {
+            list($name, $value) = explode('=', $queryPart);
             if ($name == 'subber_zipfile') {
-                $wantedSubName = urldecode( $value );
+                $wantedSubName = urldecode($value);
             }
         }
 
         // extract requested zip file
-        $zipPath = tempnam( sys_get_temp_dir(), 'subberzip_' );
-        copy( $subtitle->getUrl(), $zipPath );
-        $zip = new ZipArchive;
-        $zip->open( $zipPath );
+        $zipPath = tempnam(sys_get_temp_dir(), 'subberzip_');
+        copy($subtitle->getUrl(), $zipPath);
+        $zip = new ZipArchive();
+        $zip->open($zipPath);
         for ($i = 0; $i < $zip->numFiles; $i++) {
-            $filename = (string)$zip->getNameIndex( $i );
+            $filename = (string) $zip->getNameIndex($i);
             if ($filename === $wantedSubName) {
-                file_put_contents( $subtitleSavePath, $zip->getFromName( $filename ) );
-                $this->dispatch( $subtitle, $subtitleSavePath );
+                file_put_contents($subtitleSavePath, $zip->getFromName($filename));
+                $this->dispatch($subtitle, $subtitleSavePath);
                 $saved = true;
                 break;
             }
         }
         $zip->close();
 
-        if ( !isset( $saved ) ) {
-            throw new \Exception( "No file '$wantedSubName' extracted from zip file, something went wrong" );
+        if (!isset($saved)) {
+            throw new \Exception("No file '$wantedSubName' extracted from zip file, something went wrong");
         }
 
-        unlink( $zipPath );
+        unlink($zipPath);
     }
 
-    private function isZipFile( Subtitle $subtitle)
+    private function isZipFile(Subtitle $subtitle)
     {
-        return strstr( $subtitle->getUrl(), 'subber_zipfile' ) !== false;
+        return strstr($subtitle->getUrl(), 'subber_zipfile') !== false;
     }
 
-    private function computeSubtitleFileName( $videoFile, Subtitle $subtitle )
+    private function computeSubtitleFileName($videoFile, Subtitle $subtitle)
     {
-        $videoExtension = pathinfo( $videoFile, PATHINFO_EXTENSION );
-        $subtitleExtension = pathinfo( $subtitle->getName(), PATHINFO_EXTENSION );
+        $videoExtension = pathinfo($videoFile, PATHINFO_EXTENSION);
+        $subtitleExtension = pathinfo($subtitle->getName(), PATHINFO_EXTENSION);
 
-        return preg_replace( "/\.$videoExtension$/", ".fr.$subtitleExtension", $videoFile );
+        return preg_replace("/\.$videoExtension$/", ".fr.$subtitleExtension", $videoFile);
     }
 
-    private function dispatch( Subtitle $subtitle, $toFilePath )
+    private function dispatch(Subtitle $subtitle, $toFilePath)
     {
-        if ( isset( $this->eventDispatcher ) ) {
+        if (isset($this->eventDispatcher)) {
             $this->eventDispatcher->dispatch(
-                'subber.save_subtitle', new SaveSubtitleEvent( $subtitle, $toFilePath )
+                'subber.save_subtitle', new SaveSubtitleEvent($subtitle, $toFilePath)
             );
         }
     }

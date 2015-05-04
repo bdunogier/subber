@@ -1,8 +1,8 @@
 <?php
+
 namespace BD\Subber\WatchList;
 
 use BD\Subber\Event\NewBestSubtitleEvent;
-use BD\Subber\Event\SaveSubtitleEvent;
 use BD\Subber\ReleaseSubtitles\IndexFactory;
 use BD\Subber\Subtitles\Saver;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -26,8 +26,7 @@ class NewBestSubtitleWatchListMonitor implements WatchListMonitor
         IndexFactory $indexFactory,
         Saver $saver,
         EventDispatcherInterface $eventDispatcher = null
-    )
-    {
+    ) {
         $this->watchList = $watchList;
         $this->indexFactory = $indexFactory;
         $this->saver = $saver;
@@ -36,23 +35,20 @@ class NewBestSubtitleWatchListMonitor implements WatchListMonitor
 
     public function watchItems()
     {
-        foreach( $this->watchList->findAllActiveItems() as $item )
-        {
+        foreach ($this->watchList->findAllActiveItems() as $item) {
             // see if we need to check again ?
-            $index = $this->indexFactory->build( $item->getOriginalName() );
+            $index = $this->indexFactory->build($item->getOriginalName());
 
-            if ( $index->hasBestSubtitle() )
-            {
+            if ($index->hasBestSubtitle()) {
                 $subtitle = $index->getBestSubtitle();
-                if ( $item->getRating() !== null && $subtitle->getRating() <= $item->getRating() ) {
+                if ($item->getRating() !== null && $subtitle->getRating() <= $item->getRating()) {
                     continue;
                 }
 
-                if ( isset( $this->eventDispatcher ) )
-                {
+                if (isset($this->eventDispatcher)) {
                     $this->eventDispatcher->dispatch(
                         'subber.new_best_subtitle',
-                        new NewBestSubtitleEvent( $item, $subtitle )
+                        new NewBestSubtitleEvent($item, $subtitle)
                     );
                 }
             }
@@ -62,7 +58,7 @@ class NewBestSubtitleWatchListMonitor implements WatchListMonitor
     /**
      * @param EventDispatcherInterface $eventDispatcher
      */
-    public function setEventDispatcher( $eventDispatcher )
+    public function setEventDispatcher($eventDispatcher)
     {
         $this->eventDispatcher = $eventDispatcher;
     }

@@ -1,4 +1,5 @@
 <?php
+
 namespace BD\Subber\Logger;
 
 use BD\Subber\Event\NewBestSubtitleEvent;
@@ -12,14 +13,14 @@ use Monolog\Logger;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
- * Writes to monolog depending on various subber events
+ * Writes to monolog depending on various subber events.
  */
 class LoggerEventListener implements EventSubscriberInterface
 {
     /** @var \Monolog\Logger */
     private $logger;
 
-    public function __construct( Logger $logger )
+    public function __construct(Logger $logger)
     {
         $this->logger = $logger;
     }
@@ -32,11 +33,11 @@ class LoggerEventListener implements EventSubscriberInterface
             'subber.watch.post_new_item' => ['onNewWatchListItem'],
             'subber.scrap_error' => ['onScrapError'],
             'subber.new_best_subtitle' => ['onNewBestSubtitle'],
-            'subber.save_subtitle_error' => ['onSaveSubtitleError']
+            'subber.save_subtitle_error' => ['onSaveSubtitleError'],
         ];
     }
 
-    public function onSaveSubtitle( SaveSubtitleEvent $event )
+    public function onSaveSubtitle(SaveSubtitleEvent $event)
     {
         $this->logger->info(
             sprintf(
@@ -46,7 +47,7 @@ class LoggerEventListener implements EventSubscriberInterface
         );
     }
 
-    public function onSaveSubtitleError( SaveSubtitleErrorEvent $event )
+    public function onSaveSubtitleError(SaveSubtitleErrorEvent $event)
     {
         $this->logger->warning(
             sprintf(
@@ -56,18 +57,18 @@ class LoggerEventListener implements EventSubscriberInterface
         );
     }
 
-    public function onScrapRelease( ScrapReleaseEvent $event )
+    public function onScrapRelease(ScrapReleaseEvent $event)
     {
         $this->logger->info(
             sprintf(
-                "Scrapped %d subtitles for %s",
-                count( $event->getSubtitles() ),
+                'Scrapped %d subtitles for %s',
+                count($event->getSubtitles()),
                 $event->getReleaseName()
             )
         );
     }
 
-    public function onScrapError( ScrapErrorEvent $event )
+    public function onScrapError(ScrapErrorEvent $event)
     {
         $exception = $event->getException();
 
@@ -79,18 +80,19 @@ class LoggerEventListener implements EventSubscriberInterface
                     $exception->getReleaseName()
                 )
             );
+
             return;
         }
 
         $this->logger->error(
             sprintf(
-                "A scrapping error occured on %s: %s",
+                'A scrapping error occured on %s: %s',
                 $event->getReleaseName(), $event->getMessage()
             )
         );
     }
 
-    public function onNewWatchListItem( NewWatchListItemEvent $event )
+    public function onNewWatchListItem(NewWatchListItemEvent $event)
     {
         $this->logger->info(
             sprintf(
@@ -101,7 +103,7 @@ class LoggerEventListener implements EventSubscriberInterface
         );
     }
 
-    public function onNewBestSubtitle( NewBestSubtitleEvent $event )
+    public function onNewBestSubtitle(NewBestSubtitleEvent $event)
     {
         $this->logger->info(
             sprintf(

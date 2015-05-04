@@ -1,9 +1,9 @@
 <?php
+
 namespace BD\Subber\WatchList;
 
 use BD\Subber\Event\NewWatchListItemEvent;
 use DateTime;
-use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
 
 /**
@@ -32,19 +32,19 @@ class DoctrineWatchList extends EntityRepository implements WatchList
             ->getResult();
     }
 
-    public function addItem( WatchListitem $item )
+    public function addItem(WatchListitem $item)
     {
-        $event = new NewWatchListItemEvent( $item );
-        $this->eventDispatcher->dispatch( 'subber.watchlist.pre_new_item', $event );
-        $this->_em->persist( $item );
+        $event = new NewWatchListItemEvent($item);
+        $this->eventDispatcher->dispatch('subber.watchlist.pre_new_item', $event);
+        $this->_em->persist($item);
         $this->_em->flush();
-        $this->eventDispatcher->dispatch( 'subber.watchlist.post_new_item', $event );
+        $this->eventDispatcher->dispatch('subber.watchlist.post_new_item', $event);
     }
 
     /**
      * @param \Symfony\Component\EventDispatcher\EventDispatcherInterface $eventDispatcher
      */
-    public function setEventDispatcher( $eventDispatcher )
+    public function setEventDispatcher($eventDispatcher)
     {
         $this->eventDispatcher = $eventDispatcher;
     }
@@ -52,44 +52,44 @@ class DoctrineWatchList extends EntityRepository implements WatchList
     /**
      * @deprecated
      */
-    public function setItemComplete( WatchListItem $item )
+    public function setItemComplete(WatchListItem $item)
     {
-        $this->setItemDone( $item );
+        $this->setItemDone($item);
     }
 
-    public function setItemDone( WatchListItem $item )
+    public function setItemDone(WatchListItem $item)
     {
-        $item->setStatus( WatchListItem::STATUS_DONE );
-        $item->setUpdatedAt( new DateTime() );
-        $this->_em->persist( $item );
+        $item->setStatus(WatchListItem::STATUS_DONE);
+        $item->setUpdatedAt(new DateTime());
+        $this->_em->persist($item);
         $this->_em->flush();
     }
 
     /**
      * @return \BD\Subber\WatchList\WatchListItem
      */
-    public function loadByReleaseName( $releaseName )
+    public function loadByReleaseName($releaseName)
     {
-        return $this->findOneByOriginalName( $releaseName );
+        return $this->findOneByOriginalName($releaseName);
     }
 
     /**
      * @return \BD\Subber\WatchList\WatchListItem
      */
-    public function loadByLocalReleasePath( $localReleasePath )
+    public function loadByLocalReleasePath($localReleasePath)
     {
-        return $this->findOneByFile( $localReleasePath );
+        return $this->findOneByFile($localReleasePath);
     }
 
-    public function remove( WatchListItem $item )
+    public function remove(WatchListItem $item)
     {
-        $this->_em->remove( $item );
+        $this->_em->remove($item);
         $this->_em->flush();
     }
 
-    public function update( WatchListItem $item )
+    public function update(WatchListItem $item)
     {
-        $this->_em->persist( $item );
-        $this->_em->flush( $item );
+        $this->_em->persist($item);
+        $this->_em->flush($item);
     }
 }

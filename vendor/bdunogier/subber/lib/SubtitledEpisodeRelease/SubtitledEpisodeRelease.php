@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  */
@@ -25,7 +26,7 @@ class SubtitledEpisodeRelease extends ReleaseObject
     /**
      * @param \BD\Subber\Episode\Episode $episode
      */
-    public function setEpisode( $episode )
+    public function setEpisode($episode)
     {
         $this->episode = $episode;
     }
@@ -41,7 +42,7 @@ class SubtitledEpisodeRelease extends ReleaseObject
     /**
      * @param \BD\Subber\ReleaseSubtitles\Index $subtitlesIndex
      */
-    public function setSubtitlesIndex( $subtitlesIndex )
+    public function setSubtitlesIndex($subtitlesIndex)
     {
         $this->subtitlesIndex = $subtitlesIndex;
     }

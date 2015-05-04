@@ -1,4 +1,5 @@
 <?php
+
 namespace BD\Subber\WatchList;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -13,18 +14,19 @@ class WatchListItem
     const STATUS_DONE = 1;
     const STATUS_FINISHED = 2;
 
-    public function __construct( array $properties = [] )
+    public function __construct(array $properties = [])
     {
-        foreach ( $properties as $property => $value )
-        {
-            if ( !property_exists( $this, $property ) )
-                throw new \InvalidArgumentException( "Unknown property $property in class " . __CLASS__ );
+        foreach ($properties as $property => $value) {
+            if (!property_exists($this, $property)) {
+                throw new \InvalidArgumentException("Unknown property $property in class ".__CLASS__);
+            }
             $this->$property = $value;
         }
     }
 
     /**
-     * Local path to the file that needs subbing
+     * Local path to the file that needs subbing.
+     *
      * @ORM\Column(type="string", length=255)
      * @ORM\Id
      */
@@ -61,20 +63,23 @@ class WatchListItem
     protected $hasSubtitle = 0;
 
     /**
-     * Set file
+     * Set file.
+     *
      * @param string $file
+     *
      * @return WatchListItem
      */
     public function setFile($file)
     {
         $this->file = $file;
+
         return $this;
     }
 
     /**
-     * Get file
+     * Get file.
      *
-     * @return string 
+     * @return string
      */
     public function getFile()
     {
@@ -82,18 +87,22 @@ class WatchListItem
     }
 
     /**
-     * Set originalName
+     * Set originalName.
+     *
      * @param string $originalName
+     *
      * @return WatchListItem
      */
     public function setOriginalName($originalName)
     {
         $this->originalName = $originalName;
+
         return $this;
     }
 
     /**
-     * Get originalName
+     * Get originalName.
+     *
      * @return string
      */
     public function getOriginalName()
@@ -111,11 +120,13 @@ class WatchListItem
 
     /**
      * @param mixed $status
+     *
      * @return WatchListItem
      */
-    public function setStatus( $status )
+    public function setStatus($status)
     {
         $this->status = $status;
+
         return $this;
     }
 
@@ -129,11 +140,13 @@ class WatchListItem
 
     /**
      * @param mixed $updatedAt
+     *
      * @return WatchListItem
      */
-    public function setUpdatedAt( $updatedAt )
+    public function setUpdatedAt($updatedAt)
     {
         $this->updatedAt = $updatedAt;
+
         return $this;
     }
 
@@ -147,11 +160,13 @@ class WatchListItem
 
     /**
      * @param mixed $createdAt
+     *
      * @return WatchListItem
      */
-    public function setCreatedAt( $createdAt )
+    public function setCreatedAt($createdAt)
     {
         $this->createdAt = $createdAt;
+
         return $this;
     }
 
@@ -165,22 +180,25 @@ class WatchListItem
 
     /**
      * @param mixed $rating
+     *
      * @return WatchListItem
      */
-    public function setRating( $rating )
+    public function setRating($rating)
     {
         $this->rating = $rating;
+
         return $this;
     }
 
-    public function setHasSubtitle( $has = true )
+    public function setHasSubtitle($has = true)
     {
-        $this->hasSubtitle = (int)$has;
+        $this->hasSubtitle = (int) $has;
+
         return $this;
     }
 
     public function hasSubtitle()
     {
-        return (bool)$this->hasSubtitle;
+        return (bool) $this->hasSubtitle;
     }
 }

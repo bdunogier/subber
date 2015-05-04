@@ -1,4 +1,5 @@
 <?php
+
 namespace BD\Subber\ReleaseSubtitles\IndexFactory;
 
 use BD\Subber\Event\ScrapReleaseEvent;
@@ -38,8 +39,7 @@ class ScrapperBasedIndexFactory implements IndexFactory
         CompatibilityMatcher $compatibilityMatcher,
         Rater $rater,
         ListConsolidator $subtitleListConsolidator
-    )
-    {
+    ) {
         $this->scrapper = $scrapper;
         $this->compatiblityMatcher = $compatibilityMatcher;
         $this->rater = $rater;
@@ -47,41 +47,42 @@ class ScrapperBasedIndexFactory implements IndexFactory
         $this->subtitleListConsolidator = $subtitleListConsolidator;
     }
 
-    public function build( $releaseName )
+    public function build($releaseName)
     {
-        $event = new ScrapReleaseEvent( $releaseName );
-        $this->dispatch( 'subber.pre_scrap_release', $event );
-        $subtitles = $this->scrapper->scrap( $releaseName );
-        $event->setSubtitles( $subtitles );
-        $this->dispatch( 'subber.post_scrap_release', $event );
+        $event = new ScrapReleaseEvent($releaseName);
+        $this->dispatch('subber.pre_scrap_release', $event);
+        $subtitles = $this->scrapper->scrap($releaseName);
+        $event->setSubtitles($subtitles);
+        $this->dispatch('subber.post_scrap_release', $event);
 
-        $videoRelease = $this->videoReleaseParser->parseReleaseName( $releaseName);
+        $videoRelease = $this->videoReleaseParser->parseReleaseName($releaseName);
 
-        $this->subtitleListConsolidator->consolidate( $subtitles );
+        $this->subtitleListConsolidator->consolidate($subtitles);
 
-        $this->makeSubtitlesTestable( $subtitles );
-        $subtitles = $this->compatiblityMatcher->match( $videoRelease, $subtitles );
+        $this->makeSubtitlesTestable($subtitles);
+        $subtitles = $this->compatiblityMatcher->match($videoRelease, $subtitles);
         array_map(
-            function( TestedSubtitle $subtitle ) {
-                $subtitle->setRating( $this->rater->rate( $subtitle ) );
+            function (TestedSubtitle $subtitle) {
+                $subtitle->setRating($this->rater->rate($subtitle));
             },
             $subtitles
         );
 
-        return new Index( $videoRelease, $subtitles );
+        return new Index($videoRelease, $subtitles);
     }
 
     /**
-     * Makes $subtitles an array of TestedSubtitle
+     * Makes $subtitles an array of TestedSubtitle.
+     *
      * @param \BD\Subber\Subtitles\Subtitle[] $subtitles
      *
      * @return \BD\Subber\ReleaseSubtitles\TestedSubtitle[]
      */
-    private function makeSubtitlesTestable( array &$subtitles )
+    private function makeSubtitlesTestable(array &$subtitles)
     {
         $subtitles = array_map(
-            function ( $subtitle ) {
-                return new TestedSubtitleObject( ['compatibility' => TestedSubtitle::UNDETERMINED] + $subtitle->toArray() );
+            function ($subtitle) {
+                return new TestedSubtitleObject(['compatibility' => TestedSubtitle::UNDETERMINED] + $subtitle->toArray());
             },
             $subtitles
         );

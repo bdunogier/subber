@@ -1,8 +1,9 @@
 <?php
+
 /**
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  */
-namespace BD\SubberBundle\Controller;
+namespace BD\Subberbundle\Controller;
 
 use BD\Subber\WatchList\WatchList;
 use BD\Subber\WatchList\WatchListItem;
@@ -16,7 +17,7 @@ class WatchListController extends Controller implements ContainerAwareInterface
     /** @var \BD\Subber\WatchList\WatchList */
     private $watchList;
 
-    public function __construct( WatchList $watchList )
+    public function __construct(WatchList $watchList)
     {
         $this->watchList = $watchList;
     }
@@ -37,16 +38,16 @@ class WatchListController extends Controller implements ContainerAwareInterface
 
     public function createAction(Request $request)
     {
-        $form = $this->createForm( new WatchListItemType(), new WatchListItem(), [] );
+        $form = $this->createForm(new WatchListItemType(), new WatchListItem(), []);
 
         $form->handleRequest($request);
 
         if ($form->isValid()) {
             $item = $form->getData();
 
-            $this->watchList->addItem( $item );
+            $this->watchList->addItem($item);
 
-            return $this->redirectToRoute( 'bd_subber_item_view', ['releaseName' => $item->getName()]);
+            return $this->redirectToRoute('bd_subber_item_view', ['releaseName' => $item->getName()]);
         }
 
         return $this->render(
@@ -55,11 +56,11 @@ class WatchListController extends Controller implements ContainerAwareInterface
         );
     }
 
-    public function viewAction( $releaseName )
+    public function viewAction($releaseName)
     {
         $this->render(
             'BDSubberBundle::release.html.twig',
-            ['release' => $this->watchList->loadByReleaseName( $releaseName )]
+            ['release' => $this->watchList->loadByReleaseName($releaseName)]
         );
     }
 }

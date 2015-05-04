@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  */
@@ -14,12 +15,12 @@ class UnknownSubtitleSourceException extends Exception
     /** @var int */
     private $sourceName;
 
-    public function __construct( $releaseName, $sourceName )
+    public function __construct($releaseName, $sourceName)
     {
         $this->releaseName = $releaseName;
         $this->sourceName = $sourceName;
 
-        parent::__construct( "Unknown source $sourceName for release $releaseName" );
+        parent::__construct("Unknown source $sourceName for release $releaseName");
     }
 
     /**

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  */
@@ -16,7 +17,7 @@ interface Subtitle extends Release
     /**
      * @param mixed $language
      */
-    public function setLanguage( $language );
+    public function setLanguage($language);
 
     /**
      * @return string
@@ -26,7 +27,7 @@ interface Subtitle extends Release
     /**
      * @param string $author
      */
-    public function setAuthor( $author );
+    public function setAuthor($author);
 
     /**
      * @return string
@@ -36,17 +37,17 @@ interface Subtitle extends Release
     /**
      * @param string $url
      */
-    public function setUrl( $url );
+    public function setUrl($url);
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function isHearingImpaired();
 
     /**
-     * @param boolean $isHearingImpaired
+     * @param bool $isHearingImpaired
      */
-    public function setIsHearingImpaired( $isHearingImpaired );
+    public function setIsHearingImpaired($isHearingImpaired);
 
     /**
      * @return string
@@ -56,15 +57,15 @@ interface Subtitle extends Release
     /**
      * @param string $subtitleFormat
      */
-    public function setSubtitleFormat( $subtitleFormat );
+    public function setSubtitleFormat($subtitleFormat);
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function hasTags();
 
     /**
-     * @param boolean $hasTags
+     * @param bool $hasTags
      */
-    public function setHasTags( $hasTags );
+    public function setHasTags($hasTags);
 }

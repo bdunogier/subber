@@ -1,4 +1,5 @@
 <?php
+
 namespace BD\Subber\Betaseries;
 
 class ParserRegistry
@@ -6,7 +7,7 @@ class ParserRegistry
     /** @var \BD\Subber\Release\Parser\ReleaseParser[] */
     private $parsers;
 
-    public function __construct( array $parsers )
+    public function __construct(array $parsers)
     {
         $this->parsers = $parsers;
     }
@@ -14,12 +15,12 @@ class ParserRegistry
     /**
      * @return \BD\Subber\Release\Parser\ReleaseParser
      */
-    public function getParser( $key )
+    public function getParser($key)
     {
-        if ( isset( $this->parsers[$key] ) ) {
+        if (isset($this->parsers[$key])) {
             return $this->parsers[$key];
         }
 
-        throw new \InvalidArgumentException( "No parser for key $key" );
+        throw new \InvalidArgumentException("No parser for key $key");
     }
 }

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  */
@@ -14,27 +15,27 @@ interface Release
     /**
      * @param string $name
      */
-    public function setName( $name );
+    public function setName($name);
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function isRepack();
 
     /**
-     * @param boolean $isRepack
+     * @param bool $isRepack
      */
-    public function setIsRepack( $isRepack );
+    public function setIsRepack($isRepack);
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function isProper();
 
     /**
-     * @param boolean $isProper
+     * @param bool $isProper
      */
-    public function setIsProper( $isProper );
+    public function setIsProper($isProper);
 
     /**
      * @return string
@@ -49,7 +50,7 @@ interface Release
     /**
      * @param string $source
      */
-    public function setSource( $source );
+    public function setSource($source);
 
     /**
      * @return string
@@ -59,7 +60,7 @@ interface Release
     /**
      * @param string $resolution
      */
-    public function setResolution( $resolution );
+    public function setResolution($resolution);
 
     /**
      * @return string
@@ -69,12 +70,12 @@ interface Release
     /**
      * @param string $format
      */
-    public function setFormat( $format );
+    public function setFormat($format);
 
     /**
      * @param string $group
      */
-    public function setGroup( $group );
+    public function setGroup($group);
 
     public function toArray();
 }
