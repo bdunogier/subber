@@ -1,6 +1,6 @@
 <?php
 
-namespace BD\Subberbundle\Controller;
+namespace BD\SubberBundle\Controller;
 
 use BD\Subber\SubtitledEpisodeRelease\SubtitledEpisodeReleaseFactory;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;

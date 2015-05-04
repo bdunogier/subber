@@ -1,6 +1,6 @@
 <?php
 
-namespace BD\Subberbundle\Controller;
+namespace BD\SubberBundle\Controller;
 
 use BD\Subber\WatchList\WatchListItem;
 use BD\Subber\WatchList\WatchList;

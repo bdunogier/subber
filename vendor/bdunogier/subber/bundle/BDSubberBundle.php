@@ -1,6 +1,6 @@
 <?php
 
-namespace BD\Subberbundle;
+namespace BD\SubberBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 

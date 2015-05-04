@@ -1,6 +1,6 @@
 <?php
 
-namespace BD\Subberbundle\Command;
+namespace BD\SubberBundle\Command;
 
 use BD\Subber\Release\Release;
 use BD\Subber\ReleaseSubtitles\TestedSubtitleObject;
