@@ -30,7 +30,7 @@ class BasicSaver implements Saver
     {
         $subtitleSavePath = $this->computeSubtitleFileName( $forFile, $subtitle );
 
-        if ( !is_writable( dirname( $subtitleSavePath ) || ( file_exists( $subtitleSavePath ) && !is_writable( $subtitleSavePath ) ) ) ) {
+        if ( !is_writable( dirname( $subtitleSavePath ) ) || ( file_exists( $subtitleSavePath ) && !is_writable( $subtitleSavePath ) ) ) {
             if ( isset( $this->eventDispatcher ) ) {
                 $this->eventDispatcher->dispatch(
                     "subber.save_subtitle_error",
