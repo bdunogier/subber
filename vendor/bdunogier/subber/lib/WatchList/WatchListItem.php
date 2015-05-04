@@ -53,9 +53,9 @@ class WatchListItem
     protected $status = 0;
 
     /**
-     * @ORM\Column(name="rating", type="integer", nullable=true)
+     * @ORM\Column(name="rating", type="integer", nullable=true, options={"default":null})
      */
-    protected $rating = 0;
+    protected $rating = null;
 
     /**
      * @ORM\Column(name="has_subtitle", type="integer", nullable=false, options={"default":0})
