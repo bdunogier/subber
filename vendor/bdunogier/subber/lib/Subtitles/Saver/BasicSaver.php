@@ -95,7 +95,7 @@ class BasicSaver implements Saver
         $videoExtension = pathinfo($videoFile, PATHINFO_EXTENSION);
         $subtitleExtension = pathinfo($subtitle->getName(), PATHINFO_EXTENSION);
 
-        return preg_replace("/\.$videoExtension$/", ".fr.$subtitleExtension", $videoFile);
+        return preg_replace("/\.$videoExtension$/", ".fre.$subtitleExtension", $videoFile);
     }
 
     private function dispatch(Subtitle $subtitle, $toFilePath)
