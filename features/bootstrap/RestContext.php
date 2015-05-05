@@ -14,7 +14,7 @@ use Symfony\Component\Process\Process;
 /**
  * Defines application features from the specific context.
  */
-class FeatureContext implements Context, SnippetAcceptingContext
+class RestContext implements Context, SnippetAcceptingContext
 {
     use KernelDictionary;
 
