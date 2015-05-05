@@ -34,7 +34,8 @@ $output = array_filter(
 
 if (isSuccess( $output )) {
     list( $originalPath, $newPath ) = extractPathData( $output );
-    subber_queue( ['path' => $newPath, 'original_name' => basename( $originalPath)] );
+    $originalName = pathinfo( $originalPath, PATHINFO_FILENAME );
+    subber_queue( ['path' => $newPath, 'original_name' => $originalName ] );
 }
 
 // get new name
