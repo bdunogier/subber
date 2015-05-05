@@ -9,4 +9,6 @@ default:
                     options: {base_url: http://localhost:8000}
         scripts:
             paths: [features/scripts]
-            contexts: [ScriptContext]
+            contexts:
+                - ScriptContext:
+                    options: {subber_host: http://localhost:8000}

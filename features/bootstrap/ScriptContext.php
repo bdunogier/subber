@@ -21,6 +21,21 @@ class ScriptContext implements Context, SnippetAcceptingContext
     private $scriptOutput;
 
     /**
+     * Initializes context.
+     *
+     * Every scenario gets its own context instance.
+     * You can also pass arbitrary arguments to the
+     * context constructor through behat.yml.
+     */
+    public function __construct( array $options )
+    {
+        $this->options = $options;
+    }
+
+    /** @var array */
+    private $options;
+
+    /**
      * @Given that the Release :arg1 will be moved to :arg2 by the post-processor
      */
     public function thatTheReleaseWillBeMovedToByThePostProcessor($releaseName, $filePath)
@@ -81,7 +96,7 @@ EOF;
 
         file_put_contents($temporaryFile, $this->scriptOutput);
         putenv("SUBBERTEST_SBWRAPPER_OUTPUT_FROM=$temporaryFile");
-        putenv("SUBBER_CONFIG_SUBBER_HOST=http://php55-vm.subber");
+        putenv("SUBBER_CONFIG_SUBBER_HOST={$this->options['subber_host']}");
         exec('php app/scripts/sabToSickbeard_wrapper.php', $output, $exitCode);
 
         @unlink($temporaryFile);
