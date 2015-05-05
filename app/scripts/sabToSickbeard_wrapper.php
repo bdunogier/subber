@@ -35,7 +35,12 @@ $output = array_filter(
 if (isSuccess($output)) {
     list($originalPath, $newPath) = extractPathData($output);
     $originalName = pathinfo($originalPath, PATHINFO_FILENAME);
-    subber_queue(['path' => $newPath, 'original_name' => $originalName]);
+
+    if (!$originalPath || !$newPath) {
+        echo "[Subber]: failed to extract release name and/or file path\n";
+    } else {
+        subber_queue(['path' => $newPath, 'original_name' => $originalName]);
+    }
 }
 
 // get new name
@@ -46,11 +51,14 @@ if (!isSuccess($output)) {
 
 function runScript($arguments, &$exitCode, array &$output)
 {
-    $command = __DIR__ . "/sabToSickBeard.py $arguments";
-    if (getenv('BD_TEST') == 1) {
-        echo "BD_TEST: Command: $command\n\n";
+    // tests override
+    if (($testOutputFrom = getenv('SUBBERTEST_SBWRAPPER_OUTPUT_FROM')) !== false) {
+        $output = file($testOutputFrom);
+        $exitCode = getenv('SUBBERTEST_SBWRAPPER_EXIT_CODE') ?: 0;
+        return;
     }
 
+    $command = __DIR__ . "/sabToSickBeard.py $arguments";
     exec($command, $output, $exitCode);
 }
 
@@ -83,6 +91,7 @@ function extractPathData(array $output)
     if (!preg_match('/^Moving file from (.*) to (.*)$/', $line, $m)) {
         return false;
     }
+    
     return [trim($m[1]), trim($m[2])];
 }
 
@@ -101,6 +110,11 @@ function subber_queue(array $fields)
 
 function get_config($key)
 {
+    // environment variable override
+    if (( $envValue = getenv('SUBBER_CONFIG_' . strtoupper($key))) !== false) {
+        return $envValue;
+    }
+
     static $configuration;
 
     if ($configuration === null) {
