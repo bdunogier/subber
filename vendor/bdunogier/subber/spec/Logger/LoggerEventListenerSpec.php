@@ -8,6 +8,8 @@ use BD\Subber\Event\SaveSubtitleEvent;
 use BD\Subber\Event\ScrapErrorEvent;
 use BD\Subber\Event\ScrapReleaseEvent;
 use BD\Subber\ReleaseSubtitles\TestedSubtitleObject;
+use BD\Subber\Subtitles\Subtitle;
+use BD\Subber\Subtitles\SubtitleObject;
 use BD\Subber\WatchList\WatchListItem;
 use Monolog\Logger;
 use PhpSpec\ObjectBehavior;
@@ -38,7 +40,7 @@ class LoggerEventListenerSpec extends ObjectBehavior
         $logger->info(Argument::any())->shouldBeCalled();
 
         $this->onSaveSubtitle(
-            new SaveSubtitleEvent('http://subtitle.uri', '/local/path')
+            new SaveSubtitleEvent(new SubtitleObject(), '/local/path')
         );
     }
 
