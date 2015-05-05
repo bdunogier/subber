@@ -35,25 +35,15 @@ class NewBestSubtitleSaverSpec extends ObjectBehavior
         $this->onNewBestSubtitle($event);
     }
 
-    public function it_updates_the_watchlist_item_rating(NewBestSubtitleEvent $event, WatchListItem $watchListItem)
+    public function it_updates_the_watchlist_item(NewBestSubtitleEvent $event, WatchListItem $watchListItem)
     {
         $event->getWatchListItem()->willReturn($watchListItem);
         $event->getSubtitle()->willReturn(new TestedSubtitleObject(['rating' => 3]));
 
-        $watchListItem->setRating(3)->shouldBeCalled();
+        $watchListItem->setRating(3)->willReturn($watchListItem);
+        $watchListItem->setHasSubtitle(true)->willReturn($watchListItem);
+
         $watchListItem->getFile()->shouldBeCalled();
-        $this->onNewBestSubtitle($event);
-    }
-
-    public function it_marks_the_watchlist_item_as_complete(WatchList $watchList, NewBestSubtitleEvent $event, WatchListItem $watchListItem)
-    {
-        $event->getWatchListItem()->willReturn($watchListItem);
-        $event->getSubtitle()->willReturn(new TestedSubtitleObject());
-
-        $watchListItem->setRating(Argument::any())->shouldBeCalled();
-        $watchListItem->getFile()->shouldBeCalled();
-
-        $watchList->setItemComplete($watchListItem)->shouldBeCalled();
 
         $this->onNewBestSubtitle($event);
     }

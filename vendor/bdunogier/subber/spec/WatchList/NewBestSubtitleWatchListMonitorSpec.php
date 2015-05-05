@@ -37,7 +37,7 @@ class NewBestSubtitleWatchListMonitorSpec extends ObjectBehavior
      */
     public function it_builds_the_index_for_pending_items($watchList, $indexFactory)
     {
-        $watchList->findAllPendingItems()->willReturn(
+        $watchList->findAllActiveItems()->willReturn(
             [
                 new WatchListItem(['originalName' => 'a']),
                 new WatchListItem(['originalName' => 'b']),
@@ -58,7 +58,7 @@ class NewBestSubtitleWatchListMonitorSpec extends ObjectBehavior
     public function it_ignores_subtitles_with_a_rating_lower_than_the_task_rating($watchList, $indexFactory, $saver)
     {
         $watchListItem = new WatchListItem();
-        $watchList->findAllPendingItems()->willReturn($watchListItem);
+        $watchList->findAllActiveItems()->willReturn($watchListItem);
 
         $watchListItem->setRating(0);
         $subtitle = new TestedSubtitleObject();
@@ -82,7 +82,7 @@ class NewBestSubtitleWatchListMonitorSpec extends ObjectBehavior
         EventDispatcherInterface $eventDispatcher
     ) {
         $watchListItem = new WatchListItem(['originalName' => 'a', 'rating' => 0]);
-        $watchList->findAllPendingItems()->willReturn([$watchListItem]);
+        $watchList->findAllActiveItems()->willReturn([$watchListItem]);
 
         $newerSubtitle = new TestedSubtitleObject(['rating' => 3]);
         $indexFactory->build('a')->willReturn($index);

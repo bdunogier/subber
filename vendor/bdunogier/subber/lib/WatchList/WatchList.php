@@ -41,4 +41,6 @@ interface WatchList
     public function loadByLocalReleasePath($localReleasePath);
 
     public function remove(WatchListItem $item);
+
+    public function update(WatchListItem $item);
 }
