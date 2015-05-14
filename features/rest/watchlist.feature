@@ -17,6 +17,6 @@ Feature: Watch List
   Scenario: The dashboard shows the currently playing WatchList item
 
   Scenario: The monitor checks a new WatchList item for subtitles
-    Given there is a WatchList item for Release "API test release"
-     When I execute the WatchList Monitor
-     Then I see subtitles checked for "API test release"
+    #Given there is a WatchList item for Release "API test release"
+     #When I execute the WatchList Monitor
+     #Then I see subtitles checked for "API test release"

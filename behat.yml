@@ -2,8 +2,13 @@ default:
     extensions:
         Behat\Symfony2Extension: ~
     suites:
-        default:
+        rest:
+            paths: [features/rest]
             contexts:
-                - FeatureContext:
-                    options:
-                        base_url: http://php55-vm.subber
+                - RestContext:
+                    options: {base_url: http://php55-vm.subber}
+        scripts:
+            paths: [features/scripts]
+            contexts:
+                - ScriptContext:
+                    options: {subber_host: http://localhost:8000}
